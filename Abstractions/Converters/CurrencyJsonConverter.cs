@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Converters
 {
-    public class CurrencyCodeJsonConverter : JsonConverter<Currency>
+    public class CurrencyJsonConverter : JsonConverter<Currency>
     {
         public override Currency Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             => EnumHelpers.GetValueFromCode<Currency>(reader.GetString());

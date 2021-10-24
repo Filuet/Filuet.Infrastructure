@@ -13,7 +13,7 @@ namespace Filuet.Infrastructure.Abstractions.Business
 
         public decimal Value { get; private set; }
 
-        [JsonConverter(typeof(CurrencyCodeJsonConverter))]
+        [JsonConverter(typeof(CurrencyJsonConverter))]
         public Currency Currency { get; private set; }
 
         private Money() { }
