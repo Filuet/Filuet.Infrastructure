@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    public enum Country : ushort
+    public enum Country : int
     {
         [Code("AZ")]
         [Description("AZE")]
