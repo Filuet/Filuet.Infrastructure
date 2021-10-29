@@ -17,6 +17,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("TW")]
         [Description("TWN")]
         Taiwan = 158,
+        [Code("EE")]
+        [Description("EST")]
+        Estonia = 233,
         [Code("IN")]
         [Description("IND")]
         India = 356,
@@ -32,6 +35,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("LV")]
         [Description("LVA")]
         Latvia = 428,
+        [Code("LT")]
+        [Description("LTU")]
+        Lithuania = 440,
         [Code("MY")]
         [Description("MYS")]
         Malaysia = 458,
