@@ -5,7 +5,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
     /// <summary>
     /// ISO 4217
     /// </summary>
-    public enum Currency : int
+    public enum Currency : short
     {
         [Code("AMD")]
         ArmenianDram = 51,
