@@ -12,6 +12,7 @@ namespace Filuet.Infrastructure.Communication
             _ip = ip;
             _port = port;
             _responseDelayMs = responseDelayMs;
+            _mutex = new object();
         }
 
         public byte[] SendCommand(byte[] data)

@@ -13,3 +13,6 @@
 /Abstractions/bin/Debug/net5.0
 /nuget.exe
 .vs/
+
+bin
+obj

@@ -10,3 +10,15 @@ D:\Repos\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastruct
 D:\Repos\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.dll
 D:\Repos\Filuet.Infrastructure\Communication\obj\Debug\net5.0\ref\Filuet.Infrastructure.Communication.dll
 D:\Repos\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.pdb
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\bin\Debug\net5.0\Filuet.Infrastructure.Communication.deps.json
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\bin\Debug\net5.0\Filuet.Infrastructure.Communication.dll
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\bin\Debug\net5.0\ref\Filuet.Infrastructure.Communication.dll
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\bin\Debug\net5.0\Filuet.Infrastructure.Communication.pdb
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.csproj.AssemblyReference.cache
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.AssemblyInfoInputs.cache
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.AssemblyInfo.cs
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.csproj.CoreCompileInputs.cache
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.dll
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\ref\Filuet.Infrastructure.Communication.dll
+D:\Repos\Filuet\Filuet.Infrastructure\Communication\obj\Debug\net5.0\Filuet.Infrastructure.Communication.pdb
