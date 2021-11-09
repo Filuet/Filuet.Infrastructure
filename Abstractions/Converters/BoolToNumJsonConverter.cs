@@ -13,6 +13,6 @@ namespace Filuet.Infrastructure.Abstractions.Converters
             Utf8JsonWriter writer,
             bool route,
             JsonSerializerOptions options) =>
-                writer.WriteStringValue(route ? "1" : "0");
+                writer.WriteNumberValue(route ? 1 : 0);
     }
 }
