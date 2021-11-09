@@ -23,7 +23,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         public static bool IsPhone(this string mobile)
             => CheckMatch(mobile, @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$");
 
-        public static bool IsValidJson(string json)
+        public static bool IsValidJson(this string json)
         {
             try
             {
