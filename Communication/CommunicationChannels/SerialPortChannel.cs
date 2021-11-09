@@ -25,7 +25,7 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// </summary>
         /// <param name="data">command</param>
         /// <returns></returns>
-        public byte[] SendCommand(byte[] data)
+        public byte[] SendCommand(byte[] data, byte? endOfResponse = null)
         {
             lock (_port)
             {

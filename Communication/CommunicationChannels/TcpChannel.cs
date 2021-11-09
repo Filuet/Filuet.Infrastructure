@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace Filuet.Infrastructure.Communication
 {
     public class TcpChannel : ICommunicationChannel
     {
-        public TcpChannel(string ip, ushort port = 5000, byte? endOfPackage = null)
+        public TcpChannel(string ip, ushort port = 5000)
         {
             _ip = ip;
             _port = port;
-            _endOfPackage = endOfPackage;
             _mutex = new object();
         }
 
-        public byte[] SendCommand(byte[] data)
+        public byte[] SendCommand(byte[] data, byte? endOfResponse = null)
         {
             lock (_mutex)
             {
@@ -27,7 +25,7 @@ namespace Filuet.Infrastructure.Communication
                 stream.Write(data, 0, data.Length);
                 List<byte> response = new List<byte>();
 
-                if (_endOfPackage != null)
+                if (endOfResponse != null)
                 {
                     while (true)
                     {
@@ -36,7 +34,7 @@ namespace Filuet.Infrastructure.Communication
                             byte nextByte = (byte)stream.ReadByte();
                             response.Add(nextByte);
 
-                            if (nextByte == _endOfPackage)
+                            if (nextByte == endOfResponse)
                             {
                                 break;
                             }
@@ -45,9 +43,19 @@ namespace Filuet.Infrastructure.Communication
                 }
                 else
                 {
-                    while (stream.DataAvailable)
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+                    while (true)
                     {
-                        response.Add((byte)stream.ReadByte());
+                        if (stream.DataAvailable)
+                        {
+                            sw.Reset();
+                            sw.Start();
+                            response.Add((byte)stream.ReadByte());
+                        }
+
+                        if (sw.ElapsedMilliseconds > 200)
+                            break;
                     }
                 }
 
@@ -59,7 +67,6 @@ namespace Filuet.Infrastructure.Communication
 
         private readonly string _ip;
         private readonly ushort _port;
-        private readonly byte? _endOfPackage;
         private object _mutex;
     }
 }
