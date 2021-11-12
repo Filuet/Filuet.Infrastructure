@@ -8,8 +8,17 @@
 *.userosscache
 *.sln.docstates
 *.nupkg
+*.dll
+*.pdb
+
 
 /Abstractions/obj
 /Abstractions/bin/Debug/net5.0
 /nuget.exe
 .vs/
+
+obj
+bin
+
+obj/
+bin/

@@ -433,23 +433,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\IVG\\.nuget\\packages\\": {},
+    "C:\\Users\\igor.gutsaev\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "1.0.1",
+    "version": "1.0.5",
     "restore": {
-      "projectUniqueName": "D:\\Repos\\Filuet.Infrastructure\\Communication\\Filuet.Infrastructure.Communication.csproj",
+      "projectUniqueName": "D:\\Repos\\Filuet\\Filuet.Infrastructure\\Communication\\Filuet.Infrastructure.Communication.csproj",
       "projectName": "Filuet.Infrastructure.Communication",
-      "projectPath": "D:\\Repos\\Filuet.Infrastructure\\Communication\\Filuet.Infrastructure.Communication.csproj",
-      "packagesPath": "C:\\Users\\IVG\\.nuget\\packages\\",
-      "outputPath": "D:\\Repos\\Filuet.Infrastructure\\Communication\\obj\\",
+      "projectPath": "D:\\Repos\\Filuet\\Filuet.Infrastructure\\Communication\\Filuet.Infrastructure.Communication.csproj",
+      "packagesPath": "C:\\Users\\igor.gutsaev\\.nuget\\packages\\",
+      "outputPath": "D:\\Repos\\Filuet\\Filuet.Infrastructure\\Communication\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\IVG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\igor.gutsaev\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -496,7 +496,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.208\\RuntimeIdentifierGraph.json"
       }
     }
   }

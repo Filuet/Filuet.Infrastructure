@@ -2,6 +2,6 @@
 {
     public interface ICommunicationChannel
     {
-        byte[] SendCommand(byte[] data);
+        byte[] SendCommand(byte[] data, byte? endOfResponse = null);
     }
 }

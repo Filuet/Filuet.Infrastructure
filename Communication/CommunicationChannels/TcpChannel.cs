@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
@@ -6,29 +7,66 @@ namespace Filuet.Infrastructure.Communication
 {
     public class TcpChannel : ICommunicationChannel
     {
-        private string _ip;
-        private int _port;
-
-        public TcpChannel(string ip, int port = 5000)
+        public TcpChannel(string ip, ushort port = 5000)
         {
             _ip = ip;
             _port = port;
+            _mutex = new object();
         }
 
-        public byte[] SendCommand(byte[] data)
+        public byte[] SendCommand(byte[] data, byte? endOfResponse = null)
         {
-            TcpClient client = new TcpClient();
-            client.Connect(new IPEndPoint(IPAddress.Parse(_ip), _port));
+            lock (_mutex)
+            {
+                TcpClient client = new TcpClient();
+                client.Connect(new IPEndPoint(IPAddress.Parse(_ip), (int)_port));
 
-            NetworkStream stream = client.GetStream();
+                NetworkStream stream = client.GetStream();
+                stream.Write(data, 0, data.Length);
+                List<byte> response = new List<byte>();
 
-            stream.Write(data, 0, data.Length);
-            data = new byte[32];
-            int bytes = stream.Read(data, 0, data.Length);
+                if (endOfResponse != null)
+                {
+                    while (true)
+                    {
+                        if (stream.DataAvailable)
+                        {
+                            byte nextByte = (byte)stream.ReadByte();
+                            response.Add(nextByte);
 
-            stream.Close();
-            client.Close();
-            return data.Take(bytes).ToArray();
+                            if (nextByte == endOfResponse)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+                    while (true)
+                    {
+                        if (stream.DataAvailable)
+                        {
+                            sw.Reset();
+                            sw.Start();
+                            response.Add((byte)stream.ReadByte());
+                        }
+
+                        if (sw.ElapsedMilliseconds > 200)
+                            break;
+                    }
+                }
+
+                stream.Close();
+                client.Close();
+                return response.ToArray();
+            }
         }
+
+        private readonly string _ip;
+        private readonly ushort _port;
+        private object _mutex;
     }
 }
