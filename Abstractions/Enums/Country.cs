@@ -19,7 +19,13 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Taiwan = 158,
         [Code("EE")]
         [Description("EST")]
-        Estonia = 233,
+        Estonia = 233,        
+        [Code("FR")]
+        [Description("FRA")]
+        France = 250,   
+        [Code("GE")]
+        [Description("GEO")]
+        Georgia = 268,
         [Code("IN")]
         [Description("IND")]
         India = 356,
@@ -28,7 +34,10 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Indonesia = 360,
         [Code("IL")]
         [Description("ISR")]
-        Israel = 376,
+        Israel = 376,         
+        [Code("KZ")]
+        [Description("KAZ")]
+        Kazakhstan = 398,
         [Code("KR")]
         [Description("KOR")]
         Korea = 410,
@@ -50,6 +59,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("VN")]
         [Description("VNM")]
         Vietnam = 704,
+        [Code("US")]
+        [Description("USA")]
+        USA = 840,
         [Code("UZ")]
         [Description("UZB")]
         Uzbekistan = 860
