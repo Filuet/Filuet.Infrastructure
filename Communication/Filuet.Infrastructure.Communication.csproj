@@ -2,11 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	<PackageVersion>1.0.5</PackageVersion>
+	<PackageVersion>1.0.8</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
+    <PackageReference Include="protobuf-net" Version="3.0.101" />
     <PackageReference Include="System.IO.Ports" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Filuet.Infrastructure.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
