@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jZtTInjnU6ZLYmYZnDKbO6hgvI2scrJCgb4HRUEQfBF6lBf0Zq39wdkt9gDqTjBLbJxRVzFlFsinXyyDe74O0A==",
+  "dgSpecHash": "QuYyk9kckUb8g9pNRhkZ0ZChxWSJDBEfkn2ukjRd9io+A6WJ1ANl4JkdCbRQH1zSSuDCJODTjm9L0ohsfqAbvg==",
   "success": true,
   "projectFilePath": "D:\\Repos\\Filuet.Infrastructure\\Communication\\Filuet.Infrastructure.Communication.csproj",
   "expectedPackageFiles": [
@@ -128,7 +128,8 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\IVG\\.nuget\\packages\\filuet.infrastructure.abstractions\\1.0.15\\filuet.infrastructure.abstractions.1.0.15.nupkg.sha512"
   ],
   "logs": []
 }
