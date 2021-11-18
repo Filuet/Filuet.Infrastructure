@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Filuet.Utils.Abstractions.DataProvider
+namespace Filuet.Infrastructure.DataProvider
 {
     public class CommonRepository<TDbContext, TEntity, TKey> : ICommonRepository<TEntity>
           where TDbContext : DbContext

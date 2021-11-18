@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QuYyk9kckUb8g9pNRhkZ0ZChxWSJDBEfkn2ukjRd9io+A6WJ1ANl4JkdCbRQH1zSSuDCJODTjm9L0ohsfqAbvg==",
+  "dgSpecHash": "OisG5pyesNAp8su4y1pMl3CtmJVkFV+W7vrrKRCxvyjSTKGDOHhEFX0H08NaxiqVEi8w3feqQi+tZ0HN3On0jA==",
   "success": true,
   "projectFilePath": "D:\\Repos\\Filuet.Infrastructure\\Communication\\Filuet.Infrastructure.Communication.csproj",
   "expectedPackageFiles": [
@@ -12,7 +12,7 @@
     "C:\\Users\\IVG\\.nuget\\packages\\microsoft.azure.services.appauthentication\\1.0.3\\microsoft.azure.services.appauthentication.1.0.3.nupkg.sha512",
     "C:\\Users\\IVG\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",
-    "C:\\Users\\IVG\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\IVG\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\IVG\\.nuget\\packages\\microsoft.identitymodel.clients.activedirectory\\3.14.2\\microsoft.identitymodel.clients.activedirectory.3.14.2.nupkg.sha512",
     "C:\\Users\\IVG\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\5.4.0\\microsoft.identitymodel.jsonwebtokens.5.4.0.nupkg.sha512",
     "C:\\Users\\IVG\\.nuget\\packages\\microsoft.identitymodel.logging\\5.4.0\\microsoft.identitymodel.logging.5.4.0.nupkg.sha512",
@@ -128,8 +128,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\IVG\\.nuget\\packages\\filuet.infrastructure.abstractions\\1.0.15\\filuet.infrastructure.abstractions.1.0.15.nupkg.sha512"
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

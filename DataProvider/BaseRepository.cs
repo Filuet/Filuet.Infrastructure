@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace Filuet.Utils.Abstractions.DataProvider
+namespace Filuet.Infrastructure.DataProvider
 {
     public class BaseRepository<TDbContext, TEntity, TKey> : CommonRepository<TDbContext, TEntity, TKey>
             where TDbContext : DbContext
