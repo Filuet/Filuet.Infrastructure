@@ -2029,7 +2029,7 @@
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Filuet.Infrastructure.Abstractions/1.0.17": {
+      "Filuet.Infrastructure.Abstractions/1.0.18": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
@@ -7119,7 +7119,7 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
-    "Filuet.Infrastructure.Abstractions/1.0.17": {
+    "Filuet.Infrastructure.Abstractions/1.0.18": {
       "type": "project",
       "path": "../Abstractions/Filuet.Infrastructure.Abstractions.csproj",
       "msbuildProject": "../Abstractions/Filuet.Infrastructure.Abstractions.csproj"
@@ -7128,7 +7128,7 @@
   "projectFileDependencyGroups": {
     "net5.0": [
       "Azure.Storage.Queues >= 12.8.0",
-      "Filuet.Infrastructure.Abstractions >= 1.0.17",
+      "Filuet.Infrastructure.Abstractions >= 1.0.18",
       "Microsoft.Azure.ServiceBus >= 5.2.0",
       "System.IO.Ports >= 5.0.1",
       "protobuf-net >= 3.0.101"

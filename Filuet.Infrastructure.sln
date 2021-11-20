@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filuet.Infrastructure.Commu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{0550A557-3692-4D5D-BDE8-862B7A4162BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filuet.Infrastructure.DataProvider", "DataProvider\Filuet.Infrastructure.DataProvider.csproj", "{211E563C-902C-4D0C-AC8B-BAAEA5E6D0D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filuet.Infrastructure.DataProvider", "DataProvider\Filuet.Infrastructure.DataProvider.csproj", "{211E563C-902C-4D0C-AC8B-BAAEA5E6D0D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domains", "domains", "{0CFEB9D3-96EC-4501-965E-AF68E1B65182}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filuet.Infrastructure.Ordering", "domains\Ordering\Filuet.Infrastructure.Ordering.csproj", "{1E495C7D-7D9D-42D0-80EB-AC218E56A2B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{211E563C-902C-4D0C-AC8B-BAAEA5E6D0D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{211E563C-902C-4D0C-AC8B-BAAEA5E6D0D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{211E563C-902C-4D0C-AC8B-BAAEA5E6D0D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E495C7D-7D9D-42D0-80EB-AC218E56A2B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E495C7D-7D9D-42D0-80EB-AC218E56A2B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E495C7D-7D9D-42D0-80EB-AC218E56A2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E495C7D-7D9D-42D0-80EB-AC218E56A2B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1E495C7D-7D9D-42D0-80EB-AC218E56A2B8} = {0CFEB9D3-96EC-4501-965E-AF68E1B65182}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09E4D85A-9A3D-46B0-91B7-8AD109FDC78B}
