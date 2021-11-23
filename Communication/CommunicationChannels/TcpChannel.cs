@@ -7,11 +7,12 @@ namespace Filuet.Infrastructure.Communication
 {
     public class TcpChannel : ICommunicationChannel
     {
-        public TcpChannel(string ip, ushort port = 5000)
+        public TcpChannel(string ip, ushort port = 5000, int awaitDelayMs = 300)
         {
             _ip = ip;
             _port = port;
             _mutex = new object();
+            _awaitResponseDelayMs = awaitDelayMs;
         }
 
         public byte[] SendCommand(byte[] data, byte? endOfResponse = null)
@@ -54,7 +55,7 @@ namespace Filuet.Infrastructure.Communication
                             response.Add((byte)stream.ReadByte());
                         }
 
-                        if (sw.ElapsedMilliseconds > 200)
+                        if (sw.ElapsedMilliseconds > _awaitResponseDelayMs)
                             break;
                     }
                 }
@@ -68,5 +69,6 @@ namespace Filuet.Infrastructure.Communication
         private readonly string _ip;
         private readonly ushort _port;
         private object _mutex;
+        private int _awaitResponseDelayMs = 300; 
     }
 }
