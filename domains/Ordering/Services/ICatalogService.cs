@@ -11,5 +11,12 @@ namespace Filuet.Infrastructure.Ordering.Services
         /// <param name="language"></param>
         /// <returns></returns>
         string GetName(string uid, Language language);
+
+        /// <summary>
+        /// Get product weight
+        /// </summary>
+        /// <param name="uid">sku</param>
+        /// <returns></returns>
+        ushort GetWeight(string uid);
     }
 }
