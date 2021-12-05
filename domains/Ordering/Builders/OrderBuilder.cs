@@ -96,7 +96,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         public OrderBuilder WithExtraData(string name, object value)
         {
             if (!string.IsNullOrWhiteSpace(name))
-                _extraData[name.Trim()] = value.ToString();
+                _extraData[name.Trim()] = value == null ? string.Empty : value.ToString();
 
             return this;
         }
