@@ -24,6 +24,8 @@ namespace Filuet.Infrastructure.Ordering.Models
 
         public Language Language { get; internal set; }
 
+        public DateTime Date { get; internal set; }
+
         public DateTime Timestamp { get => _timestamp; }
 
         public decimal Points { get; internal set; }

@@ -27,10 +27,13 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
-        public OrderBuilder WithHeader(string orderNumber, string customer, string customerName, Country locale, Language language)
+        public OrderBuilder WithHeader(string orderNumber, DateTime date, string customer, string customerName, Country locale, Language language)
         {
             if (string.IsNullOrWhiteSpace(orderNumber) || orderNumber.Trim().Length < 4)
                 throw new ArgumentException("Order number is mandatory");
+
+            if (date == DateTime.MinValue || date <= DateTime.Now.AddHours(-1))
+                throw new ArgumentException("Invalid order date");
 
             if (string.IsNullOrWhiteSpace(customer) || customer.Trim().Length < 4)
                 throw new ArgumentException("Customer is mandatory");
@@ -40,7 +43,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             _orderNumber = orderNumber.Trim();
             _customer = customer.Trim();
-            _customerName = customerName.Trim();
+            _customerName = customerName.Trim().ToUpper();
             _locale = locale;
             _language = language;
 
