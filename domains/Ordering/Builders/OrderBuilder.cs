@@ -13,6 +13,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private IEnumerable<OrderLine> _items;
         private Money _amount;
         private string _orderNumber;
+        private DateTime _orderDate;
         private string _customer;
         private string _customerName;
         private Country _locale;
@@ -42,6 +43,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 throw new ArgumentException("Customer name is mandatory");
 
             _orderNumber = orderNumber.Trim();
+            _orderDate = date;
             _customer = customer.Trim();
             _customerName = customerName.Trim().ToUpper();
             _locale = locale;
@@ -125,6 +127,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Location = _locale,
                 Language = _language,
                 Number = _orderNumber,
+                Date = _orderDate,
                 Obtaining = _method,
                 ExtraData = _extraData
             };
