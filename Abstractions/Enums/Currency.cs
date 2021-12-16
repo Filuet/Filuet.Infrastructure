@@ -9,6 +9,8 @@ namespace Filuet.Infrastructure.Abstractions.Enums
     {
         [Code("AMD")]
         ArmenianDram = 51,
+        [Code("KHR")]
+        CambodianRiel = 116,
         [Code("INR")]
         IndianRupee = 356,
         [Code("RUB")]
