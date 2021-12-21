@@ -72,7 +72,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             Currency itemsCurrency = items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
 
-            if (_amount != null && (Math.Abs(items.Sum(x => x.Amount.Value) - _amount.Value) >= 1m || _amount.Currency != itemsCurrency))
+            if (_amount != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _amount.Value) >= 1m || _amount.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
