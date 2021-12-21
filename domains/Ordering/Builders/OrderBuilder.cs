@@ -11,7 +11,9 @@ namespace Filuet.Infrastructure.Ordering.Builders
     public class OrderBuilder
     {
         private IEnumerable<OrderLine> _items;
+        private IEnumerable<OrderItem> _uncollectedItems;
         private Money _amount;
+        private Money _paid;
         private string _orderNumber;
         private DateTime _orderDate;
         private string _customer;
@@ -76,7 +78,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
-        public OrderBuilder WithTotalValues(Money amount, decimal points = 0)
+        public OrderBuilder WithTotalValues(Money amount, Money paid, decimal points = 0)
         {
             if (amount.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
@@ -90,6 +92,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             }
 
             _amount = amount;
+            _paid = paid ?? _amount;
             _points = points;
 
             return this;
@@ -99,6 +102,13 @@ namespace Filuet.Infrastructure.Ordering.Builders
         {
             if (!string.IsNullOrWhiteSpace(name))
                 _extraData[name.Trim()] = value == null ? string.Empty : value.ToString();
+
+            return this;
+        }
+
+        public OrderBuilder WithUncollectedItems(IEnumerable<OrderItem> items)
+        {
+            _uncollectedItems = items ?? new List<OrderItem>();
 
             return this;
         }
@@ -120,7 +130,9 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return new Order
             {
                 Items = _items,
+                UncollectedItems = _uncollectedItems,
                 Amount = _amount,
+                Paid = _paid,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,

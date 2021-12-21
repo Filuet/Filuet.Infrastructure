@@ -49,7 +49,14 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// </summary>
         public Money Amount { get; internal set; }
 
+        /// <summary>
+        /// Paid amount
+        /// </summary>
+        public Money Paid { get; internal set; }
+
         public IEnumerable<OrderLine> Items { get; internal set; }
+
+        public IEnumerable<OrderItem> UncollectedItems { get; internal set; }
 
         public override string ToString() => JsonSerializer.Serialize(this, typeof(object), JsonSerializationOptions.EventPrettyOptions);
 
