@@ -5,12 +5,20 @@ namespace Filuet.Infrastructure.Ordering.Models
 {
     public class OrderLine : OrderItem
     {
+        // Product name
+        public string Name { get; protected set; }
+
         /// <summary>
         /// Unit cost
         /// </summary>
         public Money Amount { get; protected set; }
 
         public Money TotalAmount { get; protected set; }
+
+        /// <summary>
+        /// Loyalty program points
+        /// </summary>
+        public decimal Points { get; protected set; }
 
         private OrderLine() : base() { }
 
@@ -21,8 +29,9 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// <param name="quantity">quantity of order line</param>
         /// <param name="amount">Unit cost</param>
         /// <param name="totalAmount">Total cost of line</param>
+        /// <param name="points">loyalty points</param>
         /// <returns></returns>
-        public static OrderLine Create(string productUid, uint quantity, Money amount, Money totalAmount)
+        public static OrderLine Create(string productUid, string name, uint quantity, Money amount, Money totalAmount, decimal? points = 0m)
         {
             OrderItem item = OrderItem.Create(productUid, quantity);
 
@@ -32,7 +41,7 @@ namespace Filuet.Infrastructure.Ordering.Models
             if (totalAmount == null || totalAmount.Value < 0m)
                 throw new ArgumentException("Total amount is mandatory");
 
-            return new OrderLine { ProductUID = item.ProductUID, Quantity = item.Quantity, Amount = amount, TotalAmount = totalAmount };
+            return new OrderLine { ProductUID = item.ProductUID, Name = name ?? item.ProductUID, Quantity = item.Quantity, Amount = amount, TotalAmount = totalAmount, Points = points.Value };
         }
 
         /// <summary>

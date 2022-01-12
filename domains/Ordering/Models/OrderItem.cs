@@ -17,7 +17,7 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// Create single order line
         /// </summary>
         /// <param name="productUid">Unique identifier of product. E.g. SKU</param>
-        /// <param name="amount">Unit cost</param>
+        /// <param name="quantity"></param>
         /// <returns></returns>
         public static OrderItem Create(string productUid, uint quantity)
         {

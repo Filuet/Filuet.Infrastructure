@@ -11,8 +11,11 @@ namespace Filuet.Infrastructure.Ordering.Builders
     public class OrderBuilder
     {
         private IEnumerable<OrderLine> _items;
+        private IEnumerable<OrderItem> _uncollectedItems;
         private Money _amount;
+        private Money _paid;
         private string _orderNumber;
+        private DateTime _orderDate;
         private string _customer;
         private string _customerName;
         private Country _locale;
@@ -27,10 +30,13 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
-        public OrderBuilder WithHeader(string orderNumber, string customer, string customerName, Country locale, Language language)
+        public OrderBuilder WithHeader(string orderNumber, DateTime date, string customer, string customerName, Country locale, Language language)
         {
             if (string.IsNullOrWhiteSpace(orderNumber) || orderNumber.Trim().Length < 4)
                 throw new ArgumentException("Order number is mandatory");
+
+            if (date == DateTime.MinValue || date <= DateTime.Now.AddHours(-1))
+                throw new ArgumentException("Invalid order date");
 
             if (string.IsNullOrWhiteSpace(customer) || customer.Trim().Length < 4)
                 throw new ArgumentException("Customer is mandatory");
@@ -39,8 +45,9 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 throw new ArgumentException("Customer name is mandatory");
 
             _orderNumber = orderNumber.Trim();
+            _orderDate = date;
             _customer = customer.Trim();
-            _customerName = customerName.Trim();
+            _customerName = customerName.Trim().ToUpper();
             _locale = locale;
             _language = language;
 
@@ -65,13 +72,13 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             Currency itemsCurrency = items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
 
-            if (_amount != null && (Math.Abs(items.Sum(x => x.Amount.Value) - _amount.Value) >= 1m || _amount.Currency != itemsCurrency))
+            if (_amount != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _amount.Value) >= 1m || _amount.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
         }
 
-        public OrderBuilder WithTotalValues(Money amount, decimal points = 0)
+        public OrderBuilder WithTotalValues(Money amount, Money paid, decimal points = 0)
         {
             if (amount.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
@@ -85,6 +92,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             }
 
             _amount = amount;
+            _paid = paid ?? _amount;
             _points = points;
 
             return this;
@@ -93,7 +101,14 @@ namespace Filuet.Infrastructure.Ordering.Builders
         public OrderBuilder WithExtraData(string name, object value)
         {
             if (!string.IsNullOrWhiteSpace(name))
-                _extraData[name.Trim()] = value.ToString();
+                _extraData[name.Trim()] = value == null ? string.Empty : value.ToString();
+
+            return this;
+        }
+
+        public OrderBuilder WithUncollectedItems(IEnumerable<OrderItem> items)
+        {
+            _uncollectedItems = items ?? new List<OrderItem>();
 
             return this;
         }
@@ -115,13 +130,16 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return new Order
             {
                 Items = _items,
+                UncollectedItems = _uncollectedItems,
                 Amount = _amount,
+                Paid = _paid,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,
                 Location = _locale,
                 Language = _language,
                 Number = _orderNumber,
+                Date = _orderDate,
                 Obtaining = _method,
                 ExtraData = _extraData
             };
