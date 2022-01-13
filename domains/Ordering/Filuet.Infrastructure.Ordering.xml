@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Filuet.Infrastructure.Ordering</name>
+    </assembly>
+    <members>
+        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderDto.ExtraData">
+            <summary>
+            Extra data such as a selected month, kiosk identifier e.t.c.
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderDto.Amount">
+            <summary>
+            Order total
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderDto.Paid">
+            <summary>
+            Paid amount
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderLineDto.Amount">
+            <summary>
+            Unit cost
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderLineDto.Points">
+            <summary>
+            Loyalty program points
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.ExtraData">
+            <summary>
+            Extra data such as a selected month, kiosk identifier e.t.c.
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.Amount">
+            <summary>
+            Order total
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.Paid">
+            <summary>
+            Paid amount
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderItem.ProductUID">
+            <summary>
+            Unique identifier of product. E.g. SKU
+            </summary>
+        </member>
+        <member name="M:Filuet.Infrastructure.Ordering.Models.OrderItem.Create(System.String,System.UInt32)">
+            <summary>
+            Create single order line
+            </summary>
+            <param name="productUid">Unique identifier of product. E.g. SKU</param>
+            <param name="quantity"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderLine.Amount">
+            <summary>
+            Unit cost
+            </summary>
+        </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderLine.Points">
+            <summary>
+            Loyalty program points
+            </summary>
+        </member>
+        <member name="M:Filuet.Infrastructure.Ordering.Models.OrderLine.Create(System.String,System.String,System.UInt32,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Nullable{System.Decimal})">
+            <summary>
+            Create order line
+            </summary>
+            <param name="productUid">Unique identifier of product. E.g. SKU</param>
+            <param name="quantity">quantity of order line</param>
+            <param name="amount">Unit cost</param>
+            <param name="totalAmount">Total cost of line</param>
+            <param name="points">loyalty points</param>
+            <returns></returns>
+        </member>
+        <member name="M:Filuet.Infrastructure.Ordering.Models.OrderLine.Create(System.String,Filuet.Infrastructure.Abstractions.Business.Money)">
+            <summary>
+            Create order line with quantity equals to 1
+            </summary>
+            <param name="productUid">Unique identifier of product. E.g. SKU</param>
+            <param name="amount">Unit cost</param>
+            <returns></returns>
+        </member>
+        <member name="M:Filuet.Infrastructure.Ordering.Services.ICatalogService.GetName(System.String,Filuet.Infrastructure.Abstractions.Enums.Language)">
+            <summary>
+            Get product name by it's unique identifier
+            </summary>
+            <param name="uid">sku</param>
+            <param name="language"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Filuet.Infrastructure.Ordering.Services.ICatalogService.GetWeight(System.String)">
+            <summary>
+            Get product weight
+            </summary>
+            <param name="uid">sku</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

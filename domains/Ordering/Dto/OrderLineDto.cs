@@ -2,7 +2,10 @@
 {
     public class OrderLineDto
     {
+        public string ProductUID { get; set; }
         public string Name { get; set; }
+
+        public uint Quantity { get; set; }
 
         /// <summary>
         /// Unit cost

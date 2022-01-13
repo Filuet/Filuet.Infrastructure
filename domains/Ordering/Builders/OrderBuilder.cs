@@ -35,7 +35,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (string.IsNullOrWhiteSpace(orderNumber) || orderNumber.Trim().Length < 4)
                 throw new ArgumentException("Order number is mandatory");
 
-            if (date == DateTime.MinValue || date <= DateTime.Now.AddHours(-1))
+            if (date == DateTime.MinValue || date == DateTime.MaxValue)
                 throw new ArgumentException("Invalid order date");
 
             if (string.IsNullOrWhiteSpace(customer) || customer.Trim().Length < 4)
