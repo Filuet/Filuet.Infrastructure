@@ -28,9 +28,6 @@ namespace Filuet.Infrastructure.Communication
 
             Thread.Sleep(_settings.ReadDelay);
 
-            byte[] bytes = new byte[client.ReceiveBufferSize];
-            int bytesRead = stream.Read(bytes, 0, client.ReceiveBufferSize);
-
             if (stream.CanRead)
             {
                 byte[] myReadBuffer = new byte[1024];
