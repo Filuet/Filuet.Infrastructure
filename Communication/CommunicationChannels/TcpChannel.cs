@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using Filuet.Infrastructure.Abstractions.Helpers;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Filuet.Infrastructure.Communication
 {
     public class TcpChannel : ICommunicationChannel
     {
-        public TcpChannel(string ip, ushort port = 5000, int awaitDelayMs = 300)
+        public TcpChannel(string ip, ushort port = 5000)
         {
             _ip = ip;
             _port = port;
             _mutex = new object();
-            _awaitResponseDelayMs = awaitDelayMs;
         }
 
-        public byte[] SendCommand(byte[] data, byte? endOfResponse = null)
+        public byte[] SendCommand(byte[] data, TimeSpan readDelay, TimeSpan timeout, byte? endOfResponse = null)
         {
             lock (_mutex)
             {
@@ -26,41 +27,25 @@ namespace Filuet.Infrastructure.Communication
                 stream.Write(data, 0, data.Length);
                 List<byte> response = new List<byte>();
 
-                if (endOfResponse != null)
+                Thread.Sleep(readDelay); // Wait for a while before reading (give the slave time to process the command)
+
+                TaskHelpers.ExecuteWithTimeLimit(timeout, () =>
                 {
-                    while (true)
+                    TimeSpan newReadDelay = TimeSpan.FromMilliseconds(readDelay.Milliseconds);
+                    while (response.Count == 0)
                     {
-                        if (stream.DataAvailable)
+                        while (stream.CanRead && stream.DataAvailable)
                         {
                             byte nextByte = (byte)stream.ReadByte();
                             response.Add(nextByte);
-
-                            if (nextByte == endOfResponse)
-                            {
+                            if (endOfResponse.HasValue && nextByte == endOfResponse.Value)
                                 break;
-                            }
                         }
+                        newReadDelay += TimeSpan.FromMilliseconds(newReadDelay.Milliseconds * 2); // Slow down the poll as prescripted
+                        Thread.Sleep(newReadDelay);
                     }
-                }
-                else
-                {
-                    Stopwatch sw = new Stopwatch();
-                    sw.Start();
-                    while (true)
-                    {
-                        if (stream.DataAvailable)
-                        {
-                            sw.Reset();
-                            sw.Start();
-                            response.Add((byte)stream.ReadByte());
-                        }
+                });
 
-                        if (sw.ElapsedMilliseconds > _awaitResponseDelayMs)
-                            break;
-                    }
-                }
-
-                stream.Close();
                 client.Close();
                 return response.ToArray();
             }
@@ -69,6 +54,5 @@ namespace Filuet.Infrastructure.Communication
         private readonly string _ip;
         private readonly ushort _port;
         private object _mutex;
-        private int _awaitResponseDelayMs = 300; 
     }
 }

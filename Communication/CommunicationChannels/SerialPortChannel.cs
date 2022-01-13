@@ -1,4 +1,5 @@
-﻿using Filuet.Infrastructure.Communication.Enums;
+﻿using Filuet.Infrastructure.Abstractions.Helpers;
+using Filuet.Infrastructure.Communication.Enums;
 using System;
 using System.IO.Ports;
 using System.Threading;
@@ -7,14 +8,10 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
 {
     public class SerialPortChannel : ICommunicationChannel
     {
-        private SerialPort _port;
-
-        public SerialPortChannel(ushort serialPortNumber, ushort baudRate, TimeSpan timeout, TimeSpan commandsSendDelay)
+        public SerialPortChannel(ushort serialPortNumber, ushort baudRate)
         {
             _serialPortNumber = serialPortNumber;
             _baudRate = baudRate;
-            _timeout = timeout;
-            _commandsSendDelay = commandsSendDelay;
 
             if (_port == null)
                 _port = new SerialPort($"COM{_serialPortNumber}", _baudRate);
@@ -25,29 +22,20 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// </summary>
         /// <param name="data">command</param>
         /// <returns></returns>
-        public byte[] SendCommand(byte[] data, byte? endOfResponse = null)
+        public byte[] SendCommand(byte[] data, TimeSpan readDelay, TimeSpan timeout, byte? endOfResponse = null)
         {
             lock (_port)
             {
-                var count = 0;
-                while (true)
-                {
-                    var result = Write(data);
-                    if (result != PortCode.Success)
-                        return null; //throw new ExternalException($"Error in [{Port.Name}] write command [{command.ByteArrayToString()}]");
-                    Thread.Sleep(_commandsSendDelay);
+                var result = Write(data, readDelay);
+                if (result != PortCode.Success)
+                    return null; //throw new ExternalException($"Error in [{Port.Name}] write command [{command.ByteArrayToString()}]");
 
-                    byte[] buff;
-                    var response = Read(out buff);
-                    if (response == PortCode.Success)
-                        return buff;
-
-                    if (count > (_timeout.TotalMilliseconds / _commandsSendDelay.TotalMilliseconds))
-                        return null; //throw new TimeoutException($"Timeout in read answer on command [{command.ByteArrayToString()}]");
-
-                    Thread.Sleep(_commandsSendDelay);
-                    count++;
-                }
+                byte[] buff;
+                var response = Read(out buff, endOfResponse, timeout);
+                if (response == PortCode.Success)
+                    return buff;
+                else
+                    return null; //throw new TimeoutException($"Timeout in read answer on command [{command.ByteArrayToString()}]");
             }
         }
 
@@ -56,7 +44,7 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        private PortCode Write(byte[] command)
+        private PortCode Write(byte[] command, TimeSpan readDelay)
         {
             try
             {
@@ -67,7 +55,9 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
 
                 _port.Write(command, 0, command.Length);
 
-                Thread.Sleep(_commandsSendDelay);
+                _readDelay = readDelay;
+                _readDelay = _readDelay.Milliseconds == 0 ? TimeSpan.FromMilliseconds(200) : _readDelay;
+                Thread.Sleep(_readDelay);
 
                 // _log.Info($"[{_port.PortName}] {Encoding.Default.GetString(command)}");
                 return PortCode.Success;
@@ -93,10 +83,11 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// Read data from port
         /// </summary>
         /// <returns></returns>
-        private PortCode Read(out byte[] buffer)
+        private PortCode Read(out byte[] buffer, byte? endOfResponse, TimeSpan timeout)
         {
             if (!_port.IsOpen)
                 _port.Open();
+
             if (!_port.IsOpen)
             {
                 buffer = null;
@@ -107,10 +98,27 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
 
             try
             {
-                _port.Read(data, 0, data.Length);
+                TaskHelpers.ExecuteWithTimeLimit(timeout, () =>
+                {
+                    TimeSpan newReadDelay = TimeSpan.FromMilliseconds(_readDelay.Milliseconds);
+                    while (data.Length == 0)
+                    {
+                        _port.Read(data, 0, data.Length);
+
+                        if (data.Length >= 0)
+                            break;
+
+                        newReadDelay += TimeSpan.FromMilliseconds(newReadDelay.Milliseconds * 2); // Slow down the poll as prescripted
+                        Thread.Sleep(newReadDelay);
+                    }
+                });
+
                 buffer = data;
+
+                if (endOfResponse.HasValue && buffer.Length > 0 && endOfResponse == buffer[buffer.Length - 1])
+                    return PortCode.Success;
+                else return PortCode.Failure;
                 // _log.info($"[{_port.PortName}] {(buffer?.Length > 0 ? Encoding.Default.GetString(buffer) : string.Empty)}");
-                return PortCode.Success;
             }
             catch (TimeoutException)
             {
@@ -132,9 +140,9 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
             }
         }
 
+        private SerialPort _port;
         private ushort _serialPortNumber { get; set; }
         private ushort _baudRate { get; set; } = 9600;
-        private TimeSpan _timeout { get; set; } = TimeSpan.FromSeconds(2);
-        private TimeSpan _commandsSendDelay { get; set; } = TimeSpan.FromSeconds(0.2);
+        private TimeSpan _readDelay;
     }
 }
