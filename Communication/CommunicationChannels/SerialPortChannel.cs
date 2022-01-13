@@ -2,19 +2,19 @@
 using Filuet.Infrastructure.Communication.Enums;
 using System;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 
 namespace Filuet.Infrastructure.Communication.CommunicationChannels
 {
     public class SerialPortChannel : ICommunicationChannel
     {
-        public SerialPortChannel(ushort serialPortNumber, ushort baudRate)
+        public SerialPortChannel(Action<SerialPortChannelSettings> channelSetup)
         {
-            _serialPortNumber = serialPortNumber;
-            _baudRate = baudRate;
+            _settings = channelSetup.CreateTargetAndInvoke();
 
             if (_port == null)
-                _port = new SerialPort($"COM{_serialPortNumber}", _baudRate);
+                _port = new SerialPort($"COM{_settings.SerialPortNumber}", _settings.BaudRate);
         }
 
         /// <summary>
@@ -22,16 +22,18 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// </summary>
         /// <param name="data">command</param>
         /// <returns></returns>
-        public byte[] SendCommand(byte[] data, TimeSpan readDelay, TimeSpan timeout, byte? endOfResponse = null)
+        public byte[] SendCommand(byte[] data)
         {
             lock (_port)
             {
-                var result = Write(data, readDelay);
+                var result = Write(data);
                 if (result != PortCode.Success)
                     return null; //throw new ExternalException($"Error in [{Port.Name}] write command [{command.ByteArrayToString()}]");
 
+                Thread.Sleep(_settings.ReadDelay);
+
                 byte[] buff;
-                var response = Read(out buff, endOfResponse, timeout);
+                var response = Read(out buff);
                 if (response == PortCode.Success)
                     return buff;
                 else
@@ -44,7 +46,7 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        private PortCode Write(byte[] command, TimeSpan readDelay)
+        public PortCode Write(byte[] command)
         {
             try
             {
@@ -55,26 +57,18 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
 
                 _port.Write(command, 0, command.Length);
 
-                _readDelay = readDelay;
-                _readDelay = _readDelay.Milliseconds == 0 ? TimeSpan.FromMilliseconds(200) : _readDelay;
-                Thread.Sleep(_readDelay);
-
-                // _log.Info($"[{_port.PortName}] {Encoding.Default.GetString(command)}");
                 return PortCode.Success;
             }
             catch (TimeoutException)
             {
-                // _log.Errore($"[{_port.PortName}] timeout");
                 return PortCode.Timeout;
             }
             catch (Exception ex) when (ex is ArgumentNullException || ex is ArgumentOutOfRangeException || ex is ArgumentException)
             {
-                // _log.Error($"[{_port.PortName}] invalid command");
                 return PortCode.Failure;
             }
             catch (InvalidOperationException)
             {
-                // _log.Error($"[{_port.PortName}] port closed");
                 return PortCode.PortClosed;
             }
         }
@@ -83,7 +77,7 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
         /// Read data from port
         /// </summary>
         /// <returns></returns>
-        private PortCode Read(out byte[] buffer, byte? endOfResponse, TimeSpan timeout)
+        private PortCode Read(out byte[] buffer)
         {
             if (!_port.IsOpen)
                 _port.Open();
@@ -98,51 +92,31 @@ namespace Filuet.Infrastructure.Communication.CommunicationChannels
 
             try
             {
-                TaskHelpers.ExecuteWithTimeLimit(timeout, () =>
-                {
-                    TimeSpan newReadDelay = TimeSpan.FromMilliseconds(_readDelay.Milliseconds);
-                    while (data.Length == 0)
-                    {
-                        _port.Read(data, 0, data.Length);
+                _port.ReadTimeout = (int)_settings.ReceiveTimeout.TotalMilliseconds;
+                int readBytes = _port.Read(data, 0, data.Length);
 
-                        if (data.Length >= 0)
-                            break;
+                buffer = data.Take(readBytes).ToArray();
 
-                        newReadDelay += TimeSpan.FromMilliseconds(newReadDelay.Milliseconds * 2); // Slow down the poll as prescripted
-                        Thread.Sleep(newReadDelay);
-                    }
-                });
-
-                buffer = data;
-
-                if (endOfResponse.HasValue && buffer.Length > 0 && endOfResponse == buffer[buffer.Length - 1])
-                    return PortCode.Success;
-                else return PortCode.Failure;
-                // _log.info($"[{_port.PortName}] {(buffer?.Length > 0 ? Encoding.Default.GetString(buffer) : string.Empty)}");
+                return buffer.Length > 0 ? PortCode.Success : PortCode.Failure;
             }
             catch (TimeoutException)
             {
-                // _log.Error($"[{_port.PortName}] timeout");
                 buffer = null;
                 return PortCode.Timeout;
             }
             catch (Exception ex) when (ex is ArgumentNullException || ex is ArgumentOutOfRangeException || ex is ArgumentException)
             {
-                // _log.Error($"[{_port.PortName}] invalid command");
                 buffer = null;
                 return PortCode.Failure;
             }
             catch (InvalidOperationException)
             {
-                // _log.Error($"[{_port.PortName}] port closed");
                 buffer = null;
                 return PortCode.PortClosed;
             }
         }
 
         private SerialPort _port;
-        private ushort _serialPortNumber { get; set; }
-        private ushort _baudRate { get; set; } = 9600;
-        private TimeSpan _readDelay;
+        private readonly SerialPortChannelSettings _settings;
     }
 }

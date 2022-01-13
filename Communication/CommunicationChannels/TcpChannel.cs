@@ -1,7 +1,7 @@
 ﻿using Filuet.Infrastructure.Abstractions.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -9,50 +9,45 @@ namespace Filuet.Infrastructure.Communication
 {
     public class TcpChannel : ICommunicationChannel
     {
-        public TcpChannel(string ip, ushort port = 5000)
+        public TcpChannel(Action<TcpChannelSettings> channelSetup)
         {
-            _ip = ip;
-            _port = port;
-            _mutex = new object();
+            _settings = channelSetup.CreateTargetAndInvoke();
         }
 
-        public byte[] SendCommand(byte[] data, TimeSpan readDelay, TimeSpan timeout, byte? endOfResponse = null)
+        public byte[] SendCommand(byte[] data)
         {
-            lock (_mutex)
+            List<byte> result = new List<byte>();
+
+            TcpClient client = new TcpClient();
+            client.Connect(_settings.Endpoint);
+            client.ReceiveTimeout = (int)_settings.ReceiveTimeout.TotalMilliseconds;
+
+            NetworkStream stream = client.GetStream();
+
+            stream.Write(data, 0, data.Length);
+
+            Thread.Sleep(_settings.ReadDelay);
+
+            byte[] bytes = new byte[client.ReceiveBufferSize];
+            int bytesRead = stream.Read(bytes, 0, client.ReceiveBufferSize);
+
+            if (stream.CanRead)
             {
-                TcpClient client = new TcpClient();
-                client.Connect(new IPEndPoint(IPAddress.Parse(_ip), (int)_port));
+                byte[] myReadBuffer = new byte[1024];
+                int numberOfBytesRead = 0;
 
-                NetworkStream stream = client.GetStream();
-                stream.Write(data, 0, data.Length);
-                List<byte> response = new List<byte>();
-
-                Thread.Sleep(readDelay); // Wait for a while before reading (give the slave time to process the command)
-
-                TaskHelpers.ExecuteWithTimeLimit(timeout, () =>
+                do // Incoming message may be larger than the buffer size
                 {
-                    TimeSpan newReadDelay = TimeSpan.FromMilliseconds(readDelay.Milliseconds);
-                    while (response.Count == 0)
-                    {
-                        while (stream.CanRead && stream.DataAvailable)
-                        {
-                            byte nextByte = (byte)stream.ReadByte();
-                            response.Add(nextByte);
-                            if (endOfResponse.HasValue && nextByte == endOfResponse.Value)
-                                break;
-                        }
-                        newReadDelay += TimeSpan.FromMilliseconds(newReadDelay.Milliseconds * 2); // Slow down the poll as prescripted
-                        Thread.Sleep(newReadDelay);
-                    }
-                });
-
-                client.Close();
-                return response.ToArray();
+                    numberOfBytesRead = stream.Read(myReadBuffer, 0, myReadBuffer.Length);
+                    result.AddRange(myReadBuffer.Take(numberOfBytesRead));
+                }
+                while (stream.DataAvailable);
             }
+
+            client.Close();
+            return result.ToArray();
         }
 
-        private readonly string _ip;
-        private readonly ushort _port;
-        private object _mutex;
+        private readonly TcpChannelSettings _settings;
     }
 }
