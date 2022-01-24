@@ -6,21 +6,21 @@ namespace Filuet.Infrastructure.Ordering.Models
     public class OrderLine : OrderItem
     {
         // Product name
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Unit cost
         /// </summary>
-        public Money Amount { get; protected set; }
+        public Money Amount { get; set; }
 
-        public Money TotalAmount { get; protected set; }
+        public Money TotalAmount { get; set; }
 
         /// <summary>
         /// Loyalty program points
         /// </summary>
-        public decimal Points { get; protected set; }
+        public decimal Points { get; set; }
 
-        private OrderLine() : base() { }
+        public OrderLine() : base() { }
 
         /// <summary>
         /// Create order line

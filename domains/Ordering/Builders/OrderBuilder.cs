@@ -12,7 +12,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
     {
         private IEnumerable<OrderLine> _items;
         private IEnumerable<OrderItem> _uncollectedItems;
-        private Money _amount;
+        private Money _total;
         private Money _paid;
         private string _orderNumber;
         private DateTime _orderDate;
@@ -72,27 +72,27 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             Currency itemsCurrency = items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
 
-            if (_amount != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _amount.Value) >= 1m || _amount.Currency != itemsCurrency))
+            if (_total != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _total.Value) >= 1m || _total.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
         }
 
-        public OrderBuilder WithTotalValues(Money amount, Money paid, decimal points = 0)
+        public OrderBuilder WithTotalValues(Money total, Money paid, decimal points = 0)
         {
-            if (amount.Value < 0)
+            if (total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
 
             if (_items != null)
             {
                 Currency itemsCurrency = _items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
 
-                if (amount != null && (Math.Abs(_items.Sum(x => x.Amount.Value) - amount.Value) >= 1m || amount.Currency != itemsCurrency))
+                if (total != null && (Math.Abs(_items.Sum(x => x.Amount.Value) - total.Value) >= 1m || total.Currency != itemsCurrency))
                     throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
             }
 
-            _amount = amount;
-            _paid = paid ?? _amount;
+            _total = total;
+            _paid = paid ?? _total;
             _points = points;
 
             return this;
@@ -118,7 +118,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (_items == null || _items.Count() == 0)
                 throw new ArgumentException("Items must be specified");
 
-            if (_amount.Value < 0)
+            if (_total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
 
             if (string.IsNullOrWhiteSpace(_orderNumber) || _orderNumber.Trim().Length < 4)
@@ -131,7 +131,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             {
                 Items = _items,
                 UncollectedItems = _uncollectedItems,
-                Amount = _amount,
+                Total = _total,
                 Paid = _paid,
                 Customer = _customer,
                 CustomerName = _customerName,

@@ -11,12 +11,12 @@ namespace Filuet.Infrastructure.Abstractions.Business
         [JsonIgnore]
         public decimal Abs => Math.Abs(this.Value);
 
-        public decimal Value { get; private set; }
+        public decimal Value { get; set; }
 
         [JsonConverter(typeof(CurrencyJsonConverter))]
-        public Currency Currency { get; private set; }
+        public Currency Currency { get; set; }
 
-        private Money() { }
+        public Money() { }
 
         public static Money Create(decimal value, Currency currency) => new Money { Value = value, Currency = currency };
 

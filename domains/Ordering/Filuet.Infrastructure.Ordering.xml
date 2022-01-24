@@ -29,21 +29,6 @@
             Loyalty program points
             </summary>
         </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.ExtraData">
-            <summary>
-            Extra data such as a selected month, kiosk identifier e.t.c.
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.Amount">
-            <summary>
-            Order total
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.Paid">
-            <summary>
-            Paid amount
-            </summary>
-        </member>
         <member name="P:Filuet.Infrastructure.Ordering.Models.OrderItem.ProductUID">
             <summary>
             Unique identifier of product. E.g. SKU

@@ -7,11 +7,11 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// <summary>
         /// Unique identifier of product. E.g. SKU
         /// </summary>
-        public string ProductUID { get; protected set; }
+        public string ProductUID { get; set; }
 
-        public uint Quantity { get; protected set; }
+        public uint Quantity { get; set; }
 
-        protected OrderItem() { }
+        public OrderItem() { }
 
         /// <summary>
         /// Create single order line
