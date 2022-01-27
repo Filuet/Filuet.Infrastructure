@@ -1,20 +1,27 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Ordering.Models
 {
     public class OrderLine : OrderItem
     {
-        // Product name
+        /// <summary>
+        /// Product name
+        /// </summary>
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("amount")]
         /// <summary>
         /// Unit cost
         /// </summary>
         public Money Amount { get; set; }
 
+        [JsonPropertyName("total")]
         public Money TotalAmount { get; set; }
 
+        [JsonPropertyName("points")]
         /// <summary>
         /// Loyalty program points
         /// </summary>
