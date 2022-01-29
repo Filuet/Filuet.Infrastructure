@@ -1,5 +1,9 @@
-﻿using Filuet.Infrastructure.Abstractions.Helpers;
+﻿using Filuet.Infrastructure.Abstractions.Business;
+using Filuet.Infrastructure.Abstractions.Enums;
+using Filuet.Infrastructure.Abstractions.Helpers;
+using Filuet.Infrastructure.Ordering.Builders;
 using Filuet.Infrastructure.Ordering.Dto;
+using Filuet.Infrastructure.Ordering.Enums;
 using Filuet.Infrastructure.Ordering.Models;
 using System.Linq;
 
@@ -38,6 +42,30 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                     Quantity = x.Quantity 
                 })
             };
+        }
+
+        public static Order ToModel(this OrderDto dto)
+        {
+            OrderBuilder b = new OrderBuilder()
+                .WithHeader(dto.Number, dto.Date, dto.Customer, dto.CustomerName, EnumHelpers.GetValueFromCode<Country>(dto.CountryCode), EnumHelpers.GetValueFromCode<Language>(dto.LanguageCode))
+                .WithObtainingMethod(EnumHelpers.GetValueFromCode<GoodsObtainingMethod>(dto.Obtaining))
+                .WithTotalValues(Money.Create(dto.Amount.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency)),
+                    Money.Create(dto.Paid.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Paid.Currency)), dto.Points)
+                .WithItems(dto.Items.Select(x => new OrderLine
+                {
+                    ProductUID = x.ProductUID,
+                    Name = x.Name,
+                    TotalAmount = Money.Create(x.TotalAmount.Value, EnumHelpers.GetValueFromCode<Currency>(x.TotalAmount.Currency)),
+                    Amount = Money.Create(x.Amount.Value, EnumHelpers.GetValueFromCode<Currency>(x.Amount.Currency)),
+                    Quantity = x.Quantity,
+                    Points = x.Points
+                }).ToArray())
+                .WithUncollectedItems(dto.UncollectedItems.Select(x => new OrderItem { ProductUID = x.ProductUID, Quantity = x.Quantity }));
+
+            foreach (var e in dto.ExtraData)
+                b.WithExtraData(e.Key, e.Value);
+
+            return b.Build();
         }
     }
 }
