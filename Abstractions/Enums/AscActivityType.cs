@@ -23,6 +23,8 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Description("Resubmit order")]
         Resubmit,
         [Description("Sber PlatiQr request")]
-        SberPlatiQrRequest
+        SberPlatiQrRequest,
+        [Description("Order consumption type selection")]
+        ConsumptionType
     }
 }
