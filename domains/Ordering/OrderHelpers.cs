@@ -49,10 +49,11 @@ namespace Filuet.Infrastructure.Ordering.Helpers
             OrderBuilder b = new OrderBuilder()
                 .WithHeader(dto.Number, dto.Date, dto.Customer, dto.CustomerName, EnumHelpers.GetValueFromCode<Country>(dto.CountryCode), EnumHelpers.GetValueFromCode<Language>(dto.LanguageCode))
                 .WithObtainingMethod(EnumHelpers.GetValueFromCode<GoodsObtainingMethod>(dto.Obtaining))
+                .WithPaymentMethod(dto.PaymentMethod)
                 .WithTotalValues(Money.Create(dto.Amount.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency)),
-                    Money.Create(dto.Paid.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Paid.Currency)), dto.Points)
-                .WithItems(dto.Items.Select(x => new OrderLine
-                {
+                    Money.Create(dto.Paid.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Paid.Currency)),
+                    Money.Create(dto.Change.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Change.Currency)), dto.Points)
+                .WithItems(dto.Items.Select(x => new OrderLine {
                     ProductUID = x.ProductUID,
                     Name = x.Name,
                     TotalAmount = Money.Create(x.TotalAmount.Value, EnumHelpers.GetValueFromCode<Currency>(x.TotalAmount.Currency)),

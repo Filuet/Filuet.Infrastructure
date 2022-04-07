@@ -14,6 +14,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private IEnumerable<OrderItem> _uncollectedItems;
         private Money _total;
         private Money _paid;
+        private Money _change;
         private string _orderNumber;
         private DateTime _orderDate;
         private string _customer;
@@ -21,12 +22,19 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private Country _locale;
         private Language _language;
         private decimal _points;
-        private GoodsObtainingMethod _method;
+        private GoodsObtainingMethod _obtainingMethod;
+        private PaymentMethod? _paymentMethod;
         private Dictionary<string, object> _extraData = new Dictionary<string, object>();
 
         public OrderBuilder WithObtainingMethod(GoodsObtainingMethod method)
         {
-            _method = method;
+            _obtainingMethod = method;
+            return this;
+        }
+
+        public OrderBuilder WithPaymentMethod(PaymentMethod? method)
+        {
+            _paymentMethod = method;
             return this;
         }
 
@@ -78,7 +86,15 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
-        public OrderBuilder WithTotalValues(Money total, Money paid, decimal points = 0)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="total">Order due</param>
+        /// <param name="paid">Money income</param>
+        /// <param name="change">Change to be returned to the customer</param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public OrderBuilder WithTotalValues(Money total, Money paid, Money change, decimal points = 0)
         {
             if (total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
@@ -93,6 +109,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             _total = total;
             _paid = paid ?? _total;
+            _change = change;
             _points = points;
 
             return this;
@@ -127,12 +144,12 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (string.IsNullOrWhiteSpace(_customer) || _customer.Trim().Length < 4)
                 throw new ArgumentException("Customer is mandatory");
 
-            return new Order
-            {
+            return new Order {
                 Items = _items,
                 UncollectedItems = _uncollectedItems,
                 Total = _total,
                 Paid = _paid,
+                Change = _change,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,
@@ -140,7 +157,8 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Language = _language,
                 Number = _orderNumber,
                 Date = _orderDate,
-                Obtaining = _method,
+                Obtaining = _obtainingMethod,
+                PaymentMethod = _paymentMethod,
                 ExtraData = _extraData
             };
         }

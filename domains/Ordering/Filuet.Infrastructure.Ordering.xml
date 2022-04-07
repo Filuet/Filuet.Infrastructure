@@ -4,6 +4,16 @@
         <name>Filuet.Infrastructure.Ordering</name>
     </assembly>
     <members>
+        <member name="M:Filuet.Infrastructure.Ordering.Builders.OrderBuilder.WithTotalValues(Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Decimal)">
+            <summary>
+            
+            </summary>
+            <param name="total">Order due</param>
+            <param name="paid">Money income</param>
+            <param name="change">Change to be returned to the customer</param>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
         <member name="M:Filuet.Infrastructure.Ordering.Models.OrderItem.Create(System.String,System.UInt32)">
             <summary>
             Create single order line

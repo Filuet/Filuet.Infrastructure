@@ -51,6 +51,9 @@ namespace Filuet.Infrastructure.Ordering.Models
         [JsonConverter(typeof(GoodsObtainingMethodConverter))]
         public GoodsObtainingMethod Obtaining { get; set; } = GoodsObtainingMethod.Warehouse;
 
+        [JsonPropertyName("paymentMethod")]
+        public PaymentMethod? PaymentMethod { get; set; }
+
         public Order()
         {
             _id = Guid.NewGuid();
@@ -68,6 +71,12 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// Paid amount
         /// </summary>
         public Money Paid { get; set; }
+
+        [JsonPropertyName("change")]
+        /// <summary>
+        /// Change amount
+        /// </summary>
+        public Money Change { get; set; }
 
         [JsonPropertyName("items")]
         public IEnumerable<OrderLine> Items { get; set; }

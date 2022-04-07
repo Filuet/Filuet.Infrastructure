@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Filuet.Infrastructure.Abstractions.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -36,6 +37,9 @@ namespace Filuet.Infrastructure.Ordering.Dto
         [JsonPropertyName("obtainMethod")]
         public string Obtaining { get; set; }
 
+        [JsonPropertyName("paymentMethod")]
+        public PaymentMethod? PaymentMethod { get; set; }
+
         [JsonPropertyName("total")]
         /// <summary>
         /// Order total
@@ -47,6 +51,12 @@ namespace Filuet.Infrastructure.Ordering.Dto
         /// Paid amount
         /// </summary>
         public MoneyDto Paid { get; set; }
+
+        [JsonPropertyName("change")]
+        /// <summary>
+        /// Paid amount
+        /// </summary>
+        public MoneyDto Change { get; set; }
 
         [JsonPropertyName("items")]
         public IEnumerable<OrderLineDto> Items { get; set; }
