@@ -24,6 +24,9 @@ namespace Filuet.Infrastructure.Abstractions.Business
 
         public override string ToString() => $"{Value} {Currency.GetCode()}";
 
+        public string ToString(bool useCurrencySymbol)
+            => useCurrencySymbol ? $"{Value} {Currency.GetDescription()}" : ToString();
+
         public static bool operator ==(Money obj1, Money obj2)
         {
             if (ReferenceEquals(obj1, obj2))
