@@ -7,6 +7,9 @@ namespace Filuet.Infrastructure.Ordering.Dto
 {
     public class OrderDto
     {
+        [JsonPropertyName("isCrash")]
+        public bool IsCrash { get; set; }
+
         [JsonPropertyName("number")]
         public string Number { get; set; }
 

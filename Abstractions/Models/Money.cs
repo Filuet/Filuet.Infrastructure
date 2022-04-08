@@ -9,7 +9,7 @@ namespace Filuet.Infrastructure.Abstractions.Business
     public class Money : IEquatable<Money>
     {
         [JsonIgnore]
-        public decimal Abs => Math.Abs(this.Value);
+        public decimal Abs => Math.Abs(Value);
 
         public decimal Value { get; set; }
 
@@ -27,11 +27,11 @@ namespace Filuet.Infrastructure.Abstractions.Business
             if (Currency == 0)
                 return string.Empty;
 
-            return $"{Value} {Currency.GetCode()}";
+            return $"{Value:#,##0.00} {Currency.GetCode()}";
         }
 
         public string ToString(bool useCurrencySymbol)
-            => useCurrencySymbol && Currency != 0 ? $"{Value} {Currency.GetDescription()}" : ToString();
+            => useCurrencySymbol && Currency != 0 ? $"{Value:#,##0.00} {Currency.GetDescription()}" : ToString();
 
         public static bool operator ==(Money obj1, Money obj2)
         {

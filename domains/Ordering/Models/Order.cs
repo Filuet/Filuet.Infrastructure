@@ -15,6 +15,9 @@ namespace Filuet.Infrastructure.Ordering.Models
         [JsonIgnore]
         public Guid Id { get => _id; }
 
+        [JsonPropertyName("isCrash")]
+        public bool IsCrash { get; set; }
+
         [JsonPropertyName("number")]
         public string Number { get; set; }
 
