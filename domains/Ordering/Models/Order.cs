@@ -78,6 +78,12 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// </summary>
         public Money Change { get; set; }
 
+        [JsonPropertyName("changeGiven")]
+        /// <summary>
+        /// Change given amount
+        /// </summary>
+        public Money ChangeGiven { get; set; }
+
         [JsonPropertyName("items")]
         public IEnumerable<OrderLine> Items { get; set; }
 

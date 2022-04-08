@@ -15,6 +15,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private Money _total;
         private Money _paid;
         private Money _change;
+        private Money _changeGiven;
         private string _orderNumber;
         private DateTime _orderDate;
         private string _customer;
@@ -80,7 +81,9 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             Currency itemsCurrency = items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
 
-            if (_total != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _total.Value) >= 1m || _total.Currency != itemsCurrency))
+            decimal maxRoundError = _locale == Country.India ? 10m : 1m;
+
+            if (_total != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _total.Value) >= maxRoundError || _total.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
@@ -94,7 +97,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         /// <param name="change">Change to be returned to the customer</param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public OrderBuilder WithTotalValues(Money total, Money paid, Money change, decimal points = 0)
+        public OrderBuilder WithTotalValues(Money total, Money paid, Money change, Money changeGiven, decimal points = 0)
         {
             if (total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
@@ -110,6 +113,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             _total = total;
             _paid = paid ?? _total;
             _change = change;
+            _changeGiven = changeGiven;
             _points = points;
 
             return this;
@@ -150,6 +154,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Total = _total,
                 Paid = _paid,
                 Change = _change,
+                ChangeGiven = _changeGiven,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,

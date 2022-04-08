@@ -4,7 +4,7 @@
         <name>Filuet.Infrastructure.Ordering</name>
     </assembly>
     <members>
-        <member name="M:Filuet.Infrastructure.Ordering.Builders.OrderBuilder.WithTotalValues(Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Decimal)">
+        <member name="M:Filuet.Infrastructure.Ordering.Builders.OrderBuilder.WithTotalValues(Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Decimal)">
             <summary>
             
             </summary>

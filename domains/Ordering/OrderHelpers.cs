@@ -52,7 +52,8 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                 .WithPaymentMethod(dto.PaymentMethod)
                 .WithTotalValues(Money.Create(dto.Amount.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency)),
                     Money.Create(dto.Paid.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Paid.Currency)),
-                    Money.Create(dto.Change.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Change.Currency)), dto.Points)
+                    Money.Create(dto.Change.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Change.Currency)),
+                    Money.Create(dto.ChangeGiven.Value, EnumHelpers.GetValueFromCode<Currency>(dto.ChangeGiven.Currency)), dto.Points)
                 .WithItems(dto.Items.Select(x => new OrderLine {
                     ProductUID = x.ProductUID,
                     Name = x.Name,

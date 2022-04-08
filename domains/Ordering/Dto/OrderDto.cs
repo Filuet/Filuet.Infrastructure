@@ -58,6 +58,13 @@ namespace Filuet.Infrastructure.Ordering.Dto
         /// </summary>
         public MoneyDto Change { get; set; }
 
+        [JsonPropertyName("changeGiven")]
+        /// <summary>
+        /// Change given amount
+        /// </summary>
+        public MoneyDto ChangeGiven { get; set; }
+
+
         [JsonPropertyName("items")]
         public IEnumerable<OrderLineDto> Items { get; set; }
 

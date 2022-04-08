@@ -22,10 +22,16 @@ namespace Filuet.Infrastructure.Abstractions.Business
 
         public static Money From(Money money) => Create(money.Value, money.Currency);
 
-        public override string ToString() => $"{Value} {Currency.GetCode()}";
+        public override string ToString()
+        {
+            if (Currency == 0)
+                return string.Empty;
+
+            return $"{Value} {Currency.GetCode()}";
+        }
 
         public string ToString(bool useCurrencySymbol)
-            => useCurrencySymbol ? $"{Value} {Currency.GetDescription()}" : ToString();
+            => useCurrencySymbol && Currency != 0 ? $"{Value} {Currency.GetDescription()}" : ToString();
 
         public static bool operator ==(Money obj1, Money obj2)
         {
