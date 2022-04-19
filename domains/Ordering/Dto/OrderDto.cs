@@ -41,7 +41,7 @@ namespace Filuet.Infrastructure.Ordering.Dto
         public string Obtaining { get; set; }
 
         [JsonPropertyName("paymentMethod")]
-        public PaymentMethod? PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
 
         [JsonPropertyName("total")]
         /// <summary>

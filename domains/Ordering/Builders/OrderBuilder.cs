@@ -1,5 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
 using Filuet.Infrastructure.Abstractions.Enums;
+using Filuet.Infrastructure.Abstractions.Helpers;
 using Filuet.Infrastructure.Ordering.Enums;
 using Filuet.Infrastructure.Ordering.Models;
 using System;
@@ -33,9 +34,12 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
-        public OrderBuilder WithPaymentMethod(PaymentMethod? method)
+        public OrderBuilder WithPaymentMethod(string method)
         {
-            _paymentMethod = method;
+            if (string.IsNullOrWhiteSpace(method))
+                _paymentMethod = null;
+            else _paymentMethod = EnumHelpers.GetValueFromCode<PaymentMethod>(method);
+
             return this;
         }
 
@@ -71,19 +75,19 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (items.GroupBy(x => x.ProductUID).Any(x => x.Count() > 1))
                 throw new ArgumentException("Duplicates founded in order items");
 
-            if (items.Any(x => x.Amount == null || x.Amount.Value < 0)) // An item could costs 0 (a gift for example)
+            if (items.Any(x => x.DueAmount == null || x.DueAmount.Value < 0)) // An item could costs 0 (a gift for example)
                 throw new ArgumentException("Invalid item(s) detected");
 
-            if (items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().Count() > 1)
+            if (items.GroupBy(x => x.DueAmount.Currency).Select(x => x.Key).Distinct().Count() > 1)
                 throw new ArgumentException("Multiply currencies have been detected in order items");
 
             _items = items;
 
-            Currency itemsCurrency = items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
+            Currency itemsCurrency = items.GroupBy(x => x.DueAmount.Currency).Select(x => x.Key).Distinct().First();
 
             decimal maxRoundError = _locale == Country.India ? 10m : 1m;
 
-            if (_total != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _total.Value) >= maxRoundError || _total.Currency != itemsCurrency))
+            if (_total != null && (Math.Abs(items.Sum(x => x.DueAmount.Value) - _total.Value) >= maxRoundError || _total.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
@@ -104,9 +108,9 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             if (_items != null)
             {
-                Currency itemsCurrency = _items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
+                Currency itemsCurrency = _items.GroupBy(x => x.DueAmount.Currency).Select(x => x.Key).Distinct().First();
 
-                if (total != null && (Math.Abs(_items.Sum(x => x.Amount.Value) - total.Value) >= 1m || total.Currency != itemsCurrency))
+                if (total != null && (Math.Abs(_items.Sum(x => x.DueAmount.Value) - total.Value) >= 1m || total.Currency != itemsCurrency))
                     throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
             }
 

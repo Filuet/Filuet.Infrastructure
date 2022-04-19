@@ -12,13 +12,13 @@ namespace Filuet.Infrastructure.Ordering.Models
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("amount")]
+        [JsonPropertyName("dueAmount")]
         /// <summary>
         /// Unit cost
         /// </summary>
-        public Money Amount { get; set; }
+        public Money DueAmount { get; set; }
 
-        [JsonPropertyName("total")]
+        [JsonPropertyName("totalAmount")]
         public Money TotalAmount { get; set; }
 
         [JsonPropertyName("points")]
@@ -48,7 +48,7 @@ namespace Filuet.Infrastructure.Ordering.Models
             if (totalAmount == null || totalAmount.Value < 0m)
                 throw new ArgumentException("Total amount is mandatory");
 
-            return new OrderLine { ProductUID = item.ProductUID, Name = name ?? item.ProductUID, Quantity = item.Quantity, Amount = amount, TotalAmount = totalAmount, Points = points.Value };
+            return new OrderLine { ProductUID = item.ProductUID, Name = name ?? item.ProductUID, Quantity = item.Quantity, DueAmount = amount, TotalAmount = totalAmount, Points = points.Value };
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Filuet.Infrastructure.Ordering.Models
         {
             OrderItem item = OrderItem.Create(productUid, 1);
 
-            return new OrderLine { ProductUID = item.ProductUID, Quantity = item.Quantity, Amount = amount, TotalAmount = amount };
+            return new OrderLine { ProductUID = item.ProductUID, Quantity = item.Quantity, DueAmount = amount, TotalAmount = amount };
         }
 
         public override string ToString() => $"{base.ToString()} x{Quantity}";

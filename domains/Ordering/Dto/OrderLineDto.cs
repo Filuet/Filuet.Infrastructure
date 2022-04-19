@@ -13,13 +13,13 @@ namespace Filuet.Infrastructure.Ordering.Dto
         [JsonPropertyName("qty")]
         public uint Quantity { get; set; }
 
-        [JsonPropertyName("amount")]
+        [JsonPropertyName("dueAmount")]
         /// <summary>
         /// Unit cost
         /// </summary>
-        public MoneyDto Amount { get; set; }
+        public MoneyDto DueAmount { get; set; }
 
-        [JsonPropertyName("total")]
+        [JsonPropertyName("totalAmount")]
         public MoneyDto TotalAmount { get; set; }
 
         [JsonPropertyName("points")]

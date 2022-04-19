@@ -5,6 +5,7 @@ using Filuet.Infrastructure.Ordering.Builders;
 using Filuet.Infrastructure.Ordering.Dto;
 using Filuet.Infrastructure.Ordering.Enums;
 using Filuet.Infrastructure.Ordering.Models;
+using System;
 using System.Linq;
 
 namespace Filuet.Infrastructure.Ordering.Helpers
@@ -35,7 +36,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                     Name = x.Name,
                     Points = x.Points,
                     Quantity = x.Quantity,
-                    Amount = new MoneyDto { Value = x.Amount.Value, Currency = x.Amount.Currency.GetCode() }
+                    DueAmount = new MoneyDto { Value = x.DueAmount.Value, Currency = x.DueAmount.Currency.GetCode() }
                 }),
                 UncollectedItems = order.UncollectedItems?.Select(x => new OrderItemDto {
                     ProductUID = x.ProductUID,
@@ -46,23 +47,33 @@ namespace Filuet.Infrastructure.Ordering.Helpers
 
         public static Order ToModel(this OrderDto dto)
         {
+            Currency baseCurrency = EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency);
+            Func<MoneyDto, Money> _withDefaultMoney = (moneyDto) =>
+            {
+                if (moneyDto == null || string.IsNullOrWhiteSpace(moneyDto.Currency))
+                    return Money.Create(0m, baseCurrency);
+
+                return Money.Create(moneyDto.Value, EnumHelpers.GetValueFromCode<Currency>(moneyDto.Currency));
+            };
+
             OrderBuilder b = new OrderBuilder()
                 .WithHeader(dto.Number, dto.Date, dto.Customer, dto.CustomerName, EnumHelpers.GetValueFromCode<Country>(dto.CountryCode), EnumHelpers.GetValueFromCode<Language>(dto.LanguageCode))
                 .WithObtainingMethod(EnumHelpers.GetValueFromCode<GoodsObtainingMethod>(dto.Obtaining))
                 .WithPaymentMethod(dto.PaymentMethod)
-                .WithTotalValues(Money.Create(dto.Amount.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency)),
-                    Money.Create(dto.Paid.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Paid.Currency)),
-                    Money.Create(dto.Change.Value, EnumHelpers.GetValueFromCode<Currency>(dto.Change.Currency)),
-                    Money.Create(dto.ChangeGiven.Value, EnumHelpers.GetValueFromCode<Currency>(dto.ChangeGiven.Currency)), dto.Points)
+                .WithTotalValues(Money.Create(dto.Amount.Value, baseCurrency),
+                    _withDefaultMoney(dto.Paid),
+                    _withDefaultMoney(dto.Change),
+                    _withDefaultMoney(dto.ChangeGiven),
+                    dto.Points)
                 .WithItems(dto.Items.Select(x => new OrderLine {
                     ProductUID = x.ProductUID,
                     Name = x.Name,
-                    TotalAmount = Money.Create(x.TotalAmount.Value, EnumHelpers.GetValueFromCode<Currency>(x.TotalAmount.Currency)),
-                    Amount = Money.Create(x.Amount.Value, EnumHelpers.GetValueFromCode<Currency>(x.Amount.Currency)),
+                    TotalAmount = _withDefaultMoney(x.TotalAmount),
+                    DueAmount = _withDefaultMoney(x.DueAmount),
                     Quantity = x.Quantity,
                     Points = x.Points
                 }).ToArray())
-                .WithUncollectedItems(dto.UncollectedItems.Select(x => new OrderItem { ProductUID = x.ProductUID, Quantity = x.Quantity }));
+                .WithUncollectedItems(dto.UncollectedItems?.Select(x => new OrderItem { ProductUID = x.ProductUID, Quantity = x.Quantity }));
 
             foreach (var e in dto.ExtraData)
                 b.WithExtraData(e.Key, e.Value);
