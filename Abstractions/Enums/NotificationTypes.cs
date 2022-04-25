@@ -63,6 +63,11 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// Notification that found "red" barcode on belt
         /// </summary>
         [Code("RedAlertBarcode")]
-        RedAlertBarcode = 16
+        RedAlertBarcode = 16,
+        /// <summary>
+        /// Notification about cash flow in PosTools (Widthdrawal\Income)
+        /// </summary>
+        [Code("CashFlow")]
+        CashFlow = 17
     }
 }
