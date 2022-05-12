@@ -57,6 +57,9 @@ namespace Filuet.Infrastructure.Ordering.Models
         [JsonPropertyName("paymentMethod")]
         public PaymentMethod? PaymentMethod { get; set; }
 
+        [JsonPropertyName("installments")]
+        public uint? Installments { get; set; }
+
         public Order()
         {
             _id = Guid.NewGuid();

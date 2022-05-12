@@ -26,6 +26,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private decimal _points;
         private GoodsObtainingMethod _obtainingMethod;
         private PaymentMethod? _paymentMethod;
+        private uint? _installmentPayments;
         private Dictionary<string, object> _extraData = new Dictionary<string, object>();
 
         public OrderBuilder WithObtainingMethod(GoodsObtainingMethod method)
@@ -138,6 +139,13 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
+        public OrderBuilder WithInstallmentPayments(uint? installments)
+        {
+            _installmentPayments = installments;
+
+            return this;
+        }
+
         public Order Build()
         {
             if (_items == null || _items.Count() == 0)
@@ -168,7 +176,8 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Date = _orderDate,
                 Obtaining = _obtainingMethod,
                 PaymentMethod = _paymentMethod,
-                ExtraData = _extraData
+                ExtraData = _extraData,
+                Installments = _installmentPayments
             };
         }
     }

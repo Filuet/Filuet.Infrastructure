@@ -17,6 +17,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("INR")]
         [Description("₹")]
         IndianRupee = 356,
+        [Code("NIS")]
+        [Description("₪")]
+        IsraeliNewShekel = 376,
         [Code("RUB")]
         [Description("₽")]
         RussianRuble = 643,
