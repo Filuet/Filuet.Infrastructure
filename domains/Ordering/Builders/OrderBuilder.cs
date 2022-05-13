@@ -88,7 +88,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             decimal maxRoundError = _locale == Country.India ? 10m : 1m;
 
-            if (_total != null && (Math.Abs(items.Sum(x => x.DueAmount.Value) - _total.Value) >= maxRoundError || _total.Currency != itemsCurrency))
+            if (_total != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _total.Value) >= maxRoundError || _total.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
