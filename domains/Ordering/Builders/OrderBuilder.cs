@@ -107,14 +107,6 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
 
-            if (_items != null)
-            {
-                Currency itemsCurrency = _items.GroupBy(x => x.DueAmount.Currency).Select(x => x.Key).Distinct().First();
-
-                if (total != null && (Math.Abs(_items.Sum(x => x.DueAmount.Value) - total.Value) >= 1m || total.Currency != itemsCurrency))
-                    throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
-            }
-
             _total = total;
             _paid = paid ?? _total;
             _change = change;
