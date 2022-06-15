@@ -57,7 +57,7 @@ namespace Filuet.Infrastructure.Ordering.Dto
 
         [JsonPropertyName("change")]
         /// <summary>
-        /// Paid amount
+        /// Change to be given
         /// </summary>
         public MoneyDto Change { get; set; }
 

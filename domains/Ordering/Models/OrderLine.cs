@@ -18,6 +18,9 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// </summary>
         public Money DueAmount { get; set; }
 
+        /// <summary>
+        /// Order item final price: E(totalAmount) = totalDue (aka order total)
+        /// </summary>
         [JsonPropertyName("totalAmount")]
         public Money TotalAmount { get; set; }
 
