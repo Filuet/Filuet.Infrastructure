@@ -44,8 +44,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return value.ToString("G");
         }
 
-        public static T GetValueFromCode<T>(string code)
-            where T : Enum
+        public static T GetValueFromCode<T>(string code) where T : Enum
         {
             var type = typeof(T);
             if (!type.IsEnum)
@@ -65,6 +64,18 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             }
 
             throw new ArgumentException($"Unable to cast {code} to {typeof(T)}", "code");
+        }
+
+        public static T TryGetValueFromCode<T>(string code, T defaultValue) where T : Enum
+        {
+            try
+            {
+                return GetValueFromCode<T>(code);
+            }
+            catch (ArgumentException)
+            {
+                return defaultValue;
+            }
         }
 
         public static IEnumerable<T> GetValues<T>() => Enum.GetValues(typeof(T)).Cast<T>();

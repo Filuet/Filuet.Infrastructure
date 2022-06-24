@@ -61,6 +61,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Georgian,
         [Code("km")]
         [Description("kmKH")]
-        Khmer
+        Khmer,
+        [Code("kk")]
+        [Description("kkKZ")]
+        Kazakh
     }
 }
