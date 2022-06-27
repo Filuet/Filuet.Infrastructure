@@ -52,9 +52,9 @@ namespace Filuet.Infrastructure.DataProvider
 
         protected virtual async Task<int> SaveChangesAsync() => await DbContext.SaveChangesAsync();
 
-        public virtual IEnumerable<TEntity> GetAll() => QueryUntracking.ToList();
+        public virtual IEnumerable<TEntity> GetAll(bool tracking = true) => tracking ? QueryTracking.ToList() : QueryUntracking.ToList();
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await QueryUntracking.ToListAsync();
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = true) => tracking ? await QueryTracking.ToListAsync() : await QueryUntracking.ToListAsync();
 
 
         public virtual IEnumerable<TEntity> Add(IEnumerable<TEntity> entities)
@@ -379,11 +379,11 @@ namespace Filuet.Infrastructure.DataProvider
             return result;
         }
 
-        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
-            => QueryUntracking.Where(predicate);
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate, bool tracking = true)
+            => tracking ? QueryTracking.Where(predicate) : QueryUntracking.Where(predicate);
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
-            => await QueryUntracking.Where(predicate).ToListAsync();
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate, bool tracking = true)
+            => tracking ? await QueryTracking.Where(predicate).ToListAsync() : await QueryUntracking.Where(predicate).ToListAsync();
         #endregion
     }
 }

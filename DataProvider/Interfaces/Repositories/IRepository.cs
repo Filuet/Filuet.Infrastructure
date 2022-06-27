@@ -15,15 +15,17 @@ namespace Filuet.Infrastructure.DataProvider.Interfaces.Repositories
 
         //int SaveChanges();
 
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(bool tracking = true);
+
+        Task<IEnumerable<T>> GetAllAsync(bool tracking = true);
 
         T Get(object id, bool tracking = true);
 
         IEnumerable<T> Add(IEnumerable<T> entities);
 
-        IEnumerable<T> Get(Expression<Func<T, bool>> predicate = null);
+        IEnumerable<T> Get(Expression<Func<T, bool>> predicate = null, bool tracking = true);
 
-        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate = null);
+        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate = null, bool tracking = true);
 
         T Add(T entity);
 
