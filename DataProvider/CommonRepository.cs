@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Filuet.Infrastructure.DataProvider
 {
@@ -40,9 +41,21 @@ namespace Filuet.Infrastructure.DataProvider
             else return QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count.Value);
         }
 
+        public async Task<IEnumerable<TEntity>> GetAsync(Predicate<TEntity> predicate = null, int? count = null)
+        {
+            if (!count.HasValue)
+                return await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).ToListAsync();
+            else return await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count.Value).ToListAsync();
+        }
+
         protected virtual int SaveChanges() => DbContext.SaveChanges();
 
+        protected virtual async Task<int> SaveChangesAsync() => await DbContext.SaveChangesAsync();
+
         public virtual IEnumerable<TEntity> GetAll() => QueryUntracking.ToList();
+
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await QueryUntracking.ToListAsync();
+
 
         public virtual IEnumerable<TEntity> Add(IEnumerable<TEntity> entities)
         {
@@ -51,6 +64,17 @@ namespace Filuet.Infrastructure.DataProvider
             if (entities != null)
                 foreach (var entity in entities)
                     result.Add(Add(entity));
+
+            return result;
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
+        {
+            var result = new List<TEntity>();
+
+            if (entities != null)
+                foreach (var entity in entities)
+                    result.Add(await AddAsync(entity));
 
             return result;
         }
@@ -75,6 +99,36 @@ namespace Filuet.Infrastructure.DataProvider
                 try
                 {
                     SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    DbContext.Remove(entity);
+                    throw ex;
+                }
+
+            return entity;
+        }
+
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("Entity", "Can't add null Entity to DbContext");
+
+            EntityEntry dbEntityEntry = DbContext.Entry(entity);
+
+            if (dbEntityEntry.State != EntityState.Detached)
+            {
+                dbEntityEntry.State = EntityState.Added;
+            }
+            else
+            {
+                await DbSet.AddAsync(entity);
+            }
+
+            if (IsAutoSave)
+                try
+                {
+                    await SaveChangesAsync();
                 }
                 catch (DbUpdateException ex)
                 {
@@ -112,6 +166,37 @@ namespace Filuet.Infrastructure.DataProvider
                 DbContext.Entry(entity).State = EntityState.Detached;
                 DbContext.Entry(entity).State = EntityState.Modified;
                 DbContext.SaveChanges();
+                return entity;
+            }
+        }
+
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException("Entity", "Can't update null Entity to DbContext");
+
+                EntityEntry dbEntityEntry = DbContext.Entry(entity);
+
+                // if (dbEntityEntry.State == EntityState.Detached)
+                DbSet.Attach(entity);
+
+                //      DbSet.Update(entity);
+                dbEntityEntry.State = EntityState.Modified;
+
+                if (IsAutoSave)
+                    await SaveChangesAsync();
+
+                DbContext.Entry(entity).State = EntityState.Detached;
+
+                return entity;
+            }
+            catch (Exception)
+            {
+                DbContext.Entry(entity).State = EntityState.Detached;
+                DbContext.Entry(entity).State = EntityState.Modified;
+                await DbContext.SaveChangesAsync();
                 return entity;
             }
         }
@@ -173,6 +258,41 @@ namespace Filuet.Infrastructure.DataProvider
 
             if (IsAutoSave)
                 SaveChanges();
+        }
+
+        public virtual async Task DeleteAsync(TEntity entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("Entity", "Can't delete null Entity to DbContext");
+
+            if (entity is IDeletable)
+            {
+                ((IDeletable)entity).MarkDeleted();
+                await UpdateAsync(entity);
+                await SaveChangesAsync();
+                return;
+            }
+
+            DeleteReferences(entity);
+
+            EntityEntry dbEntityEntry = DbContext.Entry(entity);
+
+            if (dbEntityEntry.State != EntityState.Deleted)
+            {
+                dbEntityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                try
+                {
+                    DbSet.Attach(entity);
+                }
+                catch { }
+                DbSet.Remove(entity);
+            }
+
+            if (IsAutoSave)
+                await SaveChangesAsync();
         }
 
         public virtual void Delete(TKey id)
@@ -261,6 +381,9 @@ namespace Filuet.Infrastructure.DataProvider
 
         public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
             => QueryUntracking.Where(predicate);
+
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
+            => await QueryUntracking.Where(predicate).ToListAsync();
         #endregion
     }
 }
