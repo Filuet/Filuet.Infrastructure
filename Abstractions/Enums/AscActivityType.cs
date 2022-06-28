@@ -15,14 +15,16 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Description("Money change")]
         Change,
         [Description("Extraction")]
-        Extract,
-        [Description("Product extract")]
-        ProductExtract,
+        Extraction,
         [Description("Print receipt")]
         PrintReceipt,
         [Description("Logout")]
         Logout,
         [Description("Resubmit order")]
-        Resubmit
+        Resubmit,
+        [Description("Sber PlatiQr request")]
+        SberPlatiQrRequest,
+        [Description("Order consumption type selection")]
+        ConsumptionType
     }
 }

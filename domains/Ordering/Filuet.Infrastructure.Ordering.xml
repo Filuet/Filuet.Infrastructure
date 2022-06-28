@@ -4,50 +4,15 @@
         <name>Filuet.Infrastructure.Ordering</name>
     </assembly>
     <members>
-        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderDto.ExtraData">
+        <member name="M:Filuet.Infrastructure.Ordering.Builders.OrderBuilder.WithTotalValues(Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Decimal)">
             <summary>
-            Extra data such as a selected month, kiosk identifier e.t.c.
+            
             </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderDto.Amount">
-            <summary>
-            Order total
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderDto.Paid">
-            <summary>
-            Paid amount
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderLineDto.Amount">
-            <summary>
-            Unit cost
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Dto.OrderLineDto.Points">
-            <summary>
-            Loyalty program points
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.ExtraData">
-            <summary>
-            Extra data such as a selected month, kiosk identifier e.t.c.
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.Amount">
-            <summary>
-            Order total
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.Order.Paid">
-            <summary>
-            Paid amount
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderItem.ProductUID">
-            <summary>
-            Unique identifier of product. E.g. SKU
-            </summary>
+            <param name="total">Order due</param>
+            <param name="paid">Money income</param>
+            <param name="change">Change to be returned to the customer</param>
+            <param name="points"></param>
+            <returns></returns>
         </member>
         <member name="M:Filuet.Infrastructure.Ordering.Models.OrderItem.Create(System.String,System.UInt32)">
             <summary>
@@ -57,14 +22,9 @@
             <param name="quantity"></param>
             <returns></returns>
         </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderLine.Amount">
+        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderLine.Name">
             <summary>
-            Unit cost
-            </summary>
-        </member>
-        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderLine.Points">
-            <summary>
-            Loyalty program points
+            Product name
             </summary>
         </member>
         <member name="M:Filuet.Infrastructure.Ordering.Models.OrderLine.Create(System.String,System.String,System.UInt32,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Nullable{System.Decimal})">

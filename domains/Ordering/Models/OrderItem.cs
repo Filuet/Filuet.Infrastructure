@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Ordering.Models
 {
     public class OrderItem
     {
+        [JsonPropertyName("uid")]
         /// <summary>
         /// Unique identifier of product. E.g. SKU
         /// </summary>
-        public string ProductUID { get; protected set; }
+        public string ProductUID { get; set; }
 
-        public uint Quantity { get; protected set; }
+        [JsonPropertyName("qty")]
+        public uint Quantity { get; set; }
 
-        protected OrderItem() { }
+        public OrderItem() { }
 
         /// <summary>
         /// Create single order line

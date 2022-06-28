@@ -9,20 +9,29 @@ namespace Filuet.Infrastructure.Abstractions.Business
     public class Money : IEquatable<Money>
     {
         [JsonIgnore]
-        public decimal Abs => Math.Abs(this.Value);
+        public decimal Abs => Math.Abs(Value);
 
-        public decimal Value { get; private set; }
+        public decimal Value { get; set; }
 
         [JsonConverter(typeof(CurrencyJsonConverter))]
-        public Currency Currency { get; private set; }
+        public Currency Currency { get; set; }
 
-        private Money() { }
+        public Money() { }
 
         public static Money Create(decimal value, Currency currency) => new Money { Value = value, Currency = currency };
 
         public static Money From(Money money) => Create(money.Value, money.Currency);
 
-        public override string ToString() => $"{Value} {Currency.GetCode()}";
+        public override string ToString()
+        {
+            if (Currency == 0)
+                return string.Empty;
+
+            return $"{Value:#,##0.00} {Currency.GetCode()}";
+        }
+
+        public string ToString(bool useCurrencySymbol)
+            => useCurrencySymbol && Currency != 0 ? $"{Value:#,##0.00} {Currency.GetDescription()}" : ToString();
 
         public static bool operator ==(Money obj1, Money obj2)
         {

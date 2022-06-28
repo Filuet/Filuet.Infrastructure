@@ -6,6 +6,7 @@ using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Business;
 using Filuet.Infrastructure.Ordering.Converters;
 using Filuet.Infrastructure.Ordering.Enums;
+using Filuet.Infrastructure.Abstractions.Converters;
 
 namespace Filuet.Infrastructure.Ordering.Models
 {
@@ -14,49 +15,89 @@ namespace Filuet.Infrastructure.Ordering.Models
         [JsonIgnore]
         public Guid Id { get => _id; }
 
-        public string Number { get; internal set; }
+        [JsonPropertyName("isCrash")]
+        public bool IsCrash { get; set; }
 
-        public string Customer { get; internal set; }
+        [JsonPropertyName("number")]
+        public string Number { get; set; }
 
-        public string CustomerName { get; internal set; }
+        [JsonPropertyName("customer")]
+        public string Customer { get; set; }
 
-        public Country Location { get; internal set; }
+        [JsonPropertyName("name")]
+        public string CustomerName { get; set; }
 
-        public Language Language { get; internal set; }
+        [JsonPropertyName("country")]
+        [JsonConverter(typeof(CountryJsonConverter))]
+        public Country Location { get; set; }
 
-        public DateTime Date { get; internal set; }
+        [JsonPropertyName("language")]
+        [JsonConverter(typeof(LanguageJsonConverter))]
+        public Language Language { get; set; }
 
+        [JsonPropertyName("date")]
+        public DateTime Date { get; set; }
+
+        [JsonIgnore]
         public DateTime Timestamp { get => _timestamp; }
 
-        public decimal Points { get; internal set; }
+        [JsonPropertyName("points")]
+        public decimal Points { get; set; }
 
+        [JsonPropertyName("extra")]
         /// <summary>
         /// Extra data such as a selected month, kiosk identifier e.t.c.
         /// </summary>
-        public Dictionary<string, object> ExtraData { get; internal set; }
+        public Dictionary<string, object> ExtraData { get; set; }
 
+        [JsonPropertyName("obtainMethod")]
         [JsonConverter(typeof(GoodsObtainingMethodConverter))]
-        public GoodsObtainingMethod Obtaining { get; internal set; } = GoodsObtainingMethod.Warehouse;
+        public GoodsObtainingMethod Obtaining { get; set; } = GoodsObtainingMethod.Warehouse;
 
-        internal Order()
+        [JsonPropertyName("paymentMethod")]
+        public PaymentMethod? PaymentMethod { get; set; }
+
+        [JsonPropertyName("installments")]
+        public uint? Installments { get; set; }
+
+        public Order()
         {
             _id = Guid.NewGuid();
             _timestamp = DateTime.Now;
         }
 
+        [JsonPropertyName("total")]
         /// <summary>
         /// Order total
         /// </summary>
-        public Money Amount { get; internal set; }
+        public Money Total { get; set; }
 
+        [JsonPropertyName("paid")]
         /// <summary>
         /// Paid amount
         /// </summary>
-        public Money Paid { get; internal set; }
+        public Money Paid { get; set; }
 
-        public IEnumerable<OrderLine> Items { get; internal set; }
+        [JsonPropertyName("change")]
+        /// <summary>
+        /// Change amount
+        /// </summary>
+        public Money Change { get; set; }
 
-        public IEnumerable<OrderItem> UncollectedItems { get; internal set; }
+        [JsonPropertyName("changeGiven")]
+        /// <summary>
+        /// Change given amount
+        /// </summary>
+        public Money ChangeGiven { get; set; }
+
+        [JsonPropertyName("items")]
+        public IEnumerable<OrderLine> Items { get; set; }
+
+        [JsonPropertyName("uncollected")]
+        public IEnumerable<OrderItem> UncollectedItems { get; set; }
+
+        public static Order Deserialize(string serialized)
+            => JsonSerializer.Deserialize<Order>(serialized);
 
         public override string ToString() => JsonSerializer.Serialize(this, typeof(object), JsonSerializationOptions.EventPrettyOptions);
 

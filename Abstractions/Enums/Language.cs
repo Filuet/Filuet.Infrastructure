@@ -1,10 +1,11 @@
-﻿using Filuet.Infrastructure.Attributes;
+﻿using Filuet.Infrastructure.Abstractions.Converters;
+using Filuet.Infrastructure.Attributes;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(LanguageJsonConverter))]
     public enum Language
     {
         [Code("en")] // ISO lang name: two letter
@@ -60,6 +61,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Georgian,
         [Code("km")]
         [Description("kmKH")]
-        Khmer
+        Khmer,
+        [Code("kk")]
+        [Description("kkKZ")]
+        Kazakh
     }
 }

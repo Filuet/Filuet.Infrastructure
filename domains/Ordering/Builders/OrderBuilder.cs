@@ -1,5 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
 using Filuet.Infrastructure.Abstractions.Enums;
+using Filuet.Infrastructure.Abstractions.Helpers;
 using Filuet.Infrastructure.Ordering.Enums;
 using Filuet.Infrastructure.Ordering.Models;
 using System;
@@ -12,8 +13,10 @@ namespace Filuet.Infrastructure.Ordering.Builders
     {
         private IEnumerable<OrderLine> _items;
         private IEnumerable<OrderItem> _uncollectedItems;
-        private Money _amount;
+        private Money _total;
         private Money _paid;
+        private Money _change;
+        private Money _changeGiven;
         private string _orderNumber;
         private DateTime _orderDate;
         private string _customer;
@@ -21,12 +24,23 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private Country _locale;
         private Language _language;
         private decimal _points;
-        private GoodsObtainingMethod _method;
+        private GoodsObtainingMethod _obtainingMethod;
+        private PaymentMethod? _paymentMethod;
+        private uint? _installmentPayments;
         private Dictionary<string, object> _extraData = new Dictionary<string, object>();
 
         public OrderBuilder WithObtainingMethod(GoodsObtainingMethod method)
         {
-            _method = method;
+            _obtainingMethod = method;
+            return this;
+        }
+
+        public OrderBuilder WithPaymentMethod(string method)
+        {
+            if (string.IsNullOrWhiteSpace(method))
+                _paymentMethod = null;
+            else _paymentMethod = EnumHelpers.GetValueFromCode<PaymentMethod>(method);
+
             return this;
         }
 
@@ -62,37 +76,41 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (items.GroupBy(x => x.ProductUID).Any(x => x.Count() > 1))
                 throw new ArgumentException("Duplicates founded in order items");
 
-            if (items.Any(x => x.Amount == null || x.Amount.Value < 0)) // An item could costs 0 (a gift for example)
+            if (items.Any(x => x.DueAmount == null || x.DueAmount.Value < 0)) // An item could costs 0 (a gift for example)
                 throw new ArgumentException("Invalid item(s) detected");
 
-            if (items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().Count() > 1)
+            if (items.GroupBy(x => x.DueAmount.Currency).Select(x => x.Key).Distinct().Count() > 1)
                 throw new ArgumentException("Multiply currencies have been detected in order items");
 
             _items = items;
 
-            Currency itemsCurrency = items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
+            Currency itemsCurrency = items.GroupBy(x => x.DueAmount.Currency).Select(x => x.Key).Distinct().First();
 
-            if (_amount != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _amount.Value) >= 1m || _amount.Currency != itemsCurrency))
+            decimal maxRoundError = _locale == Country.India ? 10m : 1m;
+
+            if (_total != null && (Math.Abs(items.Sum(x => x.TotalAmount.Value) - _total.Value) >= maxRoundError || _total.Currency != itemsCurrency))
                 throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
 
             return this;
         }
 
-        public OrderBuilder WithTotalValues(Money amount, Money paid, decimal points = 0)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="total">Order due</param>
+        /// <param name="paid">Money income</param>
+        /// <param name="change">Change to be returned to the customer</param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public OrderBuilder WithTotalValues(Money total, Money paid, Money change, Money changeGiven, decimal points = 0)
         {
-            if (amount.Value < 0)
+            if (total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
 
-            if (_items != null)
-            {
-                Currency itemsCurrency = _items.GroupBy(x => x.Amount.Currency).Select(x => x.Key).Distinct().First();
-
-                if (amount != null && (Math.Abs(_items.Sum(x => x.Amount.Value) - amount.Value) >= 1m || amount.Currency != itemsCurrency))
-                    throw new ArgumentException("Order amount is not equals to order items summ or order currency different from order items");
-            }
-
-            _amount = amount;
-            _paid = paid ?? _amount;
+            _total = total;
+            _paid = paid ?? _total;
+            _change = change;
+            _changeGiven = changeGiven;
             _points = points;
 
             return this;
@@ -113,12 +131,19 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
+        public OrderBuilder WithInstallmentPayments(uint? installments)
+        {
+            _installmentPayments = installments;
+
+            return this;
+        }
+
         public Order Build()
         {
             if (_items == null || _items.Count() == 0)
                 throw new ArgumentException("Items must be specified");
 
-            if (_amount.Value < 0)
+            if (_total.Value < 0)
                 throw new ArgumentException("Order amount must be positive");
 
             if (string.IsNullOrWhiteSpace(_orderNumber) || _orderNumber.Trim().Length < 4)
@@ -127,12 +152,13 @@ namespace Filuet.Infrastructure.Ordering.Builders
             if (string.IsNullOrWhiteSpace(_customer) || _customer.Trim().Length < 4)
                 throw new ArgumentException("Customer is mandatory");
 
-            return new Order
-            {
+            return new Order {
                 Items = _items,
                 UncollectedItems = _uncollectedItems,
-                Amount = _amount,
+                Total = _total,
                 Paid = _paid,
+                Change = _change,
+                ChangeGiven = _changeGiven,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,
@@ -140,8 +166,10 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Language = _language,
                 Number = _orderNumber,
                 Date = _orderDate,
-                Obtaining = _method,
-                ExtraData = _extraData
+                Obtaining = _obtainingMethod,
+                PaymentMethod = _paymentMethod,
+                ExtraData = _extraData,
+                Installments = _installmentPayments
             };
         }
     }

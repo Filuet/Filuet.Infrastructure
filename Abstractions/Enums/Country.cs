@@ -1,8 +1,11 @@
-﻿using Filuet.Infrastructure.Attributes;
+﻿using Filuet.Infrastructure.Abstractions.Converters;
+using Filuet.Infrastructure.Attributes;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
+    [JsonConverter(typeof(CountryJsonConverter))]
     public enum Country : short
     {
         [Code("AZ")]

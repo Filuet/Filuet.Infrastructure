@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Communication\Filuet.Infrastructure.Communication.csproj" />
+    <ProjectReference Include="..\domains\Ordering\Filuet.Infrastructure.Ordering.csproj" />
   </ItemGroup>
 
 </Project>

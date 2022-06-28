@@ -1,26 +1,36 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Ordering.Models
 {
     public class OrderLine : OrderItem
     {
-        // Product name
-        public string Name { get; protected set; }
+        /// <summary>
+        /// Product name
+        /// </summary>
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
+        [JsonPropertyName("dueAmount")]
         /// <summary>
         /// Unit cost
         /// </summary>
-        public Money Amount { get; protected set; }
+        public Money DueAmount { get; set; }
 
-        public Money TotalAmount { get; protected set; }
+        /// <summary>
+        /// Order item final price: E(totalAmount) = totalDue (aka order total)
+        /// </summary>
+        [JsonPropertyName("totalAmount")]
+        public Money TotalAmount { get; set; }
 
+        [JsonPropertyName("points")]
         /// <summary>
         /// Loyalty program points
         /// </summary>
-        public decimal Points { get; protected set; }
+        public decimal Points { get; set; }
 
-        private OrderLine() : base() { }
+        public OrderLine() : base() { }
 
         /// <summary>
         /// Create order line
@@ -41,7 +51,7 @@ namespace Filuet.Infrastructure.Ordering.Models
             if (totalAmount == null || totalAmount.Value < 0m)
                 throw new ArgumentException("Total amount is mandatory");
 
-            return new OrderLine { ProductUID = item.ProductUID, Name = name ?? item.ProductUID, Quantity = item.Quantity, Amount = amount, TotalAmount = totalAmount, Points = points.Value };
+            return new OrderLine { ProductUID = item.ProductUID, Name = name ?? item.ProductUID, Quantity = item.Quantity, DueAmount = amount, TotalAmount = totalAmount, Points = points.Value };
         }
 
         /// <summary>
@@ -54,7 +64,7 @@ namespace Filuet.Infrastructure.Ordering.Models
         {
             OrderItem item = OrderItem.Create(productUid, 1);
 
-            return new OrderLine { ProductUID = item.ProductUID, Quantity = item.Quantity, Amount = amount, TotalAmount = amount };
+            return new OrderLine { ProductUID = item.ProductUID, Quantity = item.Quantity, DueAmount = amount, TotalAmount = amount };
         }
 
         public override string ToString() => $"{base.ToString()} x{Quantity}";
