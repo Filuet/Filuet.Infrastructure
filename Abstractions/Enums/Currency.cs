@@ -8,6 +8,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
     /// </summary>
     public enum Currency : short
     {
+        [Code("AUD")]
+        [Description("$")]
+        AustralianDollar = 36,
         [Code("AMD")]
         [Description("֏")]
         ArmenianDram = 51,
