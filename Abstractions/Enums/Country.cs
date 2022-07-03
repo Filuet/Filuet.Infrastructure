@@ -11,6 +11,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("AZ")]
         [Description("AZE")]
         Azerbaijan = 31,
+        [Code("AU")]
+        [Description("AUS")]
+        Australia = 36,
         [Code("AM")]
         [Description("ARM")]
         Armenia = 51,

@@ -34,18 +34,14 @@ namespace Filuet.Infrastructure.DataProvider
         protected virtual IQueryable<TEntity> QueryTracking => DbSet;
 
         #region IRepository<T>
-        public IEnumerable<TEntity> Get(Predicate<TEntity> predicate = null, int? count = null)
+        public IEnumerable<TEntity> GetExactly(Predicate<TEntity> predicate, int count)
         {
-            if (!count.HasValue)
-                return QueryUntracking.Where(t => predicate == null ? true : predicate(t));
-            else return QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count.Value);
+            return QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAsync(Predicate<TEntity> predicate = null, int? count = null)
+        public async Task<IEnumerable<TEntity>> GetExactlyAsync(Predicate<TEntity> predicate, int count)
         {
-            if (!count.HasValue)
-                return await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).ToListAsync();
-            else return await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count.Value).ToListAsync();
+            return await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count).ToListAsync();
         }
 
         protected virtual int SaveChanges() => DbContext.SaveChanges();

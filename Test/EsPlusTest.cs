@@ -25,6 +25,27 @@ namespace Test
             Assert.True(response.Length == 8);
         }
 
+        [Fact]
+        public void Test_Ping_ES_Plus_Belt_New()
+        {
+            // Prepare
+            ICommunicationChannel channel = new TcpChannel(x => { x.Endpoint = new System.Net.IPEndPoint(IPAddress.Parse("172.16.7.103"), 5050); });
+            byte[] command = new byte[] { 2, 48, 48, 129, 67, 67, 190, 247, 47, 3 };
+
+            // Pre-validate
+            Assert.NotNull(channel);
+
+            // Perform
+            byte[] response = channel.SendCommand(command);
+            byte[] response1 = channel.SendCommand(command);
+            byte[] response2 = channel.SendCommand(command);
+            byte[] response3 = channel.SendCommand(command);
+            byte[] response4 = channel.SendCommand(command);
+
+            // Post-validate
+            Assert.True(response.Length == 8);
+        }
+
 
         [Fact]
         public void Test_Ping_ES_Plus_Belt_Extract()
