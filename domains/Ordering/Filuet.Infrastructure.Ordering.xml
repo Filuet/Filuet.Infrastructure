@@ -27,6 +27,11 @@
             Product name
             </summary>
         </member>
+        <member name="P:Filuet.Infrastructure.Ordering.Models.OrderLine.TotalAmount">
+            <summary>
+            Order item final price: E(totalAmount) = totalDue (aka order total)
+            </summary>
+        </member>
         <member name="M:Filuet.Infrastructure.Ordering.Models.OrderLine.Create(System.String,System.String,System.UInt32,Filuet.Infrastructure.Abstractions.Business.Money,Filuet.Infrastructure.Abstractions.Business.Money,System.Nullable{System.Decimal})">
             <summary>
             Create order line
