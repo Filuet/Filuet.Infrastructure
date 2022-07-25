@@ -68,6 +68,16 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// Notification about cash flow in PosTools (Widthdrawal\Income)
         /// </summary>
         [Code("CashFlow")]
-        CashFlow = 17
+        CashFlow = 17,
+        /// <summary>
+        /// Deliver XReport on button click
+        /// </summary>
+        [Code("XReportDelivery")]
+        XReportDelivery = 18,
+        /// <summary>
+        /// Deliver ZReport on button click
+        /// </summary>
+        [Code("ZReportDelivery")]
+        ZReportDelivery = 19
     }
 }

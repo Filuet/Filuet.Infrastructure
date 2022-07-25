@@ -23,6 +23,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("TW")]
         [Description("TWN")]
         Taiwan = 158,
+        [Code("CY")]
+        [Description("CYP")]
+        Cyprus = 196,
         [Code("EE")]
         [Description("EST")]
         Estonia = 233,        

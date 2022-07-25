@@ -1,7 +1,8 @@
-﻿using Filuet.Infrastructure.Abstractions.Communication;
+﻿using Azure.Messaging.ServiceBus;
+using Azure.Storage.Queues;
+using Filuet.Infrastructure.Abstractions.Communication;
 using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Models;
-using Microsoft.Azure.ServiceBus;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,11 +27,12 @@ namespace Filuet.Infrastructure.Communication.Notifications
         /// <param name="authorId">Terminal Id or something</param>
         public AzureServiceBusNotificationManager(string serviceBusConnectionString, string queueName, string authorId)
         {
-            _queueClient = new QueueClient(serviceBusConnectionString, queueName);
+            _busClient = new ServiceBusClient(serviceBusConnectionString);
+            _sender = _busClient.CreateSender(queueName);
             _authorId = authorId;
         }
 
-        private Message CreateMessage(NotificationTypes type, string message = "", string authorId = null)
+        private  ServiceBusMessage CreateMessage(NotificationTypes type, string message = "", string authorId = null)
         {
             using MemoryStream stream = new MemoryStream();
             NotificationModel model = new NotificationModel {
@@ -43,7 +45,7 @@ namespace Filuet.Infrastructure.Communication.Notifications
             byte[] bytes = stream.ToArray();
             stream.Position = 0;
             OnEvent?.Invoke(this, EventItem.Info($"Message sent {Encoding.UTF8.GetString(bytes)}"));
-            return new Message(bytes);
+            return new ServiceBusMessage(bytes);
         }
 
         private Task SendMessage(NotificationTypes notificationType, string additionalInfo, string terminalId = null)
@@ -51,8 +53,8 @@ namespace Filuet.Infrastructure.Communication.Notifications
             try
             {
                 _lastNotification = notificationType;
-                Message brokeredMessage = CreateMessage(notificationType, ReplaceSemicolonWithSystemChar(additionalInfo), terminalId);
-                return _queueClient.SendAsync(brokeredMessage);
+                ServiceBusMessage brokeredMessage = CreateMessage(notificationType, ReplaceSemicolonWithSystemChar(additionalInfo), terminalId);
+                return _sender.SendMessageAsync(brokeredMessage);
             }
             catch (Exception e)
             {
@@ -93,8 +95,8 @@ namespace Filuet.Infrastructure.Communication.Notifications
 
             try
             {
-                Message brokeredMessage = CreateMessage(NotificationTypes.AlertClear, $"lastAlert={_lastNotification}");
-                _queueClient.SendAsync(brokeredMessage).Wait();
+                ServiceBusMessage brokeredMessage = CreateMessage(NotificationTypes.AlertClear, $"lastAlert={_lastNotification}");
+                _sender.SendMessageAsync(brokeredMessage).Wait();
             }
             catch (Exception e)
             {
@@ -130,7 +132,8 @@ namespace Filuet.Infrastructure.Communication.Notifications
             return result;
         }
 
-        private readonly QueueClient _queueClient;
+        private readonly ServiceBusClient _busClient;
+        private readonly ServiceBusSender _sender;
         private readonly string _authorId;
         private NotificationTypes? _lastNotification;
     }

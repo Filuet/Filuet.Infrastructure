@@ -32,7 +32,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("vi")]
         [Description("viVN")]
         Vietnamese,
-        [Code("ar")] 
+        [Code("ar")]
         [Description("ar")]
         Arabic,
         [Code("es")]
@@ -64,6 +64,12 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Khmer,
         [Code("kk")]
         [Description("kkKZ")]
-        Kazakh
+        Kazakh,
+        [Code("el")]
+        [Description("elGR")]
+        Greek,
+        [Code("tr")]
+        [Description("trTR")]
+        Turkish
     }
 }
