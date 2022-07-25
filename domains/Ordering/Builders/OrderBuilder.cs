@@ -28,6 +28,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private PaymentMethod? _paymentMethod;
         private uint? _installmentPayments;
         private Dictionary<string, object> _extraData = new Dictionary<string, object>();
+        private bool _isCrash;
 
         public OrderBuilder WithObtainingMethod(GoodsObtainingMethod method)
         {
@@ -44,7 +45,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             return this;
         }
 
-        public OrderBuilder WithHeader(string orderNumber, DateTime date, string customer, string customerName, Country locale, Language language)
+        public OrderBuilder WithHeader(string orderNumber, DateTime date, string customer, string customerName, Country locale, Language language, bool isCrash)
         {
             if (string.IsNullOrWhiteSpace(orderNumber) || orderNumber.Trim().Length < 4)
                 throw new ArgumentException("Order number is mandatory");
@@ -64,6 +65,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
             _customerName = customerName.Trim().ToUpper();
             _locale = locale;
             _language = language;
+            _isCrash = isCrash;
 
             return this;
         }
@@ -169,7 +171,8 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Obtaining = _obtainingMethod,
                 PaymentMethod = _paymentMethod,
                 ExtraData = _extraData,
-                Installments = _installmentPayments
+                Installments = _installmentPayments,
+                IsCrash = _isCrash
             };
         }
     }

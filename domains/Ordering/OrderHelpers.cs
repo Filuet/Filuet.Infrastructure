@@ -57,7 +57,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
             };
 
             OrderBuilder b = new OrderBuilder()
-                .WithHeader(dto.Number, dto.Date, dto.Customer, dto.CustomerName, EnumHelpers.GetValueFromCode<Country>(dto.CountryCode), EnumHelpers.GetValueFromCode<Language>(dto.LanguageCode))
+                .WithHeader(dto.Number, dto.Date, dto.Customer, dto.CustomerName, EnumHelpers.GetValueFromCode<Country>(dto.CountryCode), EnumHelpers.GetValueFromCode<Language>(dto.LanguageCode), dto.IsCrash)
                 .WithObtainingMethod(EnumHelpers.GetValueFromCode<GoodsObtainingMethod>(dto.Obtaining))
                 .WithPaymentMethod(dto.PaymentMethod)
                 .WithTotalValues(Money.Create(dto.Amount.Value, baseCurrency),
