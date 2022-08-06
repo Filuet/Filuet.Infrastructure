@@ -4,8 +4,24 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 {
     public static class StringHelpers
     {
+        public static string GetPaymentSystem(this string cardNumber)
+        {
+            Regex regexVI = new Regex(@"^4");
+            Regex regexMC = new Regex(@"^(5[1-5]|(?:222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))");
+            Regex regexJCB = new Regex(@"^(31|35)");
+
+            if (regexVI.IsMatch(cardNumber))
+                return @"VI";
+            else if (regexMC.IsMatch(cardNumber))
+                return @"MC";
+            else if (regexJCB.IsMatch(cardNumber))
+                return @"JCB";
+
+            return @"VI";
+        }
+
         public static bool IsMacAddress(this string macAddress)
-            => CheckMatch(macAddress, "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
+                => CheckMatch(macAddress, "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
 
         public static bool IsGuid(this string source)
         {
