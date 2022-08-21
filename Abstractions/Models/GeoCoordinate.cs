@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Models
 {
-    public struct GeoCoordinate
+    [ComplexType]
+    public class GeoCoordinate
     {
         [JsonPropertyName("lat")]
         public double Latitude { get; set; }
