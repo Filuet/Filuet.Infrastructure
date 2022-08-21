@@ -4,20 +4,11 @@ namespace Filuet.Infrastructure.Abstractions.Models
 {
     public struct GeoCoordinate
     {
-        private readonly double latitude;
-        private readonly double longitude;
-
         [JsonPropertyName("lat")]
-        public double Latitude => latitude;
+        public double Latitude { get; set; }
 
         [JsonPropertyName("lon")]
-        public double Longitude => longitude;
-
-        public GeoCoordinate(double latitude, double longitude)
-        {
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
+        public double Longitude { get; set; }
 
         public override string ToString() => string.Format("{0},{1}", Latitude, Longitude);
     }
