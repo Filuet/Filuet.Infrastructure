@@ -66,6 +66,39 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             throw new ArgumentException($"Unable to cast {code} to {typeof(T)}", "code");
         }
 
+        public static T GetValueFromDescription<T>(string description) where T : Enum
+        {
+            var type = typeof(T);
+
+            if (!type.IsEnum)
+                throw new InvalidOperationException();
+
+            foreach (var field in type.GetFields())
+            {
+                var attribute = Attribute.GetCustomAttribute(field,
+                    typeof(DescriptionAttribute)) as DescriptionAttribute;
+
+                if (attribute != null)
+                {
+                    string[] desc = attribute.Description.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var val in desc)
+                        if (string.Equals(val, description, StringComparison.InvariantCultureIgnoreCase))
+                            return (T)field.GetValue(null);
+                }
+                else
+                {
+                    string[] desc = field.Name.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var val in desc)
+                        if (string.Equals(val, description, StringComparison.InvariantCultureIgnoreCase))
+                            return (T)field.GetValue(null);
+                }
+            }
+
+            throw new ArgumentException("Not found", "description");
+        }
+
         public static T TryGetValueFromCode<T>(string code, T defaultValue) where T : Enum
         {
             try
