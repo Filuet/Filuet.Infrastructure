@@ -2,10 +2,10 @@
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    public enum Interval
+    public enum Interval : short
     {
         [Code("day")]
-        Day = 0x01,
+        Day = 1,
         [Code("week")]
         week,
         [Code("month")]
