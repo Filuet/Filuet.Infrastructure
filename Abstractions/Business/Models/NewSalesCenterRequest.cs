@@ -1,6 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
 
-namespace Filuet.Infrastructure.Abstractions.Business
+namespace Filuet.Infrastructure.Abstractions.Business.Models
 {
     public class NewSalesCenterRequest
     {
