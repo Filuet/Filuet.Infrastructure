@@ -28,7 +28,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Cyprus = 196,
         [Code("EE")]
         [Description("EST")]
-        Estonia = 233,        
+        Estonia = 233,
         [Code("FR")]
         [Description("FRA")]
         France = 250,   
@@ -43,7 +43,10 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Indonesia = 360,
         [Code("IL")]
         [Description("ISR")]
-        Israel = 376,         
+        Israel = 376,
+        [Code("IT")]
+        [Description("ITA")]
+        Italy = 380,
         [Code("KZ")]
         [Description("KAZ")]
         Kazakhstan = 398,
@@ -67,7 +70,10 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Russia = 643,
         [Code("VN")]
         [Description("VNM")]
-        Vietnam = 704,
+        Vietnam = 704,        
+        [Code("ES")]
+        [Description("ESP")]
+        Spain = 724,
         [Code("US")]
         [Description("USA")]
         USA = 840,
