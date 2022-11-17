@@ -2,18 +2,13 @@
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    public enum PaymentMethod
+    public enum PaymentMethod : short
     {
         [Code("cash")]
         Cash = 0x01,
-        // Non cash
         [Code("card")]
         Card,
-        [Code("virtualWallet")]
-        VirtualWallet, // e.g. GooglePay, ApplePay
-        [Code("loyaltyProgram")]
-        LoyaltyProgram,
-        [Code("e-money")] // Server based methods like paymentGateway
-        EMoney
+        [Code("digital")] // other cashless payments
+        Digital
     }
 }
