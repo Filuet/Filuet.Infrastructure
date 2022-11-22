@@ -73,7 +73,8 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                     Quantity = x.Quantity,
                     Points = x.Points
                 }).ToArray())
-                .WithUncollectedItems(dto.UncollectedItems?.Select(x => new OrderItem { ProductUID = x.ProductUID, Quantity = x.Quantity }));
+                .WithUncollectedItems(dto.UncollectedItems?.Select(x => new OrderItem { ProductUID = x.ProductUID, Quantity = x.Quantity }))
+                .WithInstallmentPayments(dto.Installments);
 
             foreach (var e in dto.ExtraData)
                 b.WithExtraData(e.Key, e.Value);

@@ -102,6 +102,7 @@ namespace Filuet.Infrastructure.Ordering.Builders
         /// <param name="total">Order due</param>
         /// <param name="paid">Money income</param>
         /// <param name="change">Change to be returned to the customer</param>
+        /// <param name="changeGiven"></param>
         /// <param name="points"></param>
         /// <returns></returns>
         public OrderBuilder WithTotalValues(Money total, Money paid, Money change, Money changeGiven, decimal points = 0)
