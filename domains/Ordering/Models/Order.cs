@@ -94,7 +94,7 @@ namespace Filuet.Infrastructure.Ordering.Models
         public IEnumerable<OrderLine> Items { get; set; }
 
         [JsonPropertyName("uncollected")]
-        public IEnumerable<OrderItem> UncollectedItems { get; set; }
+        public IEnumerable<OrderItem> UncollectedItems { get; set; }        
 
         public static Order Deserialize(string serialized)
             => JsonSerializer.Deserialize<Order>(serialized);

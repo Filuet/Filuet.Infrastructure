@@ -1,5 +1,4 @@
-﻿using Filuet.Infrastructure.Abstractions.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -73,5 +72,8 @@ namespace Filuet.Infrastructure.Ordering.Dto
 
         [JsonPropertyName("uncollected")]
         public IEnumerable<OrderItemDto> UncollectedItems { get; set; }
+
+        [JsonPropertyName("installments")]
+        public uint? Installments { get; set; }
     }
 }
