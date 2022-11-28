@@ -15,6 +15,6 @@ namespace Filuet.Infrastructure.Abstractions.Converters
             Utf8JsonWriter writer,
             decimal value,
             JsonSerializerOptions options) =>
-                writer.WriteNumberValue(value);
+                writer.WriteNumberValue(Math.Round(value, 2));
     }
 }
