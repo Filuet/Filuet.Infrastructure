@@ -70,12 +70,6 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Greek,
         [Code("tr")]
         [Description("trTR")]
-        Turkish,
-        [Code("es")]
-        [Description("EsES")]
-        Espanol,
-        [Code("it")]
-        [Description("itIT")]
-        Italiano
+        Turkish
     }
 }
