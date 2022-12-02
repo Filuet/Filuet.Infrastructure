@@ -6,11 +6,11 @@ using System.Text.Json.Serialization;
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
     [JsonConverter(typeof(LanguageJsonConverter))]
-    public enum Language
+    public enum Language : short
     {
         [Code("en")] // ISO lang name: two letter
         [Description("enGB")] // IETF tag
-        English,
+        English = 0x01,
         [Code("ru")]
         [Description("ruRu")]
         Russian,
