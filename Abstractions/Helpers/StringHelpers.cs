@@ -25,6 +25,9 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
         public static bool IsGuid(this string source)
         {
+            if (source == null)
+                return false;
+
             source = source.Trim().Replace(" ", "");
 
             if (string.IsNullOrWhiteSpace(source) || source.Length < 32)

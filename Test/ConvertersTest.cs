@@ -18,6 +18,24 @@ namespace Test
         }
 
         [Theory]
+        [InlineData("RR")]
+        public void Test_EnumHelpers_Try_GetCountry_By_Invalid_code(string code)
+        {
+            // Prepare
+            Country? expected = 0;
+
+            // Pre-validate
+            Assert.True(code.Length == 2);
+
+            // Perform
+            bool result = EnumHelpers.TryGetValueFromCode(code, out Country location);
+
+            // Validate
+            Assert.False(result);
+            Assert.Equal(expected, location);
+        }
+
+        [Theory]
         [InlineData("")]
         [InlineData("lt")]
         public void Test_Enum_From_Code_Nullable(string code)

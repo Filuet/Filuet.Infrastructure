@@ -1,7 +1,9 @@
-﻿using Filuet.Infrastructure.Attributes;
+﻿using Filuet.Infrastructure.Abstractions.Enums;
+using Filuet.Infrastructure.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Reflection;
 
@@ -131,6 +133,22 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
                 return defaultValue;
             }
         }
+
+#nullable enable
+        public static bool TryGetValueFromCode<T>(string code, out T? result) where T : Enum
+        {
+            try
+            {
+                result = GetValueFromCode<T>(code);
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                result = default(T);
+                return false;
+            }
+        }
+#nullable disable
 
         public static IEnumerable<T> GetValues<T>() => Enum.GetValues(typeof(T)).Cast<T>();
     }
