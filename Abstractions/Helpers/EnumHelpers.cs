@@ -1,9 +1,7 @@
-﻿using Filuet.Infrastructure.Abstractions.Enums;
-using Filuet.Infrastructure.Attributes;
+﻿using Filuet.Infrastructure.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Reflection;
 
@@ -151,5 +149,11 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 #nullable disable
 
         public static IEnumerable<T> GetValues<T>() => Enum.GetValues(typeof(T)).Cast<T>();
+
+        public static bool In<T>(this T val, params T[] values) where T : struct
+            => values.Contains(val);
+
+        public static bool In<T>(this T? val, params T?[] values) where T : struct
+            => values.Contains(val);
     }
 }

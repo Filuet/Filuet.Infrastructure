@@ -40,7 +40,7 @@ namespace Test
         [InlineData("lt")]
         public void Test_Enum_From_Code_Nullable(string code)
         {
-            Country? res = EnumHelpers.GetValueFromCode1<Country>(code);
+            Country? res = EnumHelpers.GetValueFromCodeNullable<Country>(code);
         }
     }
 }
