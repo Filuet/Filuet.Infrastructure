@@ -44,6 +44,27 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return value.ToString("G");
         }
 
+        public static T? GetValueFromCodeNullable<T>(string code) where T : struct, Enum
+        {
+            var type = typeof(T);
+            if (!type.IsEnum)
+                throw new InvalidOperationException();
+
+            foreach (var field in type.GetFields())
+            {
+                var attribute = Attribute.GetCustomAttribute(field,
+                    typeof(CodeAttribute)) as CodeAttribute;
+                if (attribute != null)
+                {
+                    if (string.Equals(attribute.DisplayCode, code, StringComparison.InvariantCultureIgnoreCase))
+                        return (T)field.GetValue(null);
+                }
+                else if (string.Equals(field.Name, code, StringComparison.InvariantCultureIgnoreCase))
+                    return (T)field.GetValue(null);
+            }
+
+            return null;
+        }
         public static T GetValueFromCode<T>(string code) where T : Enum
         {
             var type = typeof(T);
