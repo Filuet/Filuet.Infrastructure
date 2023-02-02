@@ -8,7 +8,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Cash = 0x01,
         [Code("card")]
         Card,
-        [Code("digital")] // other cashless payments
-        Digital
+        [Code("online")]
+        Online
     }
 }
