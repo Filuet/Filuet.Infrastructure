@@ -1,9 +1,7 @@
-﻿using Filuet.Infrastructure.Abstractions.Enums;
-using Filuet.Infrastructure.Attributes;
+﻿using Filuet.Infrastructure.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Reflection;
 
@@ -46,6 +44,27 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return value.ToString("G");
         }
 
+        public static T? GetValueFromCodeNullable<T>(string code) where T : struct, Enum
+        {
+            var type = typeof(T);
+            if (!type.IsEnum)
+                throw new InvalidOperationException();
+
+            foreach (var field in type.GetFields())
+            {
+                var attribute = Attribute.GetCustomAttribute(field,
+                    typeof(CodeAttribute)) as CodeAttribute;
+                if (attribute != null)
+                {
+                    if (string.Equals(attribute.DisplayCode, code, StringComparison.InvariantCultureIgnoreCase))
+                        return (T)field.GetValue(null);
+                }
+                else if (string.Equals(field.Name, code, StringComparison.InvariantCultureIgnoreCase))
+                    return (T)field.GetValue(null);
+            }
+
+            return null;
+        }
         public static T GetValueFromCode<T>(string code) where T : Enum
         {
             var type = typeof(T);
@@ -130,5 +149,11 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 #nullable disable
 
         public static IEnumerable<T> GetValues<T>() => Enum.GetValues(typeof(T)).Cast<T>();
+
+        public static bool In<T>(this T val, params T[] values) where T : struct
+            => values.Contains(val);
+
+        public static bool In<T>(this T? val, params T?[] values) where T : struct
+            => values.Contains(val);
     }
 }

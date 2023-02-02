@@ -34,5 +34,13 @@ namespace Test
             Assert.False(result);
             Assert.Equal(expected, location);
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("lt")]
+        public void Test_Enum_From_Code_Nullable(string code)
+        {
+            Country? res = EnumHelpers.GetValueFromCodeNullable<Country>(code);
+        }
     }
 }
