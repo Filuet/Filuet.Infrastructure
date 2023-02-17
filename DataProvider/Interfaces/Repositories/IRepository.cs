@@ -11,21 +11,17 @@ namespace Filuet.Infrastructure.DataProvider.Interfaces.Repositories
     public interface IRepository<T> : IRepository
         where T : class
     {
-        //bool IsAutoSave { get; }
+        IEnumerable<T> GetAll(bool tracking = false);
 
-        //int SaveChanges();
-
-        IEnumerable<T> GetAll(bool tracking = true);
-
-        Task<IEnumerable<T>> GetAllAsync(bool tracking = true);
+        Task<IEnumerable<T>> GetAllAsync(bool tracking = false);
 
         T Get(object id, bool tracking = true);
 
         IEnumerable<T> Add(IEnumerable<T> entities);
 
-        IEnumerable<T> Get(Expression<Func<T, bool>> predicate = null, bool tracking = true);
+        IEnumerable<T> Get(Expression<Func<T, bool>> predicate = null, bool tracking = false);
 
-        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate = null, bool tracking = true);
+        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate = null, bool tracking = false);
 
         T Add(T entity);
 

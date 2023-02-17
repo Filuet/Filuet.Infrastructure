@@ -20,6 +20,6 @@ namespace Filuet.Infrastructure.DataProvider.Entities
         }
 
         private void ChangeState(DbState state)
-        { ((IDbState)this).ChangeDbState(state); }
+            => ((IDbState)this).ChangeDbState(state);
     }
 }

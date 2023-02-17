@@ -8,7 +8,6 @@ namespace Filuet.Infrastructure.DataProvider.Entities
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public virtual T ID { get; protected set; }
 
-        #region Equality
         /// <summary>
         /// Determines whether the specified entity is equal to the current instance.
         /// </summary>
@@ -30,20 +29,14 @@ namespace Filuet.Infrastructure.DataProvider.Entities
         {
             // check for both null (cast to object or recursive loop)
             if ((object)base1 == null && (object)base2 == null)
-            {
                 return true;
-            }
 
             // check for either of them == to null
             if ((object)base1 == null || (object)base2 == null)
-            {
                 return false;
-            }
 
             if (!base1.ID.Equals(base2.ID))
-            {
                 return false;
-            }
 
             return true;
         }
@@ -64,16 +57,6 @@ namespace Filuet.Infrastructure.DataProvider.Entities
         /// <returns>A hash code for the current Key 
         /// property.</returns>
         public override int GetHashCode()
-        {
-            if (this.ID != null)
-            {
-                return this.ID.GetHashCode();
-            }
-            else
-            {
-                return 0;
-            }
-        }
-        #endregion
+            => ID != null ? ID.GetHashCode() : 0;
     }
 }

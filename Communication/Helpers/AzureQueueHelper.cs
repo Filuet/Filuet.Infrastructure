@@ -1,38 +1,61 @@
 ﻿using Azure.Storage.Queues;
 using System;
+using System.ComponentModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Filuet.Infrastructure.Communication.Helpers
 {
-    public static class AzureQueueHelper
+    public class AzureQueueHelper
     {
+        private QueueClient _queue;
+        public bool IsInitialized { get; private set; }
+
+        public AzureQueueHelper() { }
+
+        public async Task InitAsync(string queueName, string storageConnectionString)
+        {
+            var tokenSource = new CancellationTokenSource();
+
+            tokenSource.CancelAfter(4000);
+
+            // Get queue... create if does not exist.
+            _queue = new QueueClient(storageConnectionString, queueName);
+            await _queue.CreateIfNotExistsAsync(null, tokenSource.Token);
+            IsInitialized = true;
+        }
+
         /// <summary>
         /// Used to add new message to storage queue for processing
         /// </summary>
-        /// <param name="modifyRequest">Request object with needed details</param>
-        /// <param name="storageConnectionString">Storage connection string</param>
-        public static async Task AddAsyncOperationRequestToQueue(string modifyRequest, string queueName, string storageConnectionString)
+        /// <param name="modifyRequest">Request object with needed details</param>=
+        public async Task AddAsyncOperationRequestToQueue(string modifyRequest)
         {
-            // Get queue... create if does not exist.
-            QueueClient queue = new QueueClient(storageConnectionString, queueName);
-            await queue.CreateIfNotExistsAsync();
+            if (!IsInitialized)
+                throw new InvalidAsynchronousStateException("Not initialized");
+
+            var tokenSource = new CancellationTokenSource();
+
+            tokenSource.CancelAfter(4000);
             // Add entry to queue
-            await queue.SendMessageAsync(Convert.ToBase64String(Encoding.UTF8.GetBytes(modifyRequest)));
+            await _queue.SendMessageAsync(Convert.ToBase64String(Encoding.UTF8.GetBytes(modifyRequest)), tokenSource.Token);
         }
 
         /// <summary>
         /// Used to add new message to storage queue for processing
         /// </summary>
         /// <param name="modifyRequest">Request object with needed details</param>
-        /// <param name="storageConnectionString">Storage connection string</param>
-        public static void AddOperationRequestToQueue(string modifyRequest, string queueName, string storageConnectionString)
+        public void AddOperationRequestToQueue(string modifyRequest)
         {
-            // Get queue... create if does not exist.
-            QueueClient queue = new QueueClient(storageConnectionString, queueName);
-            queue.CreateIfNotExists();
+            if (!IsInitialized)
+                throw new InvalidAsynchronousStateException("Not initialized");
+
+            var tokenSource = new CancellationTokenSource();
+
+            tokenSource.CancelAfter(4000);
             // Add entry to queue
-            queue.SendMessage(Convert.ToBase64String(Encoding.UTF8.GetBytes(modifyRequest)));
+            _queue.SendMessage(Convert.ToBase64String(Encoding.UTF8.GetBytes(modifyRequest)), tokenSource.Token);
         }
     }
 }
