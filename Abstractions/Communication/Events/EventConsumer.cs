@@ -32,15 +32,9 @@ namespace Filuet.Infrastructure.Abstractions.Models
         /// <param name="item"></param>
         public void Consume(object sender, EventItem item)
         {
-            foreach (var ew in _eventWriters)
+            foreach (var ew in _eventWriters.Keys)
             {
-                Type type = sender.GetType().GetInterfaces().FirstOrDefault(x => x == ew.Value);
-
-                if (type != null)
-                {
-                    ew.Key.Push(item);
-                    break;
-                }
+                ew.Push(item);
             }
         }
     }
