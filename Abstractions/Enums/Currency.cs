@@ -32,6 +32,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("RUB")]
         [Description("₽")]
         RussianRuble = 643,
+        [Code("VND")]
+        [Description("₫")]
+        VietnameseDong = 704,
         [Code("USD")]
         [Description("$")]
         UnitedStatesDollar = 840,
