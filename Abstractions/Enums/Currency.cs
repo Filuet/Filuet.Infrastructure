@@ -28,7 +28,10 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         IsraeliNewShekel = 376,
         [Code("KZT")]
         [Description("₸")]
-        KazakhstaniTenge = 398,
+        KazakhstaniTenge = 398,        
+        [Code("KRW")]
+        [Description("₩")]
+        SouthKoreanWon = 410,
         [Code("RUB")]
         [Description("₽")]
         RussianRuble = 643,
@@ -41,6 +44,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("UZS")]
         [Description("so'm")]
         UzbekistanSom = 860,
+        [Code("TWD")]
+        [Description("NT$")]
+        NewTaiwanDollar = 901,
         [Code("AZN")]
         [Description("₼")]
         AzerbaijaniManat = 944,
