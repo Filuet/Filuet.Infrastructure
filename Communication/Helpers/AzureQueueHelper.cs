@@ -18,7 +18,7 @@ namespace Filuet.Infrastructure.Communication.Helpers
         {
             var tokenSource = new CancellationTokenSource();
 
-            tokenSource.CancelAfter(4000);
+            tokenSource.CancelAfter(30000);
 
             // Get queue... create if does not exist.
             _queue = new QueueClient(storageConnectionString, queueName);
@@ -37,7 +37,7 @@ namespace Filuet.Infrastructure.Communication.Helpers
 
             var tokenSource = new CancellationTokenSource();
 
-            tokenSource.CancelAfter(4000);
+            tokenSource.CancelAfter(30000);
             // Add entry to queue
             await _queue.SendMessageAsync(Convert.ToBase64String(Encoding.UTF8.GetBytes(modifyRequest)), tokenSource.Token);
         }
@@ -53,7 +53,7 @@ namespace Filuet.Infrastructure.Communication.Helpers
 
             var tokenSource = new CancellationTokenSource();
 
-            tokenSource.CancelAfter(4000);
+            tokenSource.CancelAfter(30000);
             // Add entry to queue
             _queue.SendMessage(Convert.ToBase64String(Encoding.UTF8.GetBytes(modifyRequest)), tokenSource.Token);
         }
