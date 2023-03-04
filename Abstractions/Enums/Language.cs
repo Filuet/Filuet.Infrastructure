@@ -1,6 +1,7 @@
 ﻿using Filuet.Infrastructure.Abstractions.Converters;
 using Filuet.Infrastructure.Attributes;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Enums
@@ -9,67 +10,67 @@ namespace Filuet.Infrastructure.Abstractions.Enums
     public enum Language : short
     {
         [Code("en")] // ISO lang name: two letter
-        [Description("enGB")] // IETF tag
+        [Display(Name = "English", Description = "enGB")]
         English = 0x01,
         [Code("ru")]
-        [Description("ruRu")]
+        [Display(Name = "Русский", Description = "ruRU")]
         Russian,
         [Code("he")]
-        [Description("he")]
+        [Display(Name = "עברית", Description = "heIL")]
         Hebrew,
         [Code("lv")]
-        [Description("lvLV")]
+        [Display(Name = "Latviešu", Description = "lvLV")]
         Latvian,
         [Code("et")]
-        [Description("etEE")]
+        [Display(Name = "Eesti", Description = "etEE")]
         Estonian,
         [Code("lt")]
-        [Description("ltLT")]
+        [Display(Name = "Lietuvių", Description = "ltLT")]
         Lithuanian,
         [Code("hi")]
-        [Description("hiIN")]
+        [Display(Name = "हिन्दी", Description = "hiIN")]
         Hindi,
         [Code("vi")]
-        [Description("viVN")]
+        [Display(Name = "Tiếng Việt", Description = "viVN")]
         Vietnamese,
         [Code("ar")]
-        [Description("ar")]
+        [Display(Name = "اللغة العربية", Description = "arAR")]
         Arabic,
         [Code("es")]
-        [Description("esES")]
+        [Display(Name = "Español", Description = "esES")]
         Spanish,
         [Code("it")]
-        [Description("itIT")]
+        [Display(Name = "Italiano", Description = "itIT")]
         Italian,
         [Code("zh")]
-        [Description("zhCN")]
+        [Display(Name = "中文", Description = "zhCN")]
         Chinese,
         [Code("ko")]
-        [Description("koKR")]
+        [Display(Name = "한국어", Description = "koKR")]
         Korean,
         [Code("fr")]
-        [Description("frFR")]
+        [Display(Name = "Français", Description = "frFR")]
         French,
         [Code("ms")]
-        [Description("msMY")]
+        [Display(Name = "Bahasa Malaysia", Description = "msMY")]
         Malay,
         [Code("id")]
-        [Description("idID")]
+        [Display(Name = "Bahasa Indonesia", Description = "idID")]
         Indonesian,
         [Code("ge")]
-        [Description("kaGE")]
+        [Display(Name = "ქართული", Description = "kaGE")]
         Georgian,
         [Code("km")]
-        [Description("kmKH")]
+        [Display(Name = "ភាសាខ្មែរ", Description = "kmKH")]
         Khmer,
         [Code("kk")]
-        [Description("kkKZ")]
+        [Display(Name = "Қазақ", Description = "kkKZ")]
         Kazakh,
         [Code("el")]
-        [Description("elGR")]
+        [Display(Name = "Ελληνικά", Description = "elGR")]
         Greek,
         [Code("tr")]
-        [Description("trTR")]
+        [Display(Name = "Türkçe", Description = "trTR")]
         Turkish
     }
 }

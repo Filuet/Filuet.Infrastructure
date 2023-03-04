@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -14,15 +15,30 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             FieldInfo fi = value.GetType().GetField(value.ToString());
 
             DescriptionAttribute[] attributes =
-                (DescriptionAttribute[])fi.GetCustomAttributes(
-                typeof(DescriptionAttribute),
-                false);
+                (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-            if (attributes != null &&
-                attributes.Length > 0)
+            if (attributes?.Length > 0)
                 return attributes[0].Description;
             else
+            {
+                DisplayAttribute[] dispAttributes =
+                    (DisplayAttribute[])fi.GetCustomAttributes(typeof(DisplayAttribute), false);
+
+                if (dispAttributes?.Length > 0)
+                    return dispAttributes[0].Description;
+
                 return value.ToString();
+            }
+        }
+
+        public static string GetName(this Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DisplayAttribute[] attributes =
+                (DisplayAttribute[])fi.GetCustomAttributes(typeof(DisplayAttribute), false);
+
+            return attributes?.Length > 0 ? attributes[0].Name : null;
         }
 
         public static string GetCode(this Enum value)
