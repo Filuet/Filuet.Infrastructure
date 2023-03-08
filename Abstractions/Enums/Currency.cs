@@ -23,7 +23,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("IDR")]
         [Description("Rp")]
         IndonesianRupiah = 360,
-        [Code("NIS")]
+        [Code("ILS")]
         [Description("₪")]
         IsraeliNewShekel = 376,
         [Code("KZT")]

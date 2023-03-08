@@ -14,7 +14,6 @@ namespace Test
         [Fact]
         public void Test_Language_attributes()
         {
-            string d = Language.Turkish.GetName();
             Assert.Equal("enGB", Language.English.GetDescription());
             Assert.Equal("English", Language.English.GetName());
         }
