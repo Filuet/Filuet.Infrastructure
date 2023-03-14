@@ -43,7 +43,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Display(Name = "Italiano", Description = "itIT")]
         Italian,
         [Code("zh")]
-        [Display(Name = "中文", Description = "zhCN")]
+        [Display(Name = "华语", Description = "zhCN")]
         Chinese,
         [Code("ko")]
         [Display(Name = "한국어", Description = "koKR")]
