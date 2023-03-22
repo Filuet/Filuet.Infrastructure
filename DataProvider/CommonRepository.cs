@@ -35,14 +35,10 @@ namespace Filuet.Infrastructure.DataProvider
 
         #region IRepository<T>
         public IEnumerable<TEntity> GetExactly(Predicate<TEntity> predicate, int count)
-        {
-            return QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count);
-        }
+            => QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count);
 
         public async Task<IEnumerable<TEntity>> GetExactlyAsync(Predicate<TEntity> predicate, int count)
-        {
-            return await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count).ToListAsync();
-        }
+            => await QueryUntracking.Where(t => predicate == null ? true : predicate(t)).Take(count).ToListAsync();
 
         protected virtual int SaveChanges() => DbContext.SaveChanges();
 
@@ -51,7 +47,6 @@ namespace Filuet.Infrastructure.DataProvider
         public virtual IEnumerable<TEntity> GetAll(bool tracking = false) => tracking ? QueryTracking.ToList() : QueryUntracking.ToList();
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = false) => tracking ? await QueryTracking.ToListAsync() : await QueryUntracking.ToListAsync();
-
 
         public virtual IEnumerable<TEntity> Add(IEnumerable<TEntity> entities)
         {
@@ -197,6 +192,42 @@ namespace Filuet.Infrastructure.DataProvider
             }
         }
 
+        public virtual async Task<ICollection<TEntity>> UpdateScopeAsync(ICollection<TEntity> entities)
+        {
+            try
+            {
+                if (!entities.Any())
+                    return entities;
+
+                foreach (TEntity entity in entities)
+                {
+                    EntityEntry dbEntityEntry = DbContext.Entry(entity);
+                    DbSet.Attach(entity);
+                    dbEntityEntry.State = EntityState.Modified;
+                }
+
+                if (IsAutoSave)
+                    await SaveChangesAsync();
+
+                foreach (TEntity entity in entities)
+                    DbContext.Entry(entity).State = EntityState.Detached;
+
+                return entities;
+            }
+            catch (Exception)
+            {
+                foreach (TEntity entity in entities)
+                {
+                    DbContext.Entry(entity).State = EntityState.Detached;
+                    DbContext.Entry(entity).State = EntityState.Modified;
+                }
+
+                await DbContext.SaveChangesAsync();
+
+                return entities;
+            }
+        }
+
         public virtual TEntity Modify(TEntity entity)
         {
             if (!entity.ID.Equals(default(TKey)))
@@ -291,6 +322,48 @@ namespace Filuet.Infrastructure.DataProvider
                 await SaveChangesAsync();
         }
 
+
+        public virtual async Task DeleteScopeAsync(ICollection<TEntity> entities)
+        {
+            if (!entities.Any())
+                return;
+
+            if (entities.First() is IDeletable)
+            {
+                foreach (var entity in entities)
+                    ((IDeletable)entity).MarkDeleted();
+
+                await UpdateScopeAsync(entities);
+                if (IsAutoSave)
+                    await SaveChangesAsync();
+                return;
+            }
+
+            DeleteReferences(entities);
+
+            foreach (var entity in entities)
+            {
+                EntityEntry dbEntityEntry = DbContext.Entry(entity);
+
+                if (dbEntityEntry.State != EntityState.Deleted)
+                {
+                    dbEntityEntry.State = EntityState.Deleted;
+                }
+                else
+                {
+                    try
+                    {
+                        DbSet.Attach(entity);
+                    }
+                    catch { }
+                    DbSet.Remove(entity);
+                }
+            }
+
+            if (IsAutoSave)
+                await SaveChangesAsync();
+        }
+
         public virtual void Delete(TKey id)
         {
             var entity = Get(id);
@@ -302,6 +375,8 @@ namespace Filuet.Infrastructure.DataProvider
         }
 
         protected virtual void DeleteReferences(TEntity entity) { }
+
+        protected virtual void DeleteReferences(ICollection<TEntity> entities) { }
 
         public virtual void Refresh(TEntity entity)
         {

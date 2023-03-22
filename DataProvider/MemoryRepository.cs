@@ -39,6 +39,11 @@ namespace Filuet.Infrastructure.DataProvider
             Delete(entity);
         }
 
+        public Task DeleteScopeAsync(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public TEntity Get(object id, bool tracking = true)
         {
             _store.TryGetValue((TKey)id, out TEntity result);
@@ -84,5 +89,10 @@ namespace Filuet.Infrastructure.DataProvider
 
         public Task<TEntity> UpdateAsync(TEntity entity)
             => Task.FromResult(Update(entity));
+
+        public Task<ICollection<TEntity>> UpdateScopeAsync(ICollection<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

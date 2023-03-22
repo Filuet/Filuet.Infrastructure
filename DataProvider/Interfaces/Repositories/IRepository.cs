@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace Filuet.Infrastructure.DataProvider.Interfaces.Repositories
 {
-    public interface IRepository
-    { }
+    public interface IRepository { }
 
     public interface IRepository<T> : IRepository
         where T : class
@@ -28,14 +27,17 @@ namespace Filuet.Infrastructure.DataProvider.Interfaces.Repositories
         Task<T> AddAsync(T entity);
 
         T Update(T entity);
-
         Task<T> UpdateAsync(T entity);
+
+        Task<ICollection<T>> UpdateScopeAsync(ICollection<T> entities);
 
         T Modify(T entity);
 
         void Delete(T entity);
 
         Task DeleteAsync(T entity);
+
+        Task DeleteScopeAsync(ICollection<T> entities);
 
         void Restore(T entity);
 

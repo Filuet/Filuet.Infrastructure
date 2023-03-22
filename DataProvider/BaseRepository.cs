@@ -10,7 +10,7 @@ namespace Filuet.Infrastructure.DataProvider
     {
         protected virtual IQueryable<TEntity> GetQuery(bool multiple, bool tracking = false)
         {
-            IQueryable<TEntity> query = this.DbSet;
+            IQueryable<TEntity> query = DbSet;
 
             if (!tracking)
                 query = query.AsNoTracking();
@@ -18,11 +18,9 @@ namespace Filuet.Infrastructure.DataProvider
             return query;
         }
 
-        protected override IQueryable<TEntity> QueryTracking
-        { get { return this.GetQuery(false, true); } }
+        protected override IQueryable<TEntity> QueryTracking => GetQuery(false, true);
 
-        protected override IQueryable<TEntity> QueryUntracking
-        => this.GetQuery(true, false);
+        protected override IQueryable<TEntity> QueryUntracking => GetQuery(true, false);
 
         public BaseRepository(TDbContext context)
             : base(context) { IsAutoSave = true; }
@@ -31,7 +29,7 @@ namespace Filuet.Infrastructure.DataProvider
         {
             var entity = base.GetEntityByKey(QueryTracking, id);
             base.DbContext.Entry(entity).State = EntityState.Detached;
-            this.Refresh(entity);
+            Refresh(entity);
 
             return entity;
         }
@@ -40,7 +38,7 @@ namespace Filuet.Infrastructure.DataProvider
         {
             var entity = base.GetEntityByKey(QueryUntracking, id);
             base.DbContext.Entry(entity).State = EntityState.Detached;
-            this.Refresh(entity);
+            Refresh(entity);
 
             return entity;
         }
