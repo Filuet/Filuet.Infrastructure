@@ -323,7 +323,7 @@ namespace Filuet.Infrastructure.DataProvider
         }
 
 
-        public virtual async Task DeleteScopeAsync(ICollection<TEntity> entities)
+        public virtual async Task DeleteAsync(ICollection<TEntity> entities)
         {
             if (!entities.Any())
                 return;

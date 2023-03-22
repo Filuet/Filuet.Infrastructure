@@ -39,7 +39,7 @@ namespace Filuet.Infrastructure.DataProvider
             Delete(entity);
         }
 
-        public Task DeleteScopeAsync(ICollection<TEntity> entities)
+        public Task DeleteAsync(ICollection<TEntity> entities)
         {
             throw new NotImplementedException();
         }

@@ -37,7 +37,7 @@ namespace Filuet.Infrastructure.DataProvider.Interfaces.Repositories
 
         Task DeleteAsync(T entity);
 
-        Task DeleteScopeAsync(ICollection<T> entities);
+        Task DeleteAsync(ICollection<T> entities);
 
         void Restore(T entity);
 
