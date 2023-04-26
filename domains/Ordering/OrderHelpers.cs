@@ -65,6 +65,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                     _withDefaultMoney(dto.Change),
                     _withDefaultMoney(dto.ChangeGiven),
                     dto.Points)
+                .WithVATValues(_withDefaultMoney(dto.AmountBeforeVAT), _withDefaultMoney(dto.VAT))
                 .WithItems(dto.Items.Select(x => new OrderLine {
                     ProductUID = x.ProductUID,
                     Name = x.Name,

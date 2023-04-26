@@ -26,6 +26,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("ILS")]
         [Description("₪")]
         IsraeliNewShekel = 376,
+        [Code("JPY")]
+        [Description("¥")]
+        JapaneseYen = 392,
         [Code("KZT")]
         [Description("₸")]
         KazakhstaniTenge = 398,        

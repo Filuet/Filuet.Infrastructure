@@ -71,6 +71,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Greek,
         [Code("tr")]
         [Display(Name = "Türkçe", Description = "trTR")]
-        Turkish
+        Turkish,
+        [Code("jp")]
+        [Display(Name = "日本語", Description = "jpJP")]
+        Japanese
     }
 }

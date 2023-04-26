@@ -17,6 +17,8 @@ namespace Filuet.Infrastructure.Ordering.Builders
         private Money _paid;
         private Money _change;
         private Money _changeGiven;
+        private Money _amountBeforeVat;
+        private Money _vat;
         private string _orderNumber;
         private DateTime _orderDate;
         private string _customer;
@@ -117,6 +119,14 @@ namespace Filuet.Infrastructure.Ordering.Builders
             _points = points;
 
             return this;
+        }        
+        
+        public OrderBuilder WithVATValues(Money amountBeforeVat, Money vat)
+        {
+            _amountBeforeVat = amountBeforeVat;
+            _vat = vat;
+
+            return this;
         }
 
         public OrderBuilder WithExtraData(string name, object value)
@@ -162,6 +172,8 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Paid = _paid,
                 Change = _change,
                 ChangeGiven = _changeGiven,
+                AmountBeforeVAT = _amountBeforeVat,
+                VAT = _vat,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,
