@@ -47,6 +47,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("IT")]
         [Description("ITA")]
         Italy = 380,
+        [Code("JP")]
+        [Description("JPN")]
+        Japan = 392,
         [Code("KZ")]
         [Description("KAZ")]
         Kazakhstan = 398,
