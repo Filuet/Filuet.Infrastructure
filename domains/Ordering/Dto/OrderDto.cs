@@ -66,12 +66,6 @@ namespace Filuet.Infrastructure.Ordering.Dto
         /// </summary>
         public MoneyDto ChangeGiven { get; set; }
 
-        [JsonPropertyName("amountBeforeVAT")]
-        public MoneyDto AmountBeforeVAT { get; set; }
-
-        [JsonPropertyName("vat")]
-        public MoneyDto VAT { get; set; }
-
         [JsonPropertyName("items")]
         public IEnumerable<OrderLineDto> Items { get; set; }
 

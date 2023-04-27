@@ -120,14 +120,6 @@ namespace Filuet.Infrastructure.Ordering.Builders
 
             return this;
         }        
-        
-        public OrderBuilder WithVATValues(Money amountBeforeVat, Money vat)
-        {
-            _amountBeforeVat = amountBeforeVat;
-            _vat = vat;
-
-            return this;
-        }
 
         public OrderBuilder WithExtraData(string name, object value)
         {
@@ -172,8 +164,6 @@ namespace Filuet.Infrastructure.Ordering.Builders
                 Paid = _paid,
                 Change = _change,
                 ChangeGiven = _changeGiven,
-                AmountBeforeVAT = _amountBeforeVat,
-                VAT = _vat,
                 Customer = _customer,
                 CustomerName = _customerName,
                 Points = _points,

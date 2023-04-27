@@ -90,12 +90,6 @@ namespace Filuet.Infrastructure.Ordering.Models
         /// </summary>
         public Money ChangeGiven { get; set; }
 
-        [JsonPropertyName("amountBeforeVAT")]
-        public Money AmountBeforeVAT { get; set; }
-
-        [JsonPropertyName("vat")]
-        public Money VAT { get; set; }
-
         [JsonPropertyName("items")]
         public IEnumerable<OrderLine> Items { get; set; }
 
