@@ -1,5 +1,5 @@
 ﻿using Filuet.Infrastructure.DataProvider.Entities;
-using Filuet.Utils.Abstractions.Platform.DataInfrastructure.Interfaces.Repositories;
+using Filuet.Infrastructure.DataProvider.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
