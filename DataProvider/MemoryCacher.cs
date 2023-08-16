@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Filuet.Infrastructure.DataProvider
@@ -17,7 +18,7 @@ namespace Filuet.Infrastructure.DataProvider
         public MemoryCacher(uint sizeMb = 1)
         {
             _sizeMb = sizeMb;
-            KeysClearTime = new Dictionary<string, DateTime>();
+            KeysClearTime = new ConcurrentDictionary<string, DateTime>();
             Cache = new MemoryCache(new MemoryCacheOptions
             {
                 SizeLimit = 1024 * 1000 * _sizeMb
