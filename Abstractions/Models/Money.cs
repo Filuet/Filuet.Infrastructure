@@ -31,7 +31,7 @@ namespace Filuet.Infrastructure.Abstractions.Business
         }
 
         public string ToString(bool useCurrencySymbol)
-            => useCurrencySymbol && Currency != 0 ? $"{Value:#,##0.00} {Currency.GetDescription()}" : ToString();
+            => useCurrencySymbol && Currency != 0 ? $"{Currency.GetDescription()} {Value:#,##0.00}" : ToString();
 
         public static bool operator ==(Money obj1, Money obj2)
         {
