@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<PackageVersion>1.0.76</PackageVersion>
+	<PackageVersion>1.0.77</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
