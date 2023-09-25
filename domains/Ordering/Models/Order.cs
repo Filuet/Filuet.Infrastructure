@@ -55,6 +55,7 @@ namespace Filuet.Infrastructure.Ordering.Models
         public GoodsObtainingMethod Obtaining { get; set; } = GoodsObtainingMethod.Warehouse;
 
         [JsonPropertyName("paymentMethod")]
+        [JsonConverter(typeof(PaymentMethodNullableConverter))]
         public PaymentMethod? PaymentMethod { get; set; }
 
         [JsonPropertyName("installments")]
