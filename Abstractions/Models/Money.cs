@@ -30,8 +30,8 @@ namespace Filuet.Infrastructure.Abstractions.Business
             return $"{Value:#,##0.00} {Currency.GetCode()}";
         }
 
-        public string ToString(bool useCurrencySymbol)
-            => useCurrencySymbol && Currency != 0 ? $"{Value:#,##0.00} {Currency.GetDescription()}" : ToString();
+        public string ToString(bool useCurrencySymbol, string format = "#,##0.00")
+            => useCurrencySymbol && Currency != 0 ? $"{Currency.GetDescription()} {Value.ToString(format)}" : ToString();
 
         public static bool operator ==(Money obj1, Money obj2)
         {

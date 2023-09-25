@@ -20,7 +20,7 @@ namespace Filuet.Infrastructure.Communication.Helpers
 
             tokenSource.CancelAfter(30000);
 
-            // Get queue... create if does not exist.
+            // Get queue or create if doesn't exist
             _queue = new QueueClient(storageConnectionString, queueName);
             await _queue.CreateIfNotExistsAsync(null, tokenSource.Token);
             IsInitialized = true;
