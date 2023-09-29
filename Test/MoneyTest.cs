@@ -1,9 +1,5 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
 using Filuet.Infrastructure.Abstractions.Enums;
-using Filuet.Infrastructure.Communication;
-using Filuet.Infrastructure.Ordering.Models;
-using System;
-using System.Net;
 using Xunit;
 
 namespace Test

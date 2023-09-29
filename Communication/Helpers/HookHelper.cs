@@ -10,8 +10,16 @@ namespace Filuet.Infrastructure.Communication.Helpers
     {
         private const int KEY_COUNT = 32;
 
-        public static string GetDecrypt(string hookSecret, string message)
+        public static string Decrypt(string hookSecret, string message)
             => DecryptStringFromBytes_Aes(HEX2Bytes(message), Encoding.Default.GetBytes(hookSecret.Replace(" ", "")));
+
+        public static string Encrypt(string hookSecret, string serializedBody)
+        {
+            byte[] key = Encoding.Default.GetBytes(hookSecret.Replace(" ", ""));
+            byte[] bytes = EncryptStringToBytes_Aes(serializedBody, key);
+
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        }
 
         private static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key)
         {
@@ -27,21 +35,28 @@ namespace Filuet.Infrastructure.Communication.Helpers
             string plaintext = null;
 
             // Create an Aes object with the specified key
-            using Aes aesAlg = Aes.Create();
-            aesAlg.Mode = CipherMode.ECB;
-            aesAlg.Key = Key;
-            aesAlg.Padding = PaddingMode.Zeros;
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Mode = CipherMode.ECB;
+                aesAlg.Key = Key;
+                aesAlg.Padding = PaddingMode.Zeros;
 
-            // Create a decryptor to perform the stream transform
-            ICryptoTransform decryptor = aesAlg.CreateDecryptor();
+                // Create a decryptor to perform the stream transform
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor();
 
-            // Create the streams used for decryption
-            using MemoryStream msDecrypt = new MemoryStream(cipherText);
-            using CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
-            using StreamReader srDecrypt = new StreamReader(csDecrypt);
-
-            // Read the decrypted bytes from the decrypting stream and place them in a string
-            plaintext = srDecrypt.ReadToEnd();
+                // Create the streams used for decryption
+                using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            // Read the decrypted bytes from the decrypting stream and place them in a string
+                            plaintext = srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
+            }
 
             return plaintext;
         }
@@ -61,14 +76,6 @@ namespace Filuet.Infrastructure.Communication.Helpers
             return HexAsBytes;
         }
 
-        public static string GetEncrypt(string hookSecret, string serializedBody)
-        {
-            var key = Encoding.Default.GetBytes(hookSecret.Replace(" ", ""));
-            var bytes = EncryptStringToBytes_Aes(serializedBody, key);
-
-            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-        }
-
         private static byte[] EncryptStringToBytes_Aes(string request, byte[] key)
         {
             if (request == null || request.Length <= 0)
@@ -80,28 +87,32 @@ namespace Filuet.Infrastructure.Communication.Helpers
             key = NormKey(key);
 
             byte[] encrypted;
-
             // Create an Aes object with the specified key and IV
-            using Aes aesAlg = new AesCryptoServiceProvider();
+            using (Aes aesAlg = new AesCryptoServiceProvider())
+            {
+                aesAlg.Mode = CipherMode.ECB;
+                aesAlg.Key = key;
+                aesAlg.Padding = PaddingMode.Zeros;
 
-            aesAlg.Mode = CipherMode.ECB;
-            aesAlg.Key = key;
-            aesAlg.Padding = PaddingMode.Zeros;
+                // Create an encryptor to perform the stream transform.
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor();
 
-            // Create an encryptor to perform the stream transform
-            ICryptoTransform encryptor = aesAlg.CreateEncryptor();
+                // Create the streams used for encryption.
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            //Write all data to the stream.
+                            swEncrypt.Write(request);
+                        }
+                        encrypted = msEncrypt.ToArray();
+                    }
+                }
 
-            // Create the streams used for encryption
-            using MemoryStream msEncrypt = new MemoryStream();
-            using CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-            using StreamWriter swEncrypt = new StreamWriter(csEncrypt);
-
-            // Write all data to the stream
-            swEncrypt.Write(request);
-
-            encrypted = msEncrypt.ToArray();
-
-            aesAlg.Clear();
+                aesAlg.Clear();
+            }
 
             // Return the encrypted bytes from the memory stream
             return encrypted;
