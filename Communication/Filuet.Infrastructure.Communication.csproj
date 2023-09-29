@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<PackageVersion>1.0.21</PackageVersion>
+	<PackageVersion>1.0.22</PackageVersion>
 	<PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   </PropertyGroup>
 
