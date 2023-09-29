@@ -15,35 +15,32 @@ namespace Filuet.Infrastructure.Communication.Helpers
 
         private static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key)
         {
-            // Check arguments.
+            // Check arguments
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
             if (Key == null || Key.Length <= 0)
                 throw new ArgumentNullException("Key");
 
-            Key = NormaKey(Key);
+            Key = NormKey(Key);
 
-            // Declare the string used to hold
-            // the decrypted text.
+            // Declare the string used to hold the decrypted text
             string plaintext = null;
 
-            // Create an Aes object
-            // with the specified key.
+            // Create an Aes object with the specified key
             using Aes aesAlg = Aes.Create();
             aesAlg.Mode = CipherMode.ECB;
             aesAlg.Key = Key;
             aesAlg.Padding = PaddingMode.Zeros;
 
-            // Create a decryptor to perform the stream transform.
+            // Create a decryptor to perform the stream transform
             ICryptoTransform decryptor = aesAlg.CreateDecryptor();
 
-            // Create the streams used for decryption.
+            // Create the streams used for decryption
             using MemoryStream msDecrypt = new MemoryStream(cipherText);
             using CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
             using StreamReader srDecrypt = new StreamReader(csDecrypt);
 
-            // Read the decrypted bytes from the decrypting stream
-            // and place them in a string.
+            // Read the decrypted bytes from the decrypting stream and place them in a string
             plaintext = srDecrypt.ReadToEnd();
 
             return plaintext;
@@ -64,18 +61,64 @@ namespace Filuet.Infrastructure.Communication.Helpers
             return HexAsBytes;
         }
 
-        private static byte[] NormaKey(byte[] key)
+        public static string GetEncrypt(string hookSecret, string serializedBody)
         {
-            byte[] norma = new byte[KEY_COUNT];
+            var key = Encoding.Default.GetBytes(hookSecret.Replace(" ", ""));
+            var bytes = EncryptStringToBytes_Aes(serializedBody, key);
+
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        }
+
+        private static byte[] EncryptStringToBytes_Aes(string request, byte[] key)
+        {
+            if (request == null || request.Length <= 0)
+                throw new ArgumentNullException("plainText");
+
+            if (key == null || key.Length <= 0)
+                throw new ArgumentNullException("Key");
+
+            key = NormKey(key);
+
+            byte[] encrypted;
+
+            // Create an Aes object with the specified key and IV
+            using Aes aesAlg = new AesCryptoServiceProvider();
+
+            aesAlg.Mode = CipherMode.ECB;
+            aesAlg.Key = key;
+            aesAlg.Padding = PaddingMode.Zeros;
+
+            // Create an encryptor to perform the stream transform
+            ICryptoTransform encryptor = aesAlg.CreateEncryptor();
+
+            // Create the streams used for encryption
+            using MemoryStream msEncrypt = new MemoryStream();
+            using CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
+            using StreamWriter swEncrypt = new StreamWriter(csEncrypt);
+
+            // Write all data to the stream
+            swEncrypt.Write(request);
+
+            encrypted = msEncrypt.ToArray();
+
+            aesAlg.Clear();
+
+            // Return the encrypted bytes from the memory stream
+            return encrypted;
+        }
+
+        private static byte[] NormKey(byte[] key)
+        {
+            byte[] norm = new byte[KEY_COUNT];
 
             for (int i = 0; i < KEY_COUNT; i++)
-                norma[i] = (byte)i;
+                norm[i] = (byte)i;
 
             if (key.Length < KEY_COUNT)
                 for (int i = 0; i < key.Length; i++)
-                    norma[i] = key[i];
+                    norm[i] = key[i];
 
-            return norma;
+            return norm;
         }
     }
 }
