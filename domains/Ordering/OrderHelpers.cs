@@ -36,12 +36,14 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                     Name = x.Name,
                     Points = x.Points,
                     Quantity = x.Quantity,
-                    DueAmount = new MoneyDto { Value = x.DueAmount.Value, Currency = x.DueAmount.Currency.GetCode() }
+                    DueAmount = new MoneyDto { Value = x.DueAmount.Value, Currency = x.DueAmount.Currency.GetCode() },
+                    TotalAmount = new MoneyDto { Value = x.TotalAmount.Value, Currency = x.TotalAmount.Currency.GetCode() },
                 }),
                 UncollectedItems = order.UncollectedItems?.Select(x => new OrderItemDto {
                     ProductUID = x.ProductUID,
                     Quantity = x.Quantity 
-                })
+                }),
+                PaymentMethod = order.PaymentMethod?.GetCode()
             };
         }
 
