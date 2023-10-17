@@ -1,30 +1,93 @@
-﻿using System.ComponentModel;
+﻿using Filuet.Infrastructure.Attributes;
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
     public enum AscActivityType
     {
-        [Description("Login")]
+        /// <summary>
+        /// Customer authorized
+        /// </summary>
+        [Code("login")]
         Login = 0x01,
-        [Description("Get cart price")]
+        /// <summary>
+        /// Pricing calculated
+        /// </summary>
+        [Code("pricing")]
         GetPrice,
-        [Description("Submit order")]
+        /// <summary>
+        /// Order submitted
+        /// </summary>
+        [Code("submit")]
         Submit,
-        [Description("Money income")]
+        /// <summary>
+        /// Money income
+        /// </summary>
+        [Code("income")]
         MoneyIncome,
-        [Description("Money change")]
-        Change,
-        [Description("Extraction")]
+        /// <summary>
+        /// Fact change given
+        /// </summary>
+        [Code("changeExtracted")]
+        TotalChangeGiven,
+        /// <summary>
+        /// Product issued
+        /// </summary>
+        [Code("extraction")]
         Extraction,
-        [Description("Print receipt")]
+        /// <summary>
+        /// Receipt printed
+        /// </summary>
+        [Code("printReceipt")]
         PrintReceipt,
-        [Description("Logout")]
+        /// <summary>
+        /// Customer logout
+        /// </summary>
+        [Code("logout")]
         Logout,
-        [Description("Resubmit order")]
+        /// <summary>
+        /// Order resubmit
+        /// </summary>
+        [Code("resubmit")]
         Resubmit,
-        [Description("Sber PlatiQr request")]
+        /// <summary>
+        /// Sberbank payment request
+        /// </summary>
+        [Code("sberRequest")]
         SberPlatiQrRequest,
-        [Description("Order consumption type selection")]
-        ConsumptionType
+        /// <summary>
+        /// Customer specified consumption type
+        /// </summary>
+        [Code("consumptionType")]
+        ConsumptionType,
+        /// <summary>
+        /// Chosen delivery method- Warehouse or Autostore
+        /// </summary>
+        [Code("deliveryMethod")]
+        DeliveryMethod,
+        /// <summary>
+        /// Selected month
+        /// </summary>
+        [Code("selectedMonth")]
+        SelectedMonth,
+        /// <summary>
+        /// Installments
+        /// </summary>
+        [Code("installments")]
+        Installments,
+        /// <summary>
+        /// Customer's tax identifier
+        /// </summary>
+        [Code("customerTin")]
+        CustomerTin,
+        /// <summary>
+        /// Uncollected item
+        /// </summary>
+        [Code("itemUncollected")]
+        ItemUncollected,
+        /// <summary>
+        /// Customer selected language
+        /// </summary>
+        [Code("selectedLanguage")]
+        SelectedLanguage
     }
 }
