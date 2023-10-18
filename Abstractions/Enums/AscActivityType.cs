@@ -25,15 +25,15 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("income")]
         MoneyIncome,
         /// <summary>
-        /// Fact change given
+        /// Some change was given
         /// </summary>
-        [Code("changeExtracted")]
-        TotalChangeGiven,
+        [Code("changeIssued")]
+        ChangeIssued,
         /// <summary>
         /// Product issued
         /// </summary>
-        [Code("extraction")]
-        Extraction,
+        [Code("productDispensed")]
+        ProductDispensed,
         /// <summary>
         /// Receipt printed
         /// </summary>
