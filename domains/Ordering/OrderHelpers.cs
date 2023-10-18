@@ -17,8 +17,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
             if (order == null)
                 return null;
 
-            return new OrderDto
-            {
+            return new OrderDto {
                 Number = order.Number,
                 Customer = order.Customer,
                 CustomerName = order.CustomerName,
@@ -30,8 +29,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                 Obtaining = order.Obtaining.GetCode(),
                 Amount = new MoneyDto { Value = order.Total.Value, Currency = order.Total.Currency.GetCode() },
                 Paid = new MoneyDto { Value = order.Paid.Value, Currency = order.Paid.Currency.GetCode() },
-                Items = order.Items?.Select(x => new OrderLineDto
-                {
+                Items = order.Items?.Select(x => new OrderLineDto {
                     ProductUID = x.ProductUID,
                     Name = x.Name,
                     Points = x.Points,
@@ -50,8 +48,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
         public static Order ToModel(this OrderDto dto)
         {
             Currency baseCurrency = EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency);
-            Func<MoneyDto, Money> _withDefaultMoney = (moneyDto) =>
-            {
+            Func<MoneyDto, Money> _withDefaultMoney = (moneyDto) => {
                 if (moneyDto == null || string.IsNullOrWhiteSpace(moneyDto.Currency))
                     return Money.Create(0m, baseCurrency);
 

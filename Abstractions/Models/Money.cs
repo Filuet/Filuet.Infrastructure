@@ -2,6 +2,8 @@
 using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Business
@@ -32,6 +34,24 @@ namespace Filuet.Infrastructure.Abstractions.Business
 
         public string ToString(bool useCurrencySymbol, string format = "#,##0.00")
             => useCurrencySymbol && Currency != 0 ? $"{Currency.GetDescription()} {Value.ToString(format)}" : ToString();
+
+        public static Money Parse(string amount) {
+            IEnumerable<Currency> symbols = EnumHelpers.GetValues<Currency>();
+            Currency? c = null;
+
+            foreach (var symbol in symbols) {
+                if (amount.Contains(symbol.GetDescription())) {
+                    c = symbol;
+                }
+                amount = amount.Replace(symbol.GetDescription(), string.Empty);
+            }
+
+            amount = amount.Trim();
+
+            if (c.HasValue)
+                return Money.Create(Decimal.Parse(amount), c.Value);
+            else throw new ArgumentException("Invalid amount string");
+        }
 
         public static bool operator ==(Money obj1, Money obj2)
         {

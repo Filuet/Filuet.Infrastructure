@@ -22,10 +22,7 @@ namespace Filuet.Infrastructure.Abstractions.Converters
             return new Denomination(amount, EnumHelpers.GetValueFromCode<Currency>(x[1]));
         }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            Denomination note,
-            JsonSerializerOptions options) =>
-                writer.WriteStringValue(note.ToString());
+        public override void Write(Utf8JsonWriter writer, Denomination note, JsonSerializerOptions options)
+            => writer.WriteStringValue(note.ToString());
     }
 }
