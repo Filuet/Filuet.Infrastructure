@@ -17,7 +17,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
             if (order == null)
                 return null;
 
-            return new OrderDto {
+            OrderDto result = new OrderDto {
                 Number = order.Number,
                 Customer = order.Customer,
                 CustomerName = order.CustomerName,
@@ -41,8 +41,16 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                     ProductUID = x.ProductUID,
                     Quantity = x.Quantity 
                 }),
-                PaymentMethod = order.PaymentMethod?.GetCode()
+                PaymentMethod = order.PaymentMethod?.GetCode(),
+                Change = new MoneyDto { Value = order.Change.Value, Currency = order.Change.Currency.GetCode() },
+                ChangeGiven = new MoneyDto { Value = order.ChangeGiven.Value, Currency = order.ChangeGiven.Currency.GetCode() } 
             };
+
+            result.IsCrash = (result.UncollectedItems != null && result.UncollectedItems.Any()) // Not given items
+                || result.Paid.Value < result.Amount.Value  // Underpaid
+                || result.Change?.Value > result.ChangeGiven?.Value; // Change not given
+
+            return result;
         }
 
         public static Order ToModel(this OrderDto dto)
