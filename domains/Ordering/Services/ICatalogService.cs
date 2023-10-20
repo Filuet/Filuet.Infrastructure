@@ -1,22 +1,24 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
+using System.Collections.Generic;
 
 namespace Filuet.Infrastructure.Ordering.Services
 {
     public interface ICatalogService
     {
         /// <summary>
-        /// Get product name by it's unique identifier
+        /// Get product names by unique identifiers
         /// </summary>
-        /// <param name="uid">sku</param>
+        /// <param name="uids">sku</param>
         /// <param name="language"></param>
         /// <returns></returns>
-        string GetName(string uid, Language language);
+        Dictionary<string, string> GetNames(IEnumerable<string> uids, Language language);
 
         /// <summary>
-        /// Get product weight
+        /// Get products weight
         /// </summary>
-        /// <param name="uid">sku</param>
+        /// <param name="uids">sku</param>
+        /// <param name="country">country</param>
         /// <returns></returns>
-        ushort GetWeight(string uid);
+        Dictionary<string, int> GetWeights(IEnumerable<string> uids, Country country);
     }
 }
