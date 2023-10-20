@@ -52,12 +52,13 @@
             <param name="amount">Unit cost</param>
             <returns></returns>
         </member>
-        <member name="M:Filuet.Infrastructure.Ordering.Services.ICatalogService.GetNames(System.Collections.Generic.IEnumerable{System.String},Filuet.Infrastructure.Abstractions.Enums.Language)">
+        <member name="M:Filuet.Infrastructure.Ordering.Services.ICatalogService.GetNames(System.Collections.Generic.IEnumerable{System.String},Filuet.Infrastructure.Abstractions.Enums.Language,Filuet.Infrastructure.Abstractions.Enums.Country)">
             <summary>
             Get product names by unique identifiers
             </summary>
             <param name="uids">sku</param>
             <param name="language"></param>
+            <param name="country"></param>
             <returns></returns>
         </member>
         <member name="M:Filuet.Infrastructure.Ordering.Services.ICatalogService.GetWeights(System.Collections.Generic.IEnumerable{System.String},Filuet.Infrastructure.Abstractions.Enums.Country)">
