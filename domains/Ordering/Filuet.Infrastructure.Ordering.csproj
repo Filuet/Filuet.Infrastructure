@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>net7.0</TargetFramework>
-	  <PackageVersion>1.0.41</PackageVersion>
+	  <PackageVersion>1.0.42</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

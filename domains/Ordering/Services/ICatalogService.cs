@@ -10,8 +10,9 @@ namespace Filuet.Infrastructure.Ordering.Services
         /// </summary>
         /// <param name="uids">sku</param>
         /// <param name="language"></param>
+        /// <param name="country"></param>
         /// <returns></returns>
-        Dictionary<string, string> GetNames(IEnumerable<string> uids, Language language);
+        Dictionary<string, string> GetNames(IEnumerable<string> uids, Language language, Country country);
 
         /// <summary>
         /// Get products weight
