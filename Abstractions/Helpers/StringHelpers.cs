@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Filuet.Infrastructure.Abstractions.Helpers
 {
@@ -42,6 +43,15 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         public static bool IsPhone(this string mobile)
             => CheckMatch(mobile, @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$");
 
+        public static string CalculateMd5Hash(this string input) {
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create()) {
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                return Convert.ToHexString(hashBytes).ToLower();
+            }
+        }
+
         public static bool IsValidJson(this string json)
         {
             try
@@ -62,5 +72,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             Regex regex = new Regex(regularExpression, RegexOptions.IgnoreCase);
             return regex.Match(source).Success;
         }
+
+
     }
 }

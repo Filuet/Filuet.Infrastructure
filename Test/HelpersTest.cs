@@ -38,5 +38,15 @@ namespace Test
             // Post-validate
             Assert.True(belongs);
         }
+
+        [Theory]
+        [InlineData("foo", "acbd18db4cc2f85cedef654fccc4a4d8")]
+        public void Test_Md5(string input, string expected) {
+            // Perform
+            string actual = input.CalculateMd5Hash();
+
+            // Post-validate
+            Assert.Equal(expected, actual);
+        }
     }
 }
