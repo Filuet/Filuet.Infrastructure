@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Filuet.Infrastructure.Abstractions.Business.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Filuet.Infrastructure.Abstractions.Helpers
@@ -52,6 +57,32 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             }
         }
 
+        public static bool IsNowWorkingHours(this string schedule) {
+            if (!schedule.IsValidJson())
+                throw new ArgumentException("Invalid schedule");
+
+            WorkingHoursSchedule workingHours = JsonSerializer.Deserialize<WorkingHoursSchedule>(schedule);
+
+            IEnumerable<WorkingHoursSlot> slots = FluentSwitch.On(DateTime.Now.DayOfWeek)
+                .Case(DayOfWeek.Monday).Then(workingHours.Monday)
+                .Case(DayOfWeek.Tuesday).Then(workingHours.Tuesday)
+                .Case(DayOfWeek.Wednesday).Then(workingHours.Wednesday)
+                .Case(DayOfWeek.Thursday).Then(workingHours.Thursday)
+                .Case(DayOfWeek.Friday).Then(workingHours.Friday)
+                .Case(DayOfWeek.Saturday).Then(workingHours.Saturday)
+                .Case(DayOfWeek.Sunday).Then(workingHours.Sunday).Default(null);
+
+            if (slots == null)
+                return false;
+
+            foreach (var slot in slots) {
+                if (DateTime.Now.Date.Add(slot.FromOfDay) <= DateTime.Now && DateTime.Now < DateTime.Now.Date.Add(slot.ToOfDay))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool IsValidJson(this string json)
         {
             try
@@ -72,7 +103,5 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             Regex regex = new Regex(regularExpression, RegexOptions.IgnoreCase);
             return regex.Match(source).Success;
         }
-
-
     }
 }
