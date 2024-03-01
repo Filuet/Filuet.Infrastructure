@@ -3,7 +3,6 @@ using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Business
@@ -13,8 +12,10 @@ namespace Filuet.Infrastructure.Abstractions.Business
         [JsonIgnore]
         public decimal Abs => Math.Abs(Value);
 
+        [JsonPropertyName("value")]
         public decimal Value { get; set; }
 
+        [JsonPropertyName("curr")]
         [JsonConverter(typeof(CurrencyJsonConverter))]
         public Currency Currency { get; set; }
 
