@@ -56,7 +56,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("id")]
         [Display(Name = "Bahasa Indonesia", Description = "idID")]
         Indonesian,
-        [Code("ge")]
+        [Code("ka")]
         [Display(Name = "ქართული", Description = "kaGE")]
         Georgian,
         [Code("km")]
