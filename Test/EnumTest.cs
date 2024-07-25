@@ -23,5 +23,10 @@ namespace Test
         {
             Assert.Equal("AZE", Country.Azerbaijan.GetDescription());
         }
+
+        [Fact]
+        public void Test_Language() {
+           Language result = EnumHelpers.TryGetValueFromCode("EN", Language.Russian);
+        }
     }
 }
