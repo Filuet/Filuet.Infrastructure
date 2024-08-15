@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Filuet.Infrastructure.Ordering.Dto
+namespace Filuet.Infrastructure.Abstractions.Dto
 {
     public class MoneyDto
     {

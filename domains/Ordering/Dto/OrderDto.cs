@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Filuet.Infrastructure.Abstractions.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
