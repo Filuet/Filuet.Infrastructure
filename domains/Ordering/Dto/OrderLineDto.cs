@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Filuet.Infrastructure.Abstractions.Dto;
+using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Ordering.Dto
 {
