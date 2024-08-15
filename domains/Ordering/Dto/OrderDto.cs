@@ -1,4 +1,4 @@
-﻿using Filuet.Infrastructure.Abstractions.Dto;
+﻿using Filuet.Infrastructure.Abstractions.Business;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -47,25 +47,25 @@ namespace Filuet.Infrastructure.Ordering.Dto
         /// <summary>
         /// Order total
         /// </summary>
-        public MoneyDto Amount { get; set; }
+        public Money Amount { get; set; }
 
         [JsonPropertyName("paid")]
         /// <summary>
         /// Paid amount
         /// </summary>
-        public MoneyDto Paid { get; set; }
+        public Money Paid { get; set; }
 
         [JsonPropertyName("change")]
         /// <summary>
         /// Change to be given
         /// </summary>
-        public MoneyDto Change { get; set; }
+        public Money Change { get; set; }
 
         [JsonPropertyName("changeGiven")]
         /// <summary>
         /// Change given amount
         /// </summary>
-        public MoneyDto ChangeGiven { get; set; }
+        public Money ChangeGiven { get; set; }
 
         [JsonPropertyName("items")]
         public IEnumerable<OrderLineDto> Items { get; set; }

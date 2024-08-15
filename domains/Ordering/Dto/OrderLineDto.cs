@@ -1,4 +1,4 @@
-﻿using Filuet.Infrastructure.Abstractions.Dto;
+﻿using Filuet.Infrastructure.Abstractions.Business;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Ordering.Dto
@@ -18,10 +18,10 @@ namespace Filuet.Infrastructure.Ordering.Dto
         /// <summary>
         /// Unit cost
         /// </summary>
-        public MoneyDto DueAmount { get; set; }
+        public Money DueAmount { get; set; }
 
         [JsonPropertyName("totalAmount")]
-        public MoneyDto TotalAmount { get; set; }
+        public Money TotalAmount { get; set; }
 
         [JsonPropertyName("points")]
         /// <summary>

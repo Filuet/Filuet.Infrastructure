@@ -19,6 +19,10 @@ namespace Filuet.Infrastructure.Abstractions.Business
         [JsonConverter(typeof(CurrencyJsonConverter))]
         public Currency Currency { get; set; }
 
+        [JsonPropertyName("currency")]
+        [JsonConverter(typeof(CurrencyJsonConverter))]
+        public Currency CurrencyAlt { set { Currency = value; } }
+
         public Money() { }
 
         public static Money Create(decimal value, Currency currency) => new Money { Value = value, Currency = currency };

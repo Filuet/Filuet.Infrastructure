@@ -1,5 +1,4 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
-using Filuet.Infrastructure.Abstractions.Dto;
 using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Helpers;
 using Filuet.Infrastructure.Ordering.Builders;
@@ -28,23 +27,23 @@ namespace Filuet.Infrastructure.Ordering.Helpers
                 Points = order.Points,
                 ExtraData = order.ExtraData,
                 Obtaining = order.Obtaining.GetCode(),
-                Amount = new MoneyDto { Value = order.Total.Value, Currency = order.Total.Currency.GetCode() },
-                Paid = new MoneyDto { Value = order.Paid.Value, Currency = order.Paid.Currency.GetCode() },
+                Amount = new Money { Value = order.Total.Value, Currency = order.Total.Currency },
+                Paid = new Money { Value = order.Paid.Value, Currency = order.Paid.Currency },
                 Items = order.Items?.Select(x => new OrderLineDto {
                     ProductUID = x.ProductUID,
                     Name = x.Name,
                     Points = x.Points,
                     Quantity = x.Quantity,
-                    DueAmount = new MoneyDto { Value = x.DueAmount.Value, Currency = x.DueAmount.Currency.GetCode() },
-                    TotalAmount = new MoneyDto { Value = x.TotalAmount.Value, Currency = x.TotalAmount.Currency.GetCode() },
+                    DueAmount = new Money { Value = x.DueAmount.Value, Currency = x.DueAmount.Currency },
+                    TotalAmount = new Money { Value = x.TotalAmount.Value, Currency = x.TotalAmount.Currency },
                 }),
                 UncollectedItems = order.UncollectedItems?.Select(x => new OrderItemDto {
                     ProductUID = x.ProductUID,
                     Quantity = x.Quantity 
                 }),
                 PaymentMethod = order.PaymentMethod?.GetCode(),
-                Change = new MoneyDto { Value = order.Change.Value, Currency = order.Change.Currency.GetCode() },
-                ChangeGiven = new MoneyDto { Value = order.ChangeGiven.Value, Currency = order.ChangeGiven.Currency.GetCode() } 
+                Change = order.Change,
+                ChangeGiven = order.ChangeGiven 
             };
 
             result.IsCrash = (result.UncollectedItems != null && result.UncollectedItems.Any()) // Not given items
@@ -56,12 +55,12 @@ namespace Filuet.Infrastructure.Ordering.Helpers
 
         public static Order ToModel(this OrderDto dto)
         {
-            Currency baseCurrency = EnumHelpers.GetValueFromCode<Currency>(dto.Amount.Currency);
-            Func<MoneyDto, Money> _withDefaultMoney = (moneyDto) => {
-                if (moneyDto == null || string.IsNullOrWhiteSpace(moneyDto.Currency))
+            Currency baseCurrency = dto.Amount.Currency;
+            Func<Money, Money> _withDefaultMoney = x => {
+                if (x == null )
                     return Money.Create(0m, baseCurrency);
 
-                return Money.Create(moneyDto.Value, EnumHelpers.GetValueFromCode<Currency>(moneyDto.Currency));
+                return x;
             };
 
             OrderBuilder b = new OrderBuilder()
