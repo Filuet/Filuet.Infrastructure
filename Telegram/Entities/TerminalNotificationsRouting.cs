@@ -31,7 +31,7 @@ namespace Filuet.Infrastructure.Telegram.Entities
         /// <summary>
         /// Email получателей уведомления через запятую
         /// </summary>
-        public ICollection<string> RecipientsCollection { get; set; }
+        public ICollection<string>? RecipientsCollection { get; set; }
         /// <summary>
         /// Username'ы в Telegram получателей уведомления через запятую
         /// </summary
