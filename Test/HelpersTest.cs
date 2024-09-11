@@ -48,5 +48,16 @@ namespace Test
             // Post-validate
             Assert.Equal(expected, actual);
         }
+
+        [Theory]
+        [InlineData("cjk sdfsf dlk", true)]
+        [InlineData("cjk sdщsf dlk", false)]
+        public void Test_IsInEnglish(string input, bool result) {
+            // Perform
+            bool fact = input.IsInEnglish();
+
+            // Post-validate
+            Assert.Equal(fact, result);
+        }
     }
 }

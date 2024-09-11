@@ -2,7 +2,7 @@
 <package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>    
     <id>Filuet.Infrastructure.Abstractions</id>
-    <version>1.0.92</version>
+    <version>1.0.93</version>
     <title>Filuet infrastructure abstractions</title>
     <authors>Igor Gutsaev</authors>
     <owners>Filuet</owners>
@@ -11,7 +11,7 @@
     <iconUrl>https://asc.filuet.com/images/errlog_dark_logo.png</iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Models and helpers</description>
-    <releaseNotes>Minor improvements + relocations</releaseNotes>
+    <releaseNotes>More string helpers</releaseNotes>
     <copyright>Copyright 2024 Filuet. Ltd.</copyright>
     <tags></tags>
   </metadata>

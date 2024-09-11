@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -47,6 +46,9 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
         public static bool IsPhone(this string mobile)
             => CheckMatch(mobile, @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$");
+
+        public static bool IsInEnglish(this string input)
+            => CheckMatch(input, @"^[a-zA-Z0-9 !""№;%:?*()_\-\\\/|+=.,<>'`~]*$");
 
         public static string CalculateMd5Hash(this string input) {
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create()) {
