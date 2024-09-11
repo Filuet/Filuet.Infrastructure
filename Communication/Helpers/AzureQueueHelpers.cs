@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Filuet.Infrastructure.Communication.Helpers
 {
-    public class AzureQueueHelper
+    public class AzureQueueHelpers
     {
         private QueueClient _queue;
         public bool IsInitialized { get; private set; }
 
-        public AzureQueueHelper() { }
+        public AzureQueueHelpers() { }
 
         public async Task InitAsync(string queueName, string storageConnectionString)
         {
