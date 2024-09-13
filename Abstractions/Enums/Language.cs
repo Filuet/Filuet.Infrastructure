@@ -73,6 +73,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Turkish,
         [Code("ja")]
         [Display(Name = "日本語", Description = "jaJP")]
-        Japanese
+        Japanese,
+        [Code("hy")]
+        [Display(Name = "Հայերեն", Description = "hyAM")]
+        Armenian
     }
 }
