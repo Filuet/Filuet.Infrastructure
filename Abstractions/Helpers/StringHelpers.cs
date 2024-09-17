@@ -1,4 +1,5 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business.Models;
+using Filuet.Infrastructure.Abstractions.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +49,22 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             => CheckMatch(mobile, @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$");
 
         public static bool IsInEnglish(this string input)
-            => CheckMatch(input, @"^[a-zA-Z0-9 !""№;%:?*()_\-\\\/|+=.,<>'`~]*$");
+            => CheckMatch(input, @"^[a-zA-Z0-9 !""№;%:?@*()_\-\\\/|+=.,<>'`~]*$");
+
+        public static Language? GetLanguage(this string input) {
+            if (input.IsInEnglish())
+                return Language.English;
+
+            // if in Russian
+            if (CheckMatch(input, @"^[а-яА-Я0-9 !""№;%:?@*()_\-\\\/|+=.,<>'`~]*$"))
+                return Language.Russian;
+
+            // Armenian
+            if (CheckMatch(input, @"^[ա-ֆԱ-Ֆ0-9 !""№;%:?@*()_\-\\\/|+=.,<>'`~]*$"))
+                return Language.Armenian;
+
+            return null;
+        }
 
         public static string CalculateMd5Hash(this string input) {
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create()) {
