@@ -78,6 +78,11 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// Deliver ZReport on button click
         /// </summary>
         [Code("ZReportDelivery")]
-        ZReportDelivery = 19
+        ZReportDelivery = 19,
+        /// <summary>
+        /// Underpayment on Change issue
+        /// </summary>
+        [Code("CashPaymentIssue")]
+        CashPaymentIssue = 20
     }
 }
