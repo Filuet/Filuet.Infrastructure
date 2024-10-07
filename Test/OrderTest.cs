@@ -38,5 +38,19 @@ namespace Test
             // Post-validate
             // Assert.Equal(expected, actual);
         }
+
+        [Theory]
+        [MemberData(nameof(TestDataGenerator.GetCashCrashOrderDTOs), MemberType = typeof(TestDataGenerator))]
+        public void Test_OrderDto_CashCrash(string dto) {
+            // Prepare
+            OrderDto orderDto = JsonSerializer.Deserialize<OrderDto>(dto);
+            // Pre-validate
+
+            // Perform
+            bool isCashCrash = orderDto.IsCashCrash();
+
+            // Post-validate
+            // Assert.Equal(expected, actual);
+        }
     }
 }

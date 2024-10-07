@@ -5,8 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Ordering.Dto
 {
-    public class OrderDto
-    {
+    public class OrderDto {
         [JsonPropertyName("isCrash")]
         public bool IsCrash { get; set; }
 
@@ -75,5 +74,8 @@ namespace Filuet.Infrastructure.Ordering.Dto
 
         [JsonPropertyName("installments")]
         public uint? Installments { get; set; }
+
+        public bool IsCashCrash() => (Change != null && ChangeGiven != Change) ||
+            Paid == null || Amount > Paid;
     }
 }
