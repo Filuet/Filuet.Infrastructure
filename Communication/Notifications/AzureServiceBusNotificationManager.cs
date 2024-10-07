@@ -1,5 +1,4 @@
 ﻿using Azure.Messaging.ServiceBus;
-using Azure.Storage.Queues;
 using Filuet.Infrastructure.Abstractions.Communication;
 using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Models;
@@ -65,27 +64,21 @@ namespace Filuet.Infrastructure.Communication.Notifications
 
         /// <inheritdoc cref="INotificationManager.AddMessageToSend(string,string)"/>
         public void AddMessageToSend(string message, string terminalId = null)
-        {
-            SendMessage(NotificationTypes.Custom, message, terminalId).Wait();
-        }
+            => SendMessage(NotificationTypes.Custom, message, terminalId).Wait();
 
         /// <inheritdoc cref="INotificationManager.AddMessageToSendAsync(string,string)"/>
         public async Task AddMessageToSendAsync(string message, string terminalId = null)
-        {
-            await SendMessage(NotificationTypes.Custom, message, terminalId).ConfigureAwait(false);
-        }
+            => await SendMessage(NotificationTypes.Custom, message, terminalId).ConfigureAwait(false);
+
 
         /// <inheritdoc cref="INotificationManager.AddMessageToSend(NotificationTypes, string,string)"/>
-        public void AddMessageToSend(NotificationTypes type, string additionalInfo, string terminalId = null)
-        {
-            SendMessage(type, additionalInfo, terminalId).Wait();
-        }
+        public void AddMessageToSend(NotificationTypes type, string message, string terminalId = null)
+            => SendMessage(type, message, terminalId).Wait();
 
         /// <inheritdoc cref="INotificationManager.AddMessageToSendAsync(NotificationTypes, string,string)"/>
-        public async Task AddMessageToSendAsync(NotificationTypes type, string additionalInfo, string terminalId = null)
-        {
-            await SendMessage(type, additionalInfo, terminalId).ConfigureAwait(false);
-        }
+        public async Task AddMessageToSendAsync(NotificationTypes type, string message, string terminalId = null)
+            => await SendMessage(type, message, terminalId).ConfigureAwait(false);
+
 
         /// <inheritdoc cref="INotificationManager.ClearLastAlert"/>
         public void ClearLastAlert()
