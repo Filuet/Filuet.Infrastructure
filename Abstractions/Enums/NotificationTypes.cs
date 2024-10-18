@@ -83,6 +83,11 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// Underpayment on Change issue
         /// </summary>
         [Code("CashPaymentIssue")]
-        CashPaymentIssue = 20
+        CashPaymentIssue = 20,
+        /// <summary>
+        /// No barcodes imported for the last N days
+        /// </summary>
+        [Code("NoBacrodesImported")]
+        NoBacrodesImported = 21
     }
 }
