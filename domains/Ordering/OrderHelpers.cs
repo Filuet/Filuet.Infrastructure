@@ -48,7 +48,7 @@ namespace Filuet.Infrastructure.Ordering.Helpers
 
             result.IsCrash = (result.UncollectedItems != null && result.UncollectedItems.Any()) // Not given items
                 || result.Paid.Value < result.Amount.Value  // Underpaid
-                || result.Change?.Value > result.ChangeGiven?.Value; // Change not given
+                || (result.Change?.Value ?? 0) > (result.ChangeGiven?.Value ?? 0); // Change not given
 
             return result;
         }
