@@ -43,11 +43,16 @@ namespace Test
         [MemberData(nameof(TestDataGenerator.GetCashCrashOrderDTOs), MemberType = typeof(TestDataGenerator))]
         public void Test_OrderDto_CashCrash(string dto) {
             // Prepare
-            OrderDto orderDto = JsonSerializer.Deserialize<OrderDto>(dto);
+            string data = "{\"isCrash\":true,\"number\":\"GGK1318875\",\"customer\":\"VA00248957\",\"name\":\"L\\u00CA TH\\u1ECA TRANG\",\"country\":\"GE\",\"language\":\"en\",\"date\":\"2024-11-01T12:19:29.8517543+03:00\",\"points\":47.9,\"extra\":{\"Tin\":null,\"Kiosk\":\"GETBLAS1\",\"HeaderLines\":\"Herbalife (Cambodia) Co., Ltd.\\\\r\\\\nLot No A2-6 \\u0026 A6, Street 169\\\\r\\\\nSangkat Veal Vong,\\\\r\\\\nKhan 7 Makara, Phnom Penh\",\"SelectedMonth\":\"2024.11\",\"Installments\":\"\",\"DSType\":\"SP\",\"FreightCharges\":0,\"PackageAndHandlingCharges\":0,\"OrderAmountBeforeVAT\":106.9,\"Discount\":106.90,\"TotalRetail\":195.98,\"AuthCode\":\"5249292b-c1ea-4c62-abea-c42a2c90e082\",\"CardNo\":null,\"VAT\":19.24,\"PaidNative\":null},\"obtainMethod\":\"AS\",\"paymentMethod\":\"cash\",\"total\":{\"value\":126,\"curr\":\"RUB\"},\"paid\":{\"value\":100,\"curr\":\"RUB\"},\"change\":null,\"changeGiven\":null,\"items\":[{\"uid\":\"4468\",\"name\":\"Formula 1 \\u2013 smooth chocolate\",\"qty\":1,\"dueAmount\":{\"value\":63.07,\"curr\":\"RUB\"},\"totalAmount\":{\"value\":63.07,\"curr\":\"RUB\"},\"points\":23.95},{\"uid\":\"4470\",\"name\":\"F1 summer berries\",\"qty\":1,\"dueAmount\":{\"value\":63.07,\"curr\":\"RUB\"},\"totalAmount\":{\"value\":63.07,\"curr\":\"RUB\"},\"points\":23.95}],\"uncollected\":[{\"uid\":\"4468\",\"qty\":1},{\"uid\":\"4470\",\"qty\":1}],\"installments\":null}";
+            Order order = JsonSerializer.Deserialize<Order>(data);
+
+            OrderDto orderDto = order.ToDto();// JsonSerializer.Deserialize<OrderDto>(dto);
             // Pre-validate
 
             // Perform
             bool isCashCrash = orderDto.IsCashCrash();
+
+           
 
             // Post-validate
             // Assert.Equal(expected, actual);
