@@ -38,7 +38,7 @@ namespace Filuet.Infrastructure.Abstractions.Business
         }
 
         public string ToString(bool useCurrencySymbol, string format = "#,##0.00")
-            => useCurrencySymbol && Currency != 0 ? $"{Currency.GetDescription()} {Value.ToString(format)}" : ToString();
+            => useCurrencySymbol && Currency != 0 ? $"{Currency.GetDescription()}{(Currency.GetDescription().Length==1 ? string.Empty : " ")}{Value.ToString(format)}" : ToString();
 
         public static Money Parse(string amount) {
             IEnumerable<Currency> symbols = EnumHelpers.GetValues<Currency>();
