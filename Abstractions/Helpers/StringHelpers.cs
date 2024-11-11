@@ -42,7 +42,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         }
 
         public static bool IsEmail(this string input)
-            => CheckMatch(input, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            => CheckMatch(input, @"^([\w\.\-]+)@([\w\-.]+)((\.(\w){2,3})+)$");
 
         public static bool IsPhone(this string mobile)
             => CheckMatch(mobile, @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$");
