@@ -48,6 +48,16 @@ namespace Test
 
             // Post-validate
             Assert.Equal(expected, actual);
+        }        
+        
+        [Theory]
+        [InlineData("e.ragone@prc.kedai.lm.lt", true)]
+        public void Test_IsEmail(string input, bool fact) {
+            // Perform
+            bool expected = input.IsEmail();
+
+            // Post-validate
+            Assert.Equal(expected, fact);
         }
     }
 }
