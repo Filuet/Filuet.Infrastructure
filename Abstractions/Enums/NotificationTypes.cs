@@ -89,5 +89,6 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// </summary>
         [Code("NoBacrodesExported")]
         NoBacrodesExported = 21
+        NoOrdersCreated = 22,
     }
 }
