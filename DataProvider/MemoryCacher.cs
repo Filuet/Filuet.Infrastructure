@@ -27,14 +27,14 @@ namespace Filuet.Infrastructure.DataProvider
 
         public T Get<T>(object key) => Cache.Get<T>(key);
 
-        public T Set<T>(object key, T value, double minDuration = 60000, bool riseEvent = true)
+        public T Set<T>(object key, T value, double minDurationMs = 60000, bool riseEvent = true)
         {
             if (value == null && riseEvent)
                 OnCacheClear.Invoke(this, new CacheClearEventArgs(key.ToString()));
 
             KeysClearTime[key.ToString()] = DateTime.Now;
 
-            return Cache.Set(key, value, new MemoryCacheEntryOptions { Size = 1000, AbsoluteExpirationRelativeToNow = TimeSpan.FromMilliseconds(minDuration) });
+            return Cache.Set(key, value, new MemoryCacheEntryOptions { Size = 1000, AbsoluteExpirationRelativeToNow = TimeSpan.FromMilliseconds(minDurationMs) });
         }
 
         public void Clear()

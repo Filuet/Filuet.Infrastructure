@@ -88,6 +88,11 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// Customer selected language
         /// </summary>
         [Code("selectedLanguage")]
-        SelectedLanguage
+        SelectedLanguage,
+        /// <summary>
+        /// Banknote rejected
+        /// </summary>
+        [Code("banknoteRejected")]
+        BanknoteRejected
     }
 }

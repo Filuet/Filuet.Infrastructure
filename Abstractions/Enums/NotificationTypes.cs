@@ -88,7 +88,16 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// No barcodes exported for the last N days
         /// </summary>
         [Code("NoBacrodesExported")]
-        NoBacrodesExported = 21
+        NoBacrodesExported = 21,
+        /// <summary>
+        /// No orders created for the last N days
+        /// </summary>
+        [Code("NoOrdersCreated")]
         NoOrdersCreated = 22,
+        /// <summary>
+        /// 2fa request
+        /// </summary>
+        [Code("F2A")]
+        F2A = 23
     }
 }
