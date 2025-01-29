@@ -21,7 +21,7 @@ namespace Filuet.Infrastructure.Abstractions.Business
 
         [JsonPropertyName("currency")]
         [JsonConverter(typeof(CurrencyJsonConverter))]
-        public Currency CurrencyAlt { set { Currency = value; } }
+        public Currency? CurrencyAlt { set { if (value.HasValue) Currency = value.Value; } }
 
         public Money() { }
 
