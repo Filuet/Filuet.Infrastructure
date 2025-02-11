@@ -42,7 +42,7 @@ namespace Filuet.Infrastructure.Abstractions.Models
 
 
         static public EventItem Info(string info, string author = null)
-            => new EventItem { Level = EventLevel.Info, LayoutMessage = info.Trim(), Timestamp = DateTime.Now, Author = author };
+            => new EventItem { Level = EventLevel.Info, LayoutMessage = info?.Trim(), Timestamp = DateTime.Now, Author = author };
 
         static public EventItem Debug(string info, string author = null)
             => new EventItem { Level = EventLevel.Debug, LayoutMessage = info.Trim(), Timestamp = DateTime.Now, Author = author };
