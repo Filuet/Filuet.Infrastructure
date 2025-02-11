@@ -36,31 +36,30 @@ namespace Filuet.Infrastructure.Abstractions.Models
         /// </summary>
         public DateTimeOffset Timestamp { get; private set; }
 
+        public string Author { get; set; }
+
         public bool IsError { get { return !string.IsNullOrWhiteSpace(ErrorMessage) || Exception != null; } }
 
 
-        static public EventItem Info(string info)
-            => new EventItem { Level = EventLevel.Info, LayoutMessage = info.Trim(), Timestamp = DateTime.Now };
+        static public EventItem Info(string info, string author = null)
+            => new EventItem { Level = EventLevel.Info, LayoutMessage = info.Trim(), Timestamp = DateTime.Now, Author = author };
 
-        static public EventItem Debug(string info)
-            => new EventItem { Level = EventLevel.Debug, LayoutMessage = info.Trim(), Timestamp = DateTime.Now };
+        static public EventItem Debug(string info, string author = null)
+            => new EventItem { Level = EventLevel.Debug, LayoutMessage = info.Trim(), Timestamp = DateTime.Now, Author = author };
 
-        static public EventItem Error(string error = "", Exception exception = null, string info = null)
-        {
+        static public EventItem Error(string error = "", Exception exception = null, string info = null, string author = null) {
             if (exception == null && error.Length == 0)
                 throw new ArgumentException("Incorrect error log arguments");
 
-            return new EventItem { Level = EventLevel.Error, ErrorMessage = error?.Trim(), LayoutMessage = info?.Trim(), Exception = exception, Timestamp = DateTime.Now };
+            return new EventItem { Level = EventLevel.Error, ErrorMessage = error?.Trim(), LayoutMessage = info?.Trim(), Exception = exception, Timestamp = DateTime.Now, Author = author };
         }
 
-        internal EventItem SetTimestamp(DateTimeOffset timestamp)
-        {
+        internal EventItem SetTimestamp(DateTimeOffset timestamp) {
             Timestamp = timestamp;
             return this;
         }
 
-        static public EventItem Create(DateTimeOffset timestamp, string info, string error, Exception exception = null)
-        {
+        static public EventItem Create(DateTimeOffset timestamp, string info, string error, Exception exception = null) {
             EventItem result = null;
 
             if (exception != null || !string.IsNullOrWhiteSpace(error))
