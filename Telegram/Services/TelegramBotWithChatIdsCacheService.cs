@@ -111,9 +111,13 @@ namespace Filuet.Infrastructure.Telegram.Services
         /// <returns>Коллекция username'ов, для которых нет chatId</returns>
         public async Task<ICollection<string>> CheckChatIdsExistAsync(ICollection<string> usernamesToCheck) {
             ICollection<TelegramBotChatLink> chatLinks = await BotChatLinksCacheRepository.GetRangeAsync(usernamesToCheck).ConfigureAwait(false);
-            IEnumerable<string> usernamesNoChatIds = usernamesToCheck.Where(x => !chatLinks.Any(y => y.Username == x));
-            if (chatLinks != null)
+            IEnumerable<string> usernamesNoChatIds = new List<string>();
+
+            if (chatLinks != null) {
+                usernamesToCheck.Where(x => !chatLinks.Any(y => y.Username == x));
                 usernamesNoChatIds = usernamesNoChatIds.Union(chatLinks.Where(x => x.ChatId == 0).Select(x => x.Username));
+            }
+
             List<string> result = new List<string>();
 
             foreach (string usernameWoChatId in usernamesNoChatIds) {
