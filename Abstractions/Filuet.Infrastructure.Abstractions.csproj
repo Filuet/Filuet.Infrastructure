@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-	<PackageVersion>1.0.110</PackageVersion>
+	<PackageVersion>1.0.113</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
