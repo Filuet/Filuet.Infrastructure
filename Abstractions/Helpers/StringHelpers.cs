@@ -1,7 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business.Models;
 using Filuet.Infrastructure.Abstractions.Enums;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -11,6 +10,11 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 {
     public static class StringHelpers
     {
+        const string GUID_PATTERN = @"^[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$";
+        const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-.]+)((\.(\w){2,3})+)$";
+        const string PHONE_PATTERN = @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$";
+        const string ENGLISH_PATTERN = @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
+
         public static string GetPaymentSystem(this string cardNumber) {
             Regex regexVI = new Regex(@"^4");
             Regex regexMC = new Regex(@"^(5[1-5]|(?:222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))");
@@ -38,17 +42,17 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             if (string.IsNullOrWhiteSpace(source) || source.Length < 32)
                 return false;
 
-            return CheckMatch(source, @"^[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$");
+            return CheckMatch(source, GUID_PATTERN);
         }
 
         public static bool IsEmail(this string input)
-            => CheckMatch(input, @"^([\w\.\-]+)@([\w\-.]+)((\.(\w){2,3})+)$");
+            => CheckMatch(input, EMAIL_PATTERN);
 
         public static bool IsPhone(this string mobile)
-            => CheckMatch(mobile, @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$");
+            => CheckMatch(mobile, PHONE_PATTERN);
 
         public static bool IsInEnglish(this string input)
-            => CheckMatch(input, @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$");
+            => CheckMatch(input, ENGLISH_PATTERN);
 
         public static Language? GetLanguage(this string input) {
             if (string.IsNullOrWhiteSpace(input))
