@@ -18,7 +18,7 @@ namespace Filuet.Infrastructure.DataProvider
         {
             List<TEntity> result = new List<TEntity>();
             foreach (var entity in entities)
-                result.Add(this.Add(entity));
+                result.Add(Add(entity));
 
             return result;
         }
@@ -30,17 +30,15 @@ namespace Filuet.Infrastructure.DataProvider
             => Task.FromResult(Add(entity));
 
         public void Delete(TEntity entity)
-        {
-            _store.TryRemove(entity.ID, out _);
-        }
+            => _store.TryRemove(entity.ID, out _);
 
         public async Task DeleteAsync(TEntity entity)
-        {
-            Delete(entity);
-        }
-
+            => Delete(entity);
+        
         public Task DeleteAsync(ICollection<TEntity> entities)
-        {
+            => throw new NotImplementedException();
+
+        public void Dispose() {
             throw new NotImplementedException();
         }
 
@@ -80,9 +78,7 @@ namespace Filuet.Infrastructure.DataProvider
             => Modify(entity);
 
         public void Restore(TEntity entity)
-        {
-            Restore(entity);
-        }
+            => Restore(entity);
 
         public TEntity Update(TEntity entity)
             => Modify(entity);
@@ -91,8 +87,6 @@ namespace Filuet.Infrastructure.DataProvider
             => Task.FromResult(Update(entity));
 
         public Task<ICollection<TEntity>> UpdateScopeAsync(ICollection<TEntity> entities)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
     }
 }

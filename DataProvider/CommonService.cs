@@ -7,22 +7,18 @@ namespace Filuet.Infrastructure.DataProvider
     {
         protected TUnitOfWork _uow;
 
-        public TUnitOfWork UnitOfWork { get { return _uow; } }
+        public TUnitOfWork UnitOfWork => _uow;
 
         public CommonService(TUnitOfWork uow)
-            : base()
-        {
+            : base() {
             _uow = uow;
         }
 
         public void SaveChanges()
-        {
-            UnitOfWork.SaveChanges();
-        }
+            => UnitOfWork.SaveChanges();
+
 
         public virtual void Dispose()
-        {
-            UnitOfWork.Dispose();
-        }
+            => UnitOfWork.Dispose();
     }
 }

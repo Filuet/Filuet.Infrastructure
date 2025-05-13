@@ -48,11 +48,8 @@ namespace Filuet.Infrastructure.DataProvider
          where TDbContext : DbContext, new()
          where TEntity : Entity<TKey>
     {
-        protected override IQueryable<TEntity> QueryTracking
-        { get { return this.GetQuery(false, false); } }
-
-        protected override IQueryable<TEntity> QueryUntracking
-        { get { return this.GetQuery(true, false); } }
+        protected override IQueryable<TEntity> QueryTracking => GetQuery(false, false);
+        protected override IQueryable<TEntity> QueryUntracking => GetQuery(true, false);
 
         public BaseModelRepository(TDbContext context)
             : base(context) { }

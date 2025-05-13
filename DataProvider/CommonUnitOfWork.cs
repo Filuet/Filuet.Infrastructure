@@ -29,59 +29,40 @@ namespace Filuet.Infrastructure.DataProvider
             }
         }
 
-        public CommonUnitOfWork(IServiceProvider provider)
-        {
+        public CommonUnitOfWork(IServiceProvider provider) {
             _repositories = new Dictionary<Type, IRepository>();
             _provider = provider;
         }
 
-        protected virtual ICollection<DbContext> GetAllContexts()
-        { return new DbContext[] { this.Context }; }
-
         public virtual void SaveChanges()
-        {
-            foreach (var context in this.GetAllContexts())
-                context.SaveChanges();
-        }
+            => _dbContext.SaveChanges();
 
         public virtual void Dispose()
-        {
-        //    foreach (var context in this.GetAllContexts())
-        //        context.Dispose();
-        }
+            => _dbContext.Dispose();
 
         public virtual T GetRepository<T>() where T : IRepository
-        {
-            return _provider.GetRequiredService<T>();
-        }
+            => _provider.GetRequiredService<T>();
 
-        public void TransactionBegin(IsolationLevel isolationLevel = IsolationLevel.Serializable)
-        {
+        public void TransactionBegin(IsolationLevel isolationLevel = IsolationLevel.Serializable) {
             if (_transactions != null && _transactions.Count > 0)
                 throw new Exception("Unable to duplicate transactions!");
 
             _transactions = new List<IDbContextTransaction>();
-            foreach (var context in GetAllContexts())
-            {
-                var transaction = context.Database.BeginTransaction();
-                _transactions.Add(transaction);
-            }
+
+            var transaction = _dbContext.Database.BeginTransaction();
+            _transactions.Add(transaction);
         }
 
-        public void TransactionCommit()
-        {
-            foreach (var transaction in _transactions)
-            {
+        public void TransactionCommit() {
+            foreach (var transaction in _transactions) {
                 transaction.Commit();
                 transaction.Dispose();
             }
             _transactions = null;
         }
 
-        public void TransactionRollback()
-        {
-            foreach (var transaction in _transactions)
-            {
+        public void TransactionRollback() {
+            foreach (var transaction in _transactions) {
                 transaction.Rollback();
                 transaction.Dispose();
             }
