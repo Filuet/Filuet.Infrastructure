@@ -1,9 +1,7 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
 using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Helpers;
-using System.Collections;
 using System.Collections.Generic;
-using System.Formats.Tar;
 using Xunit;
 
 namespace Test
@@ -19,7 +17,6 @@ namespace Test
             Money money = Money.Create(value, currency);
 
             // Pre-validate
-
 
             // Perform
             string actual = money.ToString(true);
