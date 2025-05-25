@@ -1,4 +1,5 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business.Models;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -24,6 +25,35 @@ namespace Test
             // Post-validate
             Assert.Equal(Cart.Create(missing), Cart.Create(missingFact));
             Assert.Equal(Cart.Create(redundant), Cart.Create(redundantFact));
+        }
+
+        [Fact]
+        public void Test_Cart_additional_params() {
+            // Prepare
+            Cart cart = new Cart();
+            cart.AdditionalParams.Add("date", DateTime.UtcNow);
+
+            // Pre-validate
+            Assert.NotNull(cart);
+
+            // Perform
+            DateTime date = cart.GetParam<DateTime>("date");
+
+            // Post-validate
+        }
+
+        [Fact]
+        public void Test_Cart_add_additional_param() {
+            // Prepare
+            Cart cart = new Cart();
+
+            // Pre-validate
+            Assert.NotNull(cart);
+
+            // Perform
+            cart.AddParam("date", DateTime.UtcNow);
+
+            // Post-validate
         }
     }
 }

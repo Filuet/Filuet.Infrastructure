@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -13,8 +14,23 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("items")]
         public IEnumerable<CartItem> Items { get; set; }
 
-        public static Cart Create(IEnumerable<CartItem> items)
-            => new Cart { Items = items };
+        /// <summary>
+        /// Additional parameters that take participation in calculation process
+        /// </summary>
+        /// <example>HLF: kiosk mode, month (in case of dual month period), consumption type...</example>
+        [JsonPropertyName("additionalParams")]
+        public Dictionary<string, object> AdditionalParams { get; set; } = new Dictionary<string, object>();
+
+        public static Cart Create(IEnumerable<CartItem> items, Dictionary<string, object> additionalParams = null)
+            => new Cart { Items = items, AdditionalParams = additionalParams };
+
+        public T GetParam<T>(string key)
+           => AdditionalParams.ContainsKey(key) ? (T)AdditionalParams[key] : default;
+
+        public Cart AddParam(string key, object value) {
+            AdditionalParams.TryAdd(key, value);
+            return this;
+        }
 
         public override bool Equals(object obj) {
             if (!(obj is Cart))
