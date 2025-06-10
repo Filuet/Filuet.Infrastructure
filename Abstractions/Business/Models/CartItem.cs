@@ -6,9 +6,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     public class CartItem
     {
         [JsonPropertyName("sku")]
-        public string Sku { get; private set; }
+        public string Sku { get; set; }
         [JsonPropertyName("qty")]
-        public int Quantity { get; private set; }
+        public int Quantity { get; set; }
 
         public static CartItem Create(string sku, int quantity) {
             if (string.IsNullOrWhiteSpace(sku) || sku.Trim().Length < 3)
