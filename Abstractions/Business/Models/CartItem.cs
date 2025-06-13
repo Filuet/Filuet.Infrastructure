@@ -21,6 +21,6 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         }
 
         public override string ToString()
-            => $"{Sku} x{Quantity}";
+            => $"{Sku ?? "<null>"} x{Quantity}";
     }
 }
