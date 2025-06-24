@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -9,8 +8,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     /// <summary>
     /// Shopping cart
     /// </summary>
-    public class Cart
-    {
+    public class Cart {
         [JsonPropertyName("items")]
         public IEnumerable<CartItem> Items { get; set; }
 
@@ -20,6 +18,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// <example>HLF: kiosk mode, month (in case of dual month period), consumption type...</example>
         [JsonPropertyName("additionalParams")]
         public Dictionary<string, object> AdditionalParams { get; set; } = new Dictionary<string, object>();
+
+        public bool IsEmpty
+            => Items == null || !Items.Any() || !Items.Any(x => x.Quantity > 0);
 
         public static Cart Create(IEnumerable<CartItem> items, Dictionary<string, object> additionalParams = null)
             => new Cart { Items = items, AdditionalParams = additionalParams };
@@ -52,7 +53,6 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public static bool operator ==(Cart lhs, Cart rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(Cart lhs, Cart rhs) => !(lhs == rhs);
-
 
         /// <summary>
         /// 
@@ -87,6 +87,16 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
             }
 
             return (toAdd, toRemove);
+        }
+
+        public IEnumerable<string> Skus
+            => Items.Select(x => x.Sku).Distinct().OrderBy(x => x); // Distinct is here JIC
+
+        public void Exclude(IEnumerable<string> skus) {
+            if (skus == null || !skus.Any())
+                return;
+
+            Items = Items.Where(x => !skus.Contains(x.Sku?.Trim()));
         }
     }
 }

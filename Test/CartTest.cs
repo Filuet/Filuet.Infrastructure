@@ -1,6 +1,10 @@
-﻿using Filuet.Infrastructure.Abstractions.Business.Models;
+﻿using Filuet.Infrastructure.Abstractions.Business;
+using Filuet.Infrastructure.Abstractions.Business.Models;
+using Filuet.Infrastructure.Abstractions.Enums;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Xunit;
 
 namespace Test
@@ -52,6 +56,28 @@ namespace Test
 
             // Perform
             cart.AddParam("date", DateTime.UtcNow);
+
+            // Post-validate
+        }
+
+        [Theory]
+        [InlineData("{\"items\":[{\"sku\":\"4467\",\"qty\":1}],\"additionalParams\":{\"additionalProp1\":\"string\",\"additionalProp2\":\"string\",\"additionalProp3\":\"string\"}}")]
+        public void Test_Cart_deserialization(string payload) {
+            Cart cart = JsonSerializer.Deserialize<Cart>(payload);
+        }
+
+        [Fact]
+        public void Test_CostCalculationTotal_serialization() {
+            // Prepare
+            CostCalculationTotal cartCalc = new CostCalculationTotal {
+                Items = [new CostCalculation{ Sku ="4466", Total = Money.Create(1, Currency.Euro)}]
+            };
+
+            // Pre-validate
+            Assert.NotNull(cartCalc);
+
+            // Perform
+            string result = JsonSerializer.Serialize(cartCalc);
 
             // Post-validate
         }
