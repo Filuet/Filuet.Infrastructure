@@ -160,6 +160,9 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return false;
         }
 
+        public static string RemoveHtmlTags(this string html)
+            => Regex.Replace(html, @"<[^>]+>|&nbsp;", string.Empty);
+
         private static bool CheckMatch(string source, string regularExpression) {
             if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(regularExpression))
                 return false;

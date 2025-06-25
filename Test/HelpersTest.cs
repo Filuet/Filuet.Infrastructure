@@ -59,5 +59,15 @@ namespace Test
             // Post-validate
             Assert.Equal(expected, fact);
         }
+
+        [Theory]
+        [InlineData("<p>h</p>e<br>l<br />l<br/>o</br>, </ br>Wo<div>r<img source=\"foo.png\">l</html>d!", "hello, World!")]
+        public void Test_Remove_html_tags(string input, string expected) {
+            // Perform
+            string fact = input.RemoveHtmlTags();
+
+            // Post-validate
+            Assert.Equal(expected, fact);
+        }
     }
 }
