@@ -58,6 +58,10 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         Euro = 978,
         [Code("GEL")]
         [Description("₾")]
-        GeorgianLari = 981
+        GeorgianLari = 981,
+        [Code("MYR")]
+        [Description("RM")]
+        MalaysianRinggit = 458
+
     }
 }

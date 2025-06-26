@@ -167,5 +167,12 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             Regex regex = new Regex(regularExpression, RegexOptions.IgnoreCase);
             return regex.Match(source).Success;
         }
+
+        public static string ToFineSku(this string sku) {
+            if (string.IsNullOrWhiteSpace(sku))
+                throw new ArgumentException("Sku is mandatory");
+
+            return sku.Trim().ToUpper();
+        }
     }
 }

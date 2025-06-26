@@ -9,30 +9,28 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     {
         [JsonPropertyName("sku")]
         public string Sku { get; set; }
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
         /// <summary>
         /// Weight in gramms
         /// </summary>
         [JsonPropertyName("weight")]
         public int Weight { get; set; } = 0;
-        [JsonPropertyName("desc")]
-        public string Description { get; set; } = string.Empty;
         [JsonPropertyName("loc")]
         public List<ProductLocalization> Localization { get; set; }
         [JsonPropertyName("price")]
         public Money Price { get; set; }
-        [JsonPropertyName("category")]
-        public string Category { get; set; }
         /// <summary>
         /// Additional parameters that take participation in ordering process
         /// </summary>
         /// <example>HLF: vp, product type</example>
         [JsonPropertyName("additionalParams")]
-        public Dictionary<string, object> AdditionalParams { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
 
         public ProductLocalization this[Language language]
             => Localization.FirstOrDefault(x => x.Language == language)
-                ?? new ProductLocalization { Name = Name, Description = Description, Language = Language.English };
+                ?? new ProductLocalization {
+                    Name = Sku,
+                    Description = string.Empty,
+                    Language = Language.English
+                };
     }
 }

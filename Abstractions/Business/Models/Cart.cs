@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Filuet.Infrastructure.Abstractions.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -17,19 +18,23 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// </summary>
         /// <example>HLF: kiosk mode, month (in case of dual month period), consumption type...</example>
         [JsonPropertyName("additionalParams")]
-        public Dictionary<string, object> AdditionalParams { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
 
+        public CartItem this[string sku]
+          => Items.FirstOrDefault(x => x.Sku == sku.ToFineSku());
+
+        [JsonIgnore]
         public bool IsEmpty
             => Items == null || !Items.Any() || !Items.Any(x => x.Quantity > 0);
 
-        public static Cart Create(IEnumerable<CartItem> items, Dictionary<string, object> additionalParams = null)
+        public static Cart Create(IEnumerable<CartItem> items, Dictionary<string, string> additionalParams = null)
             => new Cart { Items = items, AdditionalParams = additionalParams };
 
-        public T GetParam<T>(string key)
-           => AdditionalParams.ContainsKey(key) ? (T)AdditionalParams[key] : default;
+        public string GetParam(string key)
+           => AdditionalParams.ContainsKey(key) ? AdditionalParams[key] : null;
 
         public Cart AddParam(string key, object value) {
-            AdditionalParams.TryAdd(key, value);
+            AdditionalParams.TryAdd(key, value.ToString());
             return this;
         }
 
@@ -53,6 +58,32 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public static bool operator ==(Cart lhs, Cart rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(Cart lhs, Cart rhs) => !(lhs == rhs);
+
+        public static Cart operator +(Cart cart, CartItem item) {
+            Func<CartItem, bool> p = x => string.Equals(x.Sku, item.Sku.ToFineSku(), StringComparison.InvariantCultureIgnoreCase);
+            if (cart.Items.Any(p))
+                cart.Items.FirstOrDefault(p).Quantity += item.Quantity;
+            else {
+                var newCartItems = cart.Items.ToList();
+                newCartItems.Add(item);
+                cart.Items = newCartItems;
+            }
+
+            return cart;
+        }
+
+        public static Cart operator -(Cart cart, CartItem item) {
+            Func<CartItem, bool> p = x => string.Equals(x.Sku, item.Sku.ToFineSku(), StringComparison.InvariantCultureIgnoreCase);
+            Func<CartItem, bool> rp = x => !string.Equals(x.Sku, item.Sku.ToFineSku(), StringComparison.InvariantCultureIgnoreCase);
+
+            if (cart.Items.Any(p)) {
+                if (Math.Max(0, cart.Items.FirstOrDefault(p).Quantity - item.Quantity) == 0)
+                    cart.Items = cart.Items.Where(rp);
+                else cart.Items.FirstOrDefault(p).Quantity = Math.Max(0, cart.Items.FirstOrDefault(p).Quantity - item.Quantity);
+            }
+
+            return cart;
+        }
 
         /// <summary>
         /// 
@@ -89,6 +120,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
             return (toAdd, toRemove);
         }
 
+        [JsonIgnore]
         public IEnumerable<string> Skus
             => Items.Select(x => x.Sku).Distinct().OrderBy(x => x); // Distinct is here JIC
 

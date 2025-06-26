@@ -40,6 +40,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// </summary>
         [JsonPropertyName("identifier")]
         public string Identifier { get; set; }
+        [JsonPropertyName("comment")]
+        public string Comment { get; set; }
+
         /// <summary>
         /// Date and time of the calculation, UTC
         /// </summary>
@@ -82,6 +85,6 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// <example>HLF: kiosk mode, month (in case of dual month period), consumption type...</example>
         [JsonPropertyName("additionalParams")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Dictionary<string, object> AdditionalParams { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
     }
 }
