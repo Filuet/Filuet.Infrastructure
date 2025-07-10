@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Business.Models
 {
-    public class Order
+    public class OrderImage
     {
         [JsonPropertyName("number")]
-        public int Number { get; set; }
+        public string Number { get; set; }
         [JsonPropertyName("date")]
         public DateTime Date { get; set; }
         [JsonPropertyName("status")]

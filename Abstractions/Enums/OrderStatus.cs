@@ -3,11 +3,26 @@ using System.ComponentModel;
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    public enum OrderStatus
+    public enum OrderStatus : int
     {
         [Code("Created")]
         [Description("Created")]
-        Created,
+        Created = 0x01,
+        [Code("Created")]
+        [Description("Processing")]
+        Processing,
+        [Code("Completed")]
+        [Description("Completed")]
+        Completed,
+        [Code("Cancelled")]
+        [Description("Cancelled")]
+        Cancelled,
+        [Code("PreOrder")]
+        [Description("Pre-ordered")]
+        PreOrder,
+        [Code("Scanned")]
+        [Description("Scanned")]
+        Scanned,
         [Code("WaitPayment")]
         [Description("Waiting for payment")]
         WaitingForPayment,
@@ -25,9 +40,6 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         AwaitingToBeReceived,
         [Code("Received")]
         [Description("Received")]
-        Received,
-        [Code("Cancelled")]
-        [Description("Cancelled")]
-        Cancelled
+        Received
     }
 }
