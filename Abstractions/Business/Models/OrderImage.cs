@@ -27,5 +27,8 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("additionalParams")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
+
+        public override string ToString()
+            => Number;
     }
 }

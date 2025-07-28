@@ -8,7 +8,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("Created")]
         [Description("Created")]
         Created = 0x01,
-        [Code("Created")]
+        [Code("Processing")]
         [Description("Processing")]
         Processing,
         [Code("Completed")]
