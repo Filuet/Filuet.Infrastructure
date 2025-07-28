@@ -27,6 +27,14 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("vat")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Money Vat { get; set; }
+
+        /// <summary>
+        /// Additional parameters that take participation in calculation process
+        /// </summary>
+        /// <example>HLF: kiosk mode, month (in case of dual month period), consumption type...</example>
+        [JsonPropertyName("additionalParams")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
     }
 
     /// <summary>
