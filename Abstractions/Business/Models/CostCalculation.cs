@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Business.Models
@@ -48,6 +49,11 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// </summary>
         [JsonPropertyName("identifier")]
         public string Identifier { get; set; }
+        /// <summary>
+        /// Customer identifier
+        /// </summary>
+        [JsonPropertyName("customer")]
+        public string Customer { get; set; }
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
 
@@ -94,5 +100,11 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("additionalParams")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
+
+        public Cart ToCart()
+            => new Cart {
+                Items = Items.Select(x => new CartItem { Sku = x.Sku, Quantity = x.Quantity }),
+                AdditionalParams = AdditionalParams
+            };
     }
 }
