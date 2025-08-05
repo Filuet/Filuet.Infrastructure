@@ -177,5 +177,19 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
             return sku.Trim().ToUpper();
         }
+
+        public static string Capitalize(this string input) {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return input.First().ToString().ToUpper() + input.Substring(1);
+        }
+
+        public static string Camelize(this string input) {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return input.First().ToString().ToLower() + input.Substring(1);
+        }
     }
 }

@@ -5,6 +5,9 @@ namespace Filuet.Infrastructure.Abstractions.Enums
 {
     public enum AscKioskMode : int
     {
+        [Code("INTERNET")]
+        [Description("INTERNET")]
+        INTERNET = 0x00,
         [Code("AA")]
         [Description("AUTOATTENDANT")]
         AA = 0x01,
