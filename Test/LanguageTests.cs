@@ -24,6 +24,7 @@ namespace Test
         [InlineData("შეუკვეთე ალოე", null)] // GetLanguage function don't know Georgian yet 
         [InlineData("закажи 2x NRG и Roseguard", Language.Russian)]
         [InlineData("Պատվիրեք 1 Roseguard", Language.Armenian)]
+        [InlineData("doties uz grozu", Language.Latvian)]
         public void Test_GetLanguage(string input, Language? actual) {
             // Perform
             Language? fact = input.GetLanguage();
