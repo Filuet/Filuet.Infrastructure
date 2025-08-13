@@ -19,6 +19,8 @@ namespace Test
         }
 
         [Theory]
+        [InlineData("38008946", null)]
+        [InlineData("igor.gutsaev@filuet.com", null)]
         [InlineData("закажи его и ещё 5 NRG", Language.Russian)]
         [InlineData("order Aloe", Language.English)]
         [InlineData("შეუკვეთე ალოე", null)] // GetLanguage function don't know Georgian yet 

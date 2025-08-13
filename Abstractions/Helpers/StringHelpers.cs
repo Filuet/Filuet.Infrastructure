@@ -58,6 +58,12 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             if (string.IsNullOrWhiteSpace(input))
                 return null;
 
+            if(CheckMatch(input, @"^[0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+                return null;
+
+            if (input.IsEmail() || input.IsGuid() || input.IsMacAddress())
+                return null;
+
             // input contains only English, digits and special symbols
             if (input.IsInEnglish())
                 return Language.English;
