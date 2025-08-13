@@ -15,6 +15,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         const string PHONE_PATTERN = @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$";
         const string ENGLISH_PATTERN = @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
 
+
         public static string GetPaymentSystem(this string cardNumber) {
             Regex regexVI = new Regex(@"^4");
             Regex regexMC = new Regex(@"^(5[1-5]|(?:222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))");
@@ -65,8 +66,22 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
                 return null;
 
             // input contains only English, digits and special symbols
-            if (input.IsInEnglish())
+            if (input.IsInEnglish()) {
+                // let's test if it is Latvian JIC
+                if (!input.Any(x => LatvianHelper.NotLatvianSymbols.Contains(x))) { // no not latvian symbols detected
+                    // let's try luck with conjunctions and prepositions
+                    string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    if (words.Any(x => LatvianHelper.LatvianConjunctions.Contains(x.ToLower()) || LatvianHelper.LatvianPrepositions.Contains(x.ToLower()))) {
+                        return Language.Latvian; // It must be Latvian after all
+                    }
+                }
+
                 return Language.English;
+            }
+
+            // if Latvian letters only, digits and special symbols
+            if (CheckMatch(input, @"^[a-zA-ZāčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+                return Language.Latvian;
 
             // if Russian letters only, digits and special symbols
             if (CheckMatch(input, @"^[а-яА-Я0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
@@ -182,6 +197,20 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
                 throw new ArgumentException("Sku is mandatory");
 
             return sku.Trim().ToUpper();
+        }
+
+        public static string Capitalize(this string input) {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return input.First().ToString().ToUpper() + input.Substring(1);
+        }
+
+        public static string Camelize(this string input) {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return input.First().ToString().ToLower() + input.Substring(1);
         }
     }
 }
