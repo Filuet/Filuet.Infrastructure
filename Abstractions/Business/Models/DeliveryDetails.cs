@@ -10,6 +10,11 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public string MobileNumber { get; set; }
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
+        /// <summary>
+        /// Deliver paper invoice with the parcel
+        /// </summary>
+        [JsonPropertyName("invoice")]
+        public bool Invoice { get; set; }
 
         public override string ToString()
             => $"{Address} {MobileNumber} {Comment}";
