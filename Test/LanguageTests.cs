@@ -34,5 +34,13 @@ namespace Test
             // Post-validate
             Assert.Equal(fact, actual);
         }
+
+        [Theory]
+        [InlineData("ЕЛЕНА ХОЛОХОН", "ELENA KHOLOKHON")]
+        [InlineData("Елена Холохон", "Elena Kholokhon")]
+        public void Test_Latinize(string source, string expected) {
+            string actual = source.Latinize();
+            Assert.Equal(expected, actual);
+        }
     }
 }

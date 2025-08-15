@@ -15,7 +15,6 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         const string PHONE_PATTERN = @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$";
         const string ENGLISH_PATTERN = @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
 
-
         public static string GetPaymentSystem(this string cardNumber) {
             Regex regexVI = new Regex(@"^4");
             Regex regexMC = new Regex(@"^(5[1-5]|(?:222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))");
@@ -211,6 +210,20 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
                 return input;
 
             return input.First().ToString().ToLower() + input.Substring(1);
+        }
+
+        public static string Latinize(this string message) {
+            bool capitalized = message == message.ToUpper();
+
+            string[] lat_up = { "A", "B", "V", "G", "D", "E", "Yo", "Zh", "Z", "I", "Y", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "F", "Kh", "Ts", "Ch", "Sh", "Shch", "\"", "Y", "'", "E", "Yu", "Ya" };
+            string[] lat_low = { "a", "b", "v", "g", "d", "e", "yo", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "kh", "ts", "ch", "sh", "shch", "\"", "y", "'", "e", "yu", "ya" };
+            string[] cyr_up = { "А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я" };
+            string[] cyr_low = { "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я" };
+            for (int i = 0; i <= 32; i++) {
+                message = message.Replace(cyr_up[i], capitalized ? lat_up[i].ToUpper() : lat_up[i]);
+                message = message.Replace(cyr_low[i], lat_low[i]);
+            }
+            return message;
         }
     }
 }
