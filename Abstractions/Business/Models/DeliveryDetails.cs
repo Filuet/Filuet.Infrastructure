@@ -17,7 +17,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public bool Invoice { get; set; }
 
         public bool IsSufficient
-            => Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber);
+            => Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber) && MobileNumber.Trim().Length >= 8;
 
         public override string ToString()
             => $"{Address} {MobileNumber} {Comment}";

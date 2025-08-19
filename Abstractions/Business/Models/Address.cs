@@ -18,9 +18,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public string AddressLine { get; set; }
 
         public bool IsSufficient
-            => !string.IsNullOrWhiteSpace(PostCode) &&
-            !string.IsNullOrWhiteSpace(City) &&
-            !string.IsNullOrWhiteSpace(AddressLine);
+            => !string.IsNullOrWhiteSpace(PostCode) && PostCode.Trim().Length >= 4 &&
+            !string.IsNullOrWhiteSpace(City) && City.Trim().Length >= 2 &&
+            !string.IsNullOrWhiteSpace(AddressLine) && AddressLine.Trim().Length >= 4;
 
         public override string ToString()
             => $"{PostCode} {Country} {City} {AddressLine}".Trim();
