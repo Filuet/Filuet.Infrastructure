@@ -17,6 +17,11 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// </summary>
         public string AddressLine { get; set; }
 
+        public bool IsSufficient
+            => !string.IsNullOrWhiteSpace(PostCode) &&
+            !string.IsNullOrWhiteSpace(City) &&
+            !string.IsNullOrWhiteSpace(AddressLine);
+
         public override string ToString()
             => $"{PostCode} {Country} {City} {AddressLine}".Trim();
     }

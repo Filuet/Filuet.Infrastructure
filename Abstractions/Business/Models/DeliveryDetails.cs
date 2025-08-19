@@ -16,6 +16,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("invoice")]
         public bool Invoice { get; set; }
 
+        public bool IsSufficient
+            => Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber);
+
         public override string ToString()
             => $"{Address} {MobileNumber} {Comment}";
     }
