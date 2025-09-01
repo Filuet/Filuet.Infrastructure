@@ -32,5 +32,8 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
                     Description = string.Empty,
                     Language = Language.English
                 };
+
+        public override string ToString()
+            => $"{Sku} {Price}";
     }
 }

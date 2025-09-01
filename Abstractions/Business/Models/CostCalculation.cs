@@ -100,6 +100,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("additionalParams")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
+        [JsonPropertyName("products")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public IEnumerable<Product> Products { get; set; }
 
         public Cart ToCart()
             => new Cart {
