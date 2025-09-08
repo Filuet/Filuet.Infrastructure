@@ -20,6 +20,13 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public BotChannel Channel { get; set; }
         [JsonPropertyName("customerUid")]
         public string CustomerUid { get; set; }
+        /// <summary>
+        /// Language of the current request
+        /// </summary>
+        [JsonIgnore]
+        public Language InqueryLanguage { get; set; }
+        [JsonIgnore]
+        public Language ReplyLanguage => Language ?? InqueryLanguage;
 
         public override string ToString()
             => $"{Channel.GetCode()} {Name} {Id}";

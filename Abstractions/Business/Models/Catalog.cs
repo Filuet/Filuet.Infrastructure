@@ -21,4 +21,21 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public bool IsEmpty 
             => !Categories.Any(x => x.Products.Any()); 
     }
+
+    public class ProductSkuName
+    {
+        [JsonPropertyName("sku")]
+        public string Sku { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+    }
+
+    public class ProductSkuNames {
+        [JsonPropertyName("sku")]
+        public string Sku { get; set; }
+
+        [JsonPropertyName("names")]
+        public IEnumerable<string> Names { get; set; }
+    }
 }

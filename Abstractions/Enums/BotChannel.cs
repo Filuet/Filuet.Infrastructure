@@ -11,6 +11,8 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("msteams")]
         Teams,
         [Code("telegram")]
-        Telegram
+        Telegram,
+        [Code("webchat")]
+        Webchat
     }
 }
