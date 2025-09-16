@@ -8,9 +8,19 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     {
         [JsonPropertyName("type")]
         public ShippingType Type { get; set; } = ShippingType.CourierDelivery;
+        [JsonPropertyName("storeCode")]
         public string StoreCode { get; set; }
+        [JsonPropertyName("pickUpPointCode")]
         public string PickUpPointCode { get; set; }
-        public DeliveryDetails Delivery { get; set; }
+        [JsonPropertyName("delivery")]
+        public DeliveryDetails Delivery { get; set; } = new DeliveryDetails();
+        [JsonIgnore]
+        public string Tag
+            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(ShippingType.CourierDelivery.GetCode())
+                .Case(ShippingType.Store).Then($"{ShippingType.Store.GetCode()}:{StoreCode}")
+                .Case(ShippingType.PickUpPoint).Then($"{ShippingType.PickUpPoint.GetCode()}:{PickUpPointCode}")
+                .Default(null);
+        [JsonIgnore]
         public bool IsSufficient
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.IsSufficient).
             Case(ShippingType.Store).Then(!string.IsNullOrWhiteSpace(StoreCode)).
