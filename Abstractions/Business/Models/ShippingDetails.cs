@@ -11,6 +11,10 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public string StoreCode { get; set; }
         public string PickUpPointCode { get; set; }
         public DeliveryDetails Delivery { get; set; }
+        public bool IsSufficient
+            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.IsSufficient).
+            Case(ShippingType.Store).Then(!string.IsNullOrWhiteSpace(StoreCode)).
+            Case(ShippingType.PickUpPoint).Then(!string.IsNullOrWhiteSpace(PickUpPointCode)).Default(false);
 
         public override string ToString()
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.ToString()).
