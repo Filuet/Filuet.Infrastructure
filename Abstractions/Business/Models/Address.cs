@@ -16,7 +16,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// Victorenko st, 14-23
         /// </summary>
         public string AddressLine { get; set; }
-
+        [JsonIgnore]
         public bool IsSufficient
             => !string.IsNullOrWhiteSpace(PostCode) && PostCode.Trim().Length >= 4 &&
             !string.IsNullOrWhiteSpace(City) && City.Trim().Length >= 2 &&
