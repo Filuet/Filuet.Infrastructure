@@ -6,6 +6,11 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     {
         [JsonPropertyName("address")]
         public Address Address { get; set; }
+        /// <summary>
+        /// Recipient name
+        /// </summary>
+        [JsonPropertyName("recipient")]
+        public string Recipient { get; set; }
         [JsonPropertyName("mobileNumber")]
         public string MobileNumber { get; set; }
         [JsonPropertyName("comment")]
@@ -19,7 +24,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public bool Invoice { get; set; }
         [JsonIgnore]
         public bool IsSufficient
-            => Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber) && MobileNumber.Trim().Length >= 8;
+            => Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber) && !string.IsNullOrWhiteSpace(Recipient) && MobileNumber.Trim().Length >= 8 && Recipient.Trim().Length >= 3;
 
         public override string ToString()
             => $"{Address} {MobileNumber} {Comment}";

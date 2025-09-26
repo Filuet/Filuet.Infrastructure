@@ -22,6 +22,7 @@ namespace Test
         public void Test_Country_attributes()
         {
             Assert.Equal("AZE", Country.Azerbaijan.GetDescription());
+            Assert.Equal("Российская Федерация", Country.Russia.GetName());
         }
 
         [Fact]

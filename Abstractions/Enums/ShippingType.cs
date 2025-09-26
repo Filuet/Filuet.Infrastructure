@@ -7,8 +7,6 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("store")]
         Store = 0x01,
         [Code("courier")]
-        CourierDelivery = 0x02,
-        [Code("pickup")]
-        PickUpPoint = 0x03
+        CourierDelivery = 0x02
     }
 }

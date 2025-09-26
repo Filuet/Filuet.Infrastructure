@@ -1,4 +1,5 @@
 ﻿using Filuet.Infrastructure.Abstractions.Business;
+using Filuet.Infrastructure.Abstractions.Business.Models;
 using Filuet.Infrastructure.Ordering.Dto;
 using Filuet.Infrastructure.Ordering.Helpers;
 using Filuet.Infrastructure.Ordering.Models;
@@ -53,6 +54,22 @@ namespace Test
             bool isCashCrash = orderDto.IsCashCrash();
 
            
+
+            // Post-validate
+            // Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Test_Shipping_details() {
+            // Prepare
+            ShippingDetails details = new ShippingDetails();
+
+            string ser = JsonSerializer.Serialize(details);
+            // Pre-validate
+
+            // Perform
+
+
 
             // Post-validate
             // Assert.Equal(expected, actual);

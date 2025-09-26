@@ -1,4 +1,5 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
+using Filuet.Infrastructure.Abstractions.Helpers;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Business.Models
@@ -13,7 +14,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public string City { get; set; }
         [JsonPropertyName("addressLine")]
         /// <summary>
-        /// Victorenko st, 14-23
+        /// Viktorenko st, 14-23
         /// </summary>
         public string AddressLine { get; set; }
         [JsonIgnore]
@@ -23,6 +24,6 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
             !string.IsNullOrWhiteSpace(AddressLine) && AddressLine.Trim().Length >= 4;
 
         public override string ToString()
-            => $"{PostCode} {Country} {City} {AddressLine}".Trim();
+            => $"{PostCode}, {Country.GetName()}, {City}, {AddressLine}".Trim();
     }
 }
