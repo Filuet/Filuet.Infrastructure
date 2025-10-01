@@ -98,6 +98,16 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// 2fa request
         /// </summary>
         [Code("F2A")]
-        F2A = 23
+        F2A = 23,
+        /// <summary>
+        /// An exeption in the app
+        /// </summary>
+        [Code("Bug")]
+        Bug = 24,
+        /// <summary>
+        /// When a new payment happened
+        /// </summary>
+        [Code("MoneyIncome")]
+        MoneyIncome = 25
     }
 }
