@@ -15,6 +15,21 @@
             <param name="points"></param>
             <returns></returns>
         </member>
+        <member name="F:Filuet.Infrastructure.Ordering.Dto.OrderRollbackReason.Expired">
+            <summary>
+            The order pricing is outdated or the payment link has expired
+            </summary>
+        </member>
+        <member name="F:Filuet.Infrastructure.Ordering.Dto.OrderRollbackReason.Cancelled">
+            <summary>
+            Cancelled by the customer
+            </summary>
+        </member>
+        <member name="F:Filuet.Infrastructure.Ordering.Dto.OrderRollbackReason.Changed">
+            <summary>
+            Order params have been changed, cost recalculation is needed
+            </summary>
+        </member>
         <member name="M:Filuet.Infrastructure.Ordering.Models.OrderItem.Create(System.String,System.UInt32)">
             <summary>
             Create single order line
