@@ -10,7 +10,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("qty")]
         public int Quantity { get; set; }
 
-        public static CartItem Create(string sku, int quantity) {
+        public static CartItem Create(string sku, int quantity = 1) {
             if (string.IsNullOrWhiteSpace(sku) || (sku.Trim().Length < 3 && sku.Trim().ToLower() != "it")) // users may use a pronounce to mention the product
                 throw new ArgumentException("Invalid sku");
 
