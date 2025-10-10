@@ -38,9 +38,7 @@ namespace Filuet.Infrastructure.DataProvider
         public Task DeleteAsync(ICollection<TEntity> entities)
             => throw new NotImplementedException();
 
-        public void Dispose() {
-            throw new NotImplementedException();
-        }
+        public void Dispose() { }
 
         public TEntity Get(object id, bool tracking = true)
         {
