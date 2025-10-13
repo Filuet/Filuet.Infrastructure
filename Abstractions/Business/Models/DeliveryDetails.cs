@@ -5,7 +5,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     public class DeliveryDetails
     {
         [JsonPropertyName("address")]
-        public Address Address { get; set; }
+        public Address Address { get; set; } = new Address();
         /// <summary>
         /// Recipient name
         /// </summary>
@@ -24,7 +24,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public bool Invoice { get; set; }
         [JsonIgnore]
         public bool IsSufficient
-            => Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber) && !string.IsNullOrWhiteSpace(Recipient) && MobileNumber.Trim().Length >= 8 && Recipient.Trim().Length >= 3;
+            => Address != null && Address.IsSufficient && !string.IsNullOrWhiteSpace(MobileNumber) && !string.IsNullOrWhiteSpace(Recipient) && MobileNumber.Trim().Length >= 8 && Recipient.Trim().Length >= 3;
 
         public override string ToString()
             => $"{Address} {MobileNumber} {Comment}";
