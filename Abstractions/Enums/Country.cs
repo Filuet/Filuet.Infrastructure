@@ -69,7 +69,7 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         //[Description("KAZ")]
         [Display(Name = "Қазақстан", Description = "KAZ")]
         Kazakhstan = 398,
-        //[Code("KR")]
+        [Code("KR")]
         [Description("KOR")]
         [Display(Name = "한국", Description = "KOR")]
         Korea = 410,
