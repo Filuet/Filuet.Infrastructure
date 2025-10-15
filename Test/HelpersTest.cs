@@ -1,5 +1,4 @@
-﻿using Filuet.Infrastructure.Abstractions.Enums;
-using Filuet.Infrastructure.Abstractions.Helpers;
+﻿using Filuet.Infrastructure.Abstractions.Helpers;
 using Xunit;
 
 namespace Test
@@ -48,7 +47,7 @@ namespace Test
 
             // Post-validate
             Assert.Equal(expected, actual);
-        }        
+        }
         
         [Theory]
         [InlineData("e.ragone@prc.kedai.lm.lt", true)]
@@ -69,5 +68,21 @@ namespace Test
             // Post-validate
             Assert.Equal(expected, fact);
         }
+
+        [Theory]
+        [InlineData("3E33")]
+        [InlineData("3133")]
+        [InlineData("M110")]
+        [InlineData("111F")]
+        public void Test_Sku_regex(string sku)
+            => Assert.True(sku.IsSku());
+
+        [Theory]
+        [InlineData("3E3_")]
+        [InlineData("11T1")]
+        [InlineData("M1110")]
+        [InlineData("M1110  wwdwd")]
+        public void Test_Not_Sku_regex(string not_sku)
+            => Assert.False(not_sku.IsSku());
     }
 }

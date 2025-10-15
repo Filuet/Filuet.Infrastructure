@@ -14,6 +14,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-.]+)((\.(\w){2,3})+)$";
         const string PHONE_PATTERN = @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$";
         const string ENGLISH_PATTERN = @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
+        const string SKU_PATTERN = @"[a-zA-Z0-9]{2}\d{1}[a-zA-Z0-9]{1}\b";
 
         public static string GetPaymentSystem(this string cardNumber) {
             Regex regexVI = new Regex(@"^4");
@@ -30,8 +31,20 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return @"VI";
         }
 
+        public static bool IsSku(this string sku) {
+            if (sku.Length != 4)
+                return false;
+
+            Regex regex = new Regex(SKU_PATTERN);
+            Match match = regex.Match(sku);
+            if (match.Success && match.Captures.Count > 0)
+                return true;
+
+            return false;
+        }
+
         public static bool IsMacAddress(this string macAddress)
-                => CheckMatch(macAddress, "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
+            => CheckMatch(macAddress, "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
 
         public static bool IsGuid(this string source) {
             if (source == null)
