@@ -2,7 +2,7 @@
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    public enum ShippingType : byte
+    public enum ShippingType : short
     {
         [Code("store")]
         Store = 0x01,
