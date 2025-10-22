@@ -20,6 +20,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("additionalParams")]
         public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
 
+        [JsonPropertyName("shipping")]
+        public ShippingDetails ShippingDetails { get; set; }
+
         public CartItem this[string sku]
           => Items.FirstOrDefault(x => x.Sku == sku.ToFineSku());
 
