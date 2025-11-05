@@ -1,5 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
 using Filuet.Infrastructure.Abstractions.Helpers;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Filuet.Infrastructure.Abstractions.Business.Models
@@ -20,6 +21,8 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public BotChannel Channel { get; set; }
         [JsonPropertyName("customerUid")]
         public string CustomerUid { get; set; }
+        [JsonPropertyName("createdOn")]
+        public DateTime CreatedOn { get; set; }
         /// <summary>
         /// Language of the current request
         /// </summary>
