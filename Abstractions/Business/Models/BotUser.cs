@@ -22,7 +22,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("customerUid")]
         public string CustomerUid { get; set; }
         [JsonPropertyName("createdOn")]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         /// <summary>
         /// Language of the current request
         /// </summary>
