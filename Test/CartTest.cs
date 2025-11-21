@@ -148,5 +148,20 @@ namespace Test
             // Post-validate
             Assert.Equal(cart.Items.Count(), 0);
         }
+
+        [Theory]
+        [MemberData(nameof(TestDataGenerator.GetCarts), MemberType = typeof(TestDataGenerator))]
+        public void Test_Cart_update_carts(Cart cart) {
+            // Prepare
+
+            // Pre-validate
+            Assert.NotNull(cart);
+
+            // Perform
+            cart.Modify(x => { x.Clear(); x.Items = [CartItem.Create("quux")]; });
+
+            // Post-validate
+            Assert.Equal(cart.Items.Count(), 0);
+        }
     }
 }

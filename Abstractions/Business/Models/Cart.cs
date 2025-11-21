@@ -133,5 +133,14 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
 
             Items = Items.Where(x => !skus.Contains(x.Sku?.Trim()));
         }
+
+        public Cart Modify(Action<Cart> setupCart) {
+            setupCart(this);
+            return this;
+        }
+
+        public void Clear() {
+            Items = new List<CartItem>;
+        }
     }
 }
