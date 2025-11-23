@@ -30,6 +30,13 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public bool IsEmpty
             => Items == null || !Items.Any() || !Items.Any(x => x.Quantity > 0);
 
+        /// <summary>
+        /// The cart contains only one product
+        /// </summary>
+        [JsonIgnore]
+        public bool IsOneProductCart
+            => Items != null && Items.Count() == 1;
+
         public static Cart Create(IEnumerable<CartItem> items, Dictionary<string, string> additionalParams = null)
             => new Cart { Items = items, AdditionalParams = additionalParams };
 
@@ -140,7 +147,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         }
 
         public void Clear() {
-            Items = new List<CartItem>;
+            Items = new List<CartItem>();
         }
     }
 }

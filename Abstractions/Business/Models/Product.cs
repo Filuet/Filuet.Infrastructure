@@ -13,6 +13,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// Weight in gramms
         /// </summary>
         [JsonPropertyName("weight")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault | JsonIgnoreCondition.WhenWritingNull)]
         public int Weight { get; set; } = 0;
         [JsonPropertyName("loc")]
         public List<ProductLocalization> Localization { get; set; }
@@ -24,6 +25,13 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         /// <example>HLF: vp, product type</example>
         [JsonPropertyName("additionalParams")]
         public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Display number
+        /// </summary>
+        [JsonPropertyName("idx")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault | JsonIgnoreCondition.WhenWritingNull)]
+        public int Index { get; set; }
 
         public ProductLocalization this[Language language]
             => Localization.FirstOrDefault(x => x.Language == language)
