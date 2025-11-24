@@ -5,7 +5,7 @@ namespace Filuet.Infrastructure.DataProvider.Entities
 {
     public abstract class IdentifiableEntity<T> : IIdentifiable<T>
     {
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual T ID { get; protected set; }
 
         /// <summary>

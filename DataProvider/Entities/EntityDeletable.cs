@@ -7,14 +7,12 @@ namespace Filuet.Infrastructure.DataProvider.Entities
     {
         public virtual bool Deleted { get; protected set; } = false;
 
-        public void MarkDeleted()
-        {
+        public void MarkDeleted() {
             Deleted = true;
             ChangeState(DbState.Modified);
         }
 
-        public virtual void Restore()
-        {
+        public virtual void Restore() {
             Deleted = false;
             ChangeState(DbState.Modified);
         }

@@ -1,5 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.DataProvider;
 using Filuet.Infrastructure.DataProvider.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Filuet.Infrastructure.DataProvider.Entities
 {
@@ -14,5 +15,11 @@ namespace Filuet.Infrastructure.DataProvider.Entities
 
         void IDbState.DeleteFromDb()
         { _dbState = DbState.Deleted; }
+
+        /// <summary>
+        /// Sorting index
+        /// </summary>
+        [NotMapped]
+        public virtual int Index { get; set; } = 0;
     }
 }
