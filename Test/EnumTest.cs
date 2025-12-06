@@ -27,7 +27,7 @@ namespace Test
 
         [Fact]
         public void Test_Language() {
-           Language result = EnumHelpers.TryGetValueFromCode("EN", Language.Russian);
+           Language result = EnumHelpers.TryGetValueFromCode("ET", Language.Estonian);
         }
     }
 }

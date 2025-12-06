@@ -11,6 +11,10 @@ namespace Filuet.Infrastructure.Abstractions.Converters
         public override Language Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string value = reader.GetString();
+
+            if (string.Equals(value, "ee", StringComparison.InvariantCultureIgnoreCase)) // ecom still think that ee is the iso code of Estonian =)
+                value = "et";
+
             return EnumHelpers.GetValueFromCode<Language>(value);
         }
 

@@ -10,8 +10,8 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public string Address { get; set; }
         public string FreightCode { get; set; }
         public string WarehouseCode { get; set; }
-        public string Name { get; set; }
+        public string ServiceName { get; set; }
         public override string ToString()
-            => $"{Address} ({Name} - #{Code})";
+            => $"{Address} ({ServiceName} - #{Code})";
     }
 }
