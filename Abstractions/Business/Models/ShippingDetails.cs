@@ -24,7 +24,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonIgnore]
         public bool IsSufficient
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.IsSufficient).
-            Case(ShippingType.Store).Then(Pickup.IsSufficient).Default(false);
+            Case(ShippingType.Store).Then(Pickup.IsSufficient).Case(ShippingType.Locker).Then(Locker != null && !string.IsNullOrWhiteSpace(Locker.Code)).Default(false);
 
         public override string ToString()
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.ToString()).
