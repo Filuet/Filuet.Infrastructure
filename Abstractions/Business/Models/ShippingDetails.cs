@@ -13,6 +13,8 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public PickupDetails Pickup { get; set; } = new PickupDetails();
         [JsonPropertyName("delivery")]
         public DeliveryDetails Delivery { get; set; } = new DeliveryDetails();
+        [JsonPropertyName("locker")]
+        public ParcelLocker Locker { get; set; } = new ParcelLocker();
         [JsonIgnore]
         public string Tag
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(ShippingType.CourierDelivery.GetCode())
