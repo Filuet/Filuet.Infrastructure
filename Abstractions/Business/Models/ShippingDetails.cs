@@ -14,7 +14,7 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("delivery")]
         public DeliveryDetails Delivery { get; set; } = new DeliveryDetails();
         [JsonPropertyName("locker")]
-        public ParcelLocker Locker { get; set; }
+        public LockerDetails Locker { get; set; } = new LockerDetails();
         [JsonIgnore]
         public string Tag
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(ShippingType.CourierDelivery.GetCode())
@@ -23,11 +23,14 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
 
         [JsonIgnore]
         public bool IsSufficient
-            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.IsSufficient).
-            Case(ShippingType.Store).Then(Pickup.IsSufficient).Case(ShippingType.Locker).Then(Locker != null && !string.IsNullOrWhiteSpace(Locker.Code)).Default(false);
+            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.IsSufficient)
+                .Case(ShippingType.Store).Then(Pickup.IsSufficient)
+                .Case(ShippingType.Locker).Then(Locker.IsSufficient)
+            .Default(false);
 
         public override string ToString()
-            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.ToString()).
-            Case(ShippingType.Store).Then(Pickup.StoreCode).Default(null);
+            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.ToString())
+                .Case(ShippingType.Store).Then(Pickup.StoreCode)
+            .Default(null);
     }
 }

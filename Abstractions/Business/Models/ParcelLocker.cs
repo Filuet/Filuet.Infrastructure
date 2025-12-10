@@ -45,6 +45,10 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
             }
         }
 
+        [JsonIgnore]
+        public bool IsSufficient
+            => !string.IsNullOrWhiteSpace(Code) && !string.IsNullOrWhiteSpace(Address) && !string.IsNullOrWhiteSpace(City);
+
         public string Serialize()
             => $"code:{Code};country:{Country.GetCode()};city:{City};address:{Address.Replace(";", "&#59;")};freightCode:{FreightCode};warehouseCode:{WarehouseCode};serviceName:{ServiceName}";
 
