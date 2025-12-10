@@ -6,8 +6,6 @@ namespace Filuet.Infrastructure.Abstractions.Converters
 {
     public class DateTimeWithTimeZoneConverter : JsonConverter<DateTime>
     {
-        private TimeZoneInfo pacificZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string value = reader.GetString();
@@ -15,8 +13,7 @@ namespace Filuet.Infrastructure.Abstractions.Converters
             if (value == null)
                 return DateTime.MinValue;
 
-            var pacificTime = DateTime.Parse(value);
-            return TimeZoneInfo.ConvertTimeToUtc(pacificTime, pacificZone);
+            return DateTime.Parse(value);
         }
 
         public override void Write(
