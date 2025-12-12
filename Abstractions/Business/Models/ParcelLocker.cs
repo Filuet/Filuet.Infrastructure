@@ -49,6 +49,22 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public bool IsSufficient
             => !string.IsNullOrWhiteSpace(Code) && !string.IsNullOrWhiteSpace(Address) && !string.IsNullOrWhiteSpace(City);
 
+        [JsonIgnore]
+        public ParcelDelivery? ParcelDeliveryService
+        {
+            get {
+                string service = ServiceName.ToLower();
+                if (service.StartsWith("dpd"))
+                    return ParcelDelivery.DPD;
+                else if (service.StartsWith("omniva"))
+                    return ParcelDelivery.Omniva;
+                else if (service.StartsWith("smartposti") || service.StartsWith("posti") || service.StartsWith("itella"))
+                    return ParcelDelivery.SmartPosti;
+
+                return null;
+            }
+        }
+
         public string Serialize()
             => $"code:{Code};country:{Country.GetCode()};city:{City};address:{Address.Replace(";", "&#59;")};freightCode:{FreightCode};warehouseCode:{WarehouseCode};serviceName:{ServiceName}";
 

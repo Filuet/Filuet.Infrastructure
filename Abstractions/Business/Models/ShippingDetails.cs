@@ -15,6 +15,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public DeliveryDetails Delivery { get; set; } = new DeliveryDetails();
         [JsonPropertyName("locker")]
         public LockerDetails Locker { get; set; } = new LockerDetails();
+        [JsonPropertyName("comment")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string Comment { get; set; }
         [JsonIgnore]
         public string Tag
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(ShippingType.CourierDelivery.GetCode())
