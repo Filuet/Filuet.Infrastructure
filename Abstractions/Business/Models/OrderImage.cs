@@ -13,6 +13,8 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public DateTime Date { get; set; }
         [JsonPropertyName("status")]
         public OrderStatus Status { get; set; }
+        [JsonPropertyName("shipping")]
+        public ShippingType ShippingMethod { get; set; }
         [JsonPropertyName("customer")]
         public string Customer { get; set; }
         [JsonPropertyName("total")]
