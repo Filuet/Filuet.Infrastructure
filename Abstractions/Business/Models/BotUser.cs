@@ -23,6 +23,9 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         public string CustomerUid { get; set; }
         [JsonPropertyName("createdOn")]
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        [JsonPropertyName("lastLogin")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public DateTime? LastLogin { get; set; }
         /// <summary>
         /// Language of the current request
         /// </summary>
