@@ -13,7 +13,8 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         const string GUID_PATTERN = @"^[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$";
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-.]+)((\.(\w){2,3})+)$";
         const string PHONE_PATTERN = @"^(\+\d{1,2}\s)\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$";
-        const string ENGLISH_PATTERN = @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
+        const string LATIN_PATTERN = @"^[a-zA-Z0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
+        const string CYRILLIC_PATTERN = @"^[а-яА-Я0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$";
         const string SKU_PATTERN = @"[a-zA-Z0-9]{2}\d{1}[a-zA-Z0-9]{1}\b";
 
         public static string GetPaymentSystem(this string cardNumber) {
@@ -64,44 +65,99 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         public static bool IsPhone(this string mobile)
             => CheckMatch(mobile, PHONE_PATTERN);
 
-        public static bool IsInEnglish(this string input)
-            => CheckMatch(input, ENGLISH_PATTERN);
+        public static bool IsLatinText(this string input)
+            => CheckMatch(input, LATIN_PATTERN);
 
-        public static Language? GetLanguage(this string input) {
+        public static bool IsCyrillicText(this string input)
+            => CheckMatch(input, CYRILLIC_PATTERN);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="country">Country hint</param>
+        /// <returns></returns>
+        public static Language? GetLanguage(this string input, Country? country = null) {
             if (string.IsNullOrWhiteSpace(input))
                 return null;
 
-            if(CheckMatch(input, @"^[0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+            if (CheckMatch(input, @"^[0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
                 return null;
 
             if (input.IsEmail() || input.IsGuid() || input.IsMacAddress())
                 return null;
 
-            // input contains only English, digits and special symbols
-            if (input.IsInEnglish()) {
+            List<Language> languages = new List<Language>();
+
+            // input contains only Latin, digits and special symbols
+            if (input.IsLatinText()) {
                 // let's test if it is Latvian JIC
-                if (!input.Any(x => LatvianHelper.NotLatvianSymbols.Contains(x))) { // no not latvian symbols detected
+                if (!input.Any(x => LatvianHelper.LatinCharactersInException.Contains(x))) { // no not latvian symbols detected
                     // let's try luck with conjunctions and prepositions
                     string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    if (words.Any(x => LatvianHelper.LatvianConjunctions.Contains(x.ToLower()) || LatvianHelper.LatvianPrepositions.Contains(x.ToLower()))) {
+                    if (words.Any(x => LatvianHelper.Conjunctions.Contains(x.ToLower()) || LatvianHelper.Prepositions.Contains(x.ToLower()))) {
                         return Language.Latvian; // It must be Latvian after all
                     }
                 }
 
-                return Language.English;
+                // let's test if it is Uzbek JIC
+                if (!input.Any(x => UzbekHelper.LatinCharactersInException.Contains(x))) { // no not uz symbols detected
+                    // let's try luck with conjunctions and prepositions
+                    string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    if (words.Any(x => UzbekHelper.Conjunctions.Contains(x.ToLower()) || UzbekHelper.Prepositions.Contains(x.ToLower())))
+                        return Language.Uzbek; // It must be Uzbek
+                }
+
+                languages.Add(Language.English);
             }
+
+            // input contains only Cyrillic, digits and special symbols
+            if (input.IsCyrillicText()) {
+                // let's test if it is Uzbek JIC
+                if (!input.Any(x => UzbekHelper.CyrillicCharactersInException.Contains(x))) { // no not uz symbols detected
+                    // let's try luck with conjunctions and prepositions
+                    string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    if (words.Any(x => UzbekHelper.Conjunctions.Contains(x.ToLower()) || UzbekHelper.Prepositions.Contains(x.ToLower())))
+                        return Language.Uzbek; // It must be Uzbek
+                }
+
+                languages.Add(Language.Russian);
+            }
+
 
             // if Latvian letters only, digits and special symbols
             if (CheckMatch(input, @"^[a-zA-ZāčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
-                return Language.Latvian;
+                languages.Add(Language.Latvian);
 
-            // if Russian letters only, digits and special symbols
-            if (CheckMatch(input, @"^[а-яА-Я0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
-                return Language.Russian;
+            // if Latin letters and special symbols
+            if (CheckMatch(input, @"^[aAbBdcCDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVxXyYzZʻʼ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+                languages.Add(Language.Uzbek);
+            // if Cyrillic letters and special symbols
+            if (CheckMatch(input, @"^[аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТУфФхХцЦчЧшШьЬъЪэЭюЮяЯўЎқҚғҒҳҲʻʼ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+                languages.Add(Language.Uzbek);
 
             // if Armenian letters only, digits and special symbols
             if (CheckMatch(input, @"^[ա-ֆԱ-Ֆ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
-                return Language.Armenian;
+                languages.Add(Language.Armenian);
+
+            if (languages.Count() == 1)
+                return languages.First();
+            else if (languages.Count() >= 2) {
+                if (country.HasValue) { // country hint specified
+                    switch (country.Value) {
+                        case Country.Latvia:
+                            if (languages.Contains(Language.Latvian)) // prefer the local language
+                                return Language.Latvian;
+                            else return languages.First();
+                        case Country.Uzbekistan:
+                            if (languages.Contains(Language.Uzbek))
+                                return Language.Uzbek;
+                            else return languages.First();
+                    }
+                }
+
+                return languages.Last();
+            }
 
             #region mixed text detected. Let's analyze it more thoroughly
             var charsToRemove = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -129,6 +185,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
             langLettersCount[Language.English] = input.Count(x => listLatin.Contains(x)); // how many latin letters in the text
             langLettersCount[Language.Russian] = input.Count(x => listCyrillic.Contains(x)); // how many cyrillic... 
+            langLettersCount[Language.Uzbek] = input.Count(x => UzbekHelper.CyrillicAlphabet.Contains(x)); // how many UZ cyrillic... 
             langLettersCount[Language.Armenian] = input.Count(x => listArmenian.Contains(x)); // ...armenian...
 
             // if the test doesn't contain one of the provided by this function languages
@@ -236,6 +293,14 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
                 message = message.Replace(cyr_up[i], capitalized ? lat_up[i].ToUpper() : lat_up[i]);
                 message = message.Replace(cyr_low[i], lat_low[i]);
             }
+            // Uzbek
+            string[] uzSpecLetters = { "ў", "қ", "ғ", "ҳ", "oʻ", "gʻ" };
+            string[] latInvariants = { "u", "k", "g", "h", "o", "g" };
+            for (int i = 0; i < 6; i++) {
+                message = message.Replace(uzSpecLetters[i], latInvariants[i]);
+                message = message.Replace(uzSpecLetters[i].ToUpper(), latInvariants[i].ToUpper());
+            }
+
             return message;
         }
     }
