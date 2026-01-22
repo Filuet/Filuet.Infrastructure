@@ -80,5 +80,8 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         [Code("kn")]
         [Display(Name = "ಕನ್ನಡ", Description = "knIN")]
         Kannada,
+        [Code("uz")]
+        [Display(Name = "Oʻzbekcha", Description = "uz-Cyrl-UZ")]
+        Uzbek
     }
 }
