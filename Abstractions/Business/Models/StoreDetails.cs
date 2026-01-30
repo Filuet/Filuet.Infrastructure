@@ -2,7 +2,7 @@
 
 namespace Filuet.Infrastructure.Abstractions.Business.Models
 {
-    public class PickupDetails : ShipBaseDetails
+    public class StoreDetails : ShipBaseDetails
     {
         [JsonPropertyName("storeCode")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

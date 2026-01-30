@@ -1,5 +1,7 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Filuet.Infrastructure.Abstractions.Helpers
 {
@@ -52,6 +54,62 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
                 default:
                     throw new ArgumentException("No currency allocated for this country yet");
             }
+        }
+
+        public static Language[] GetLanguages(this Country country) {
+            Language[] result = null;
+
+            switch (country) {
+                case Country.Armenia:
+                    result = [Language.Armenian];
+                    break;
+                case Country.Latvia:
+                case Country.Estonia:
+                case Country.Lithuania:
+                    result = [Language.Latvian, Language.Estonian, Language.Lithuanian];
+                    break;
+                case Country.France:
+                case Country.Martinique:
+                    result = [Language.French];
+                    break;
+                case Country.Georgia:
+                    result = [Language.Georgian];
+                    break;
+                case Country.India:
+                    result = [Language.Hindi, Language.Kannada];
+                    break;
+                case Country.Israel:
+                    result = [Language.Hebrew, Language.Arabic, Language.Russian];
+                    break;
+                case Country.Japan:
+                    result = [Language.Japanese];
+                    break;
+                case Country.Kazakhstan:
+                    result = [Language.Kazakh, Language.Russian];
+                    break;
+                case Country.Korea:
+                    result = [Language.Korean];
+                    break;
+                case Country.Malaysia:
+                    result = [Language.Malay];
+                    break;
+                case Country.Russia:
+                    result = [Language.Russian];
+                    break;
+                case Country.Taiwan:
+                    result = [Language.Chinese];
+                    break;
+                case Country.Uzbekistan:
+                    result = [Language.Uzbek, Language.Russian];
+                    break;
+                case Country.Vietnam:
+                    result = [Language.Vietnamese];
+                    break;
+                default:
+                    break;
+            }
+
+            return result.Concat([Language.English]).ToArray(); // English is possible by default
         }
     }
 }

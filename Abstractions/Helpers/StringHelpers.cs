@@ -77,7 +77,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
         /// <param name="input"></param>
         /// <param name="country">Country hint</param>
         /// <returns></returns>
-        public static Language? GetLanguage(this string input, Country? country = null) {
+        public static Language[] GetLanguages(this string input, Country country) {
             if (string.IsNullOrWhiteSpace(input))
                 return null;
 
@@ -91,21 +91,25 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
             // input contains only Latin, digits and special symbols
             if (input.IsLatinText()) {
-                // let's test if it is Latvian JIC
-                if (!input.Any(x => LatvianHelper.LatinCharactersInException.Contains(x))) { // no not latvian symbols detected
-                    // let's try luck with conjunctions and prepositions
-                    string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    if (words.Any(x => LatvianHelper.Conjunctions.Contains(x.ToLower()) || LatvianHelper.Prepositions.Contains(x.ToLower()))) {
-                        return Language.Latvian; // It must be Latvian after all
+                if (country == Country.Latvia) {
+                    // let's test if it is Latvian JIC
+                    if (!input.Any(x => LatvianHelper.LatinCharactersInException.Contains(x))) { // no not latvian symbols detected
+                                                                                                 // let's try luck with conjunctions and prepositions
+                        string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        if (words.Any(x => LatvianHelper.Conjunctions.Contains(x.ToLower()) || LatvianHelper.Prepositions.Contains(x.ToLower()))) {
+                            return [Language.Latvian]; // It must be Latvian after all
+                        }
                     }
                 }
 
-                // let's test if it is Uzbek JIC
-                if (!input.Any(x => UzbekHelper.LatinCharactersInException.Contains(x))) { // no not uz symbols detected
-                    // let's try luck with conjunctions and prepositions
-                    string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    if (words.Any(x => UzbekHelper.Conjunctions.Contains(x.ToLower()) || UzbekHelper.Prepositions.Contains(x.ToLower())))
-                        return Language.Uzbek; // It must be Uzbek
+                if (country == Country.Uzbekistan) {
+                    // let's test if it is Uzbek JIC
+                    if (!input.Any(x => UzbekHelper.LatinCharactersInException.Contains(x))) { // no not uz symbols detected
+                                                                                               // let's try luck with conjunctions and prepositions
+                        string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        if (words.Any(x => UzbekHelper.Conjunctions.Contains(x.ToLower()) || UzbekHelper.Prepositions.Contains(x.ToLower())))
+                            return [Language.Uzbek]; // It must be Uzbek
+                    }
                 }
 
                 languages.Add(Language.English);
@@ -113,12 +117,14 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
             // input contains only Cyrillic, digits and special symbols
             if (input.IsCyrillicText()) {
-                // let's test if it is Uzbek JIC
-                if (!input.Any(x => UzbekHelper.CyrillicCharactersInException.Contains(x))) { // no not uz symbols detected
-                    // let's try luck with conjunctions and prepositions
-                    string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    if (words.Any(x => UzbekHelper.Conjunctions.Contains(x.ToLower()) || UzbekHelper.Prepositions.Contains(x.ToLower())))
-                        return Language.Uzbek; // It must be Uzbek
+                if (country == Country.Uzbekistan) {
+                    // let's test if it is Uzbek JIC
+                    if (!input.Any(x => UzbekHelper.CyrillicCharactersInException.Contains(x))) { // no not uz symbols detected
+                                                                                                  // let's try luck with conjunctions and prepositions
+                        string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        if (words.Any(x => UzbekHelper.Conjunctions.Contains(x.ToLower()) || UzbekHelper.Prepositions.Contains(x.ToLower())))
+                            return [Language.Uzbek]; // It must be Uzbek
+                    }
                 }
 
                 languages.Add(Language.Russian);
@@ -126,38 +132,22 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
 
             // if Latvian letters only, digits and special symbols
-            if (CheckMatch(input, @"^[a-zA-ZāčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+            if (CheckMatch(input, @"^[a-zA-ZāčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$") && !languages.Contains(Language.Latvian) && country == Country.Latvia)
                 languages.Add(Language.Latvian);
 
             // if Latin letters and special symbols
-            if (CheckMatch(input, @"^[aAbBdcCDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVxXyYzZʻʼ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+            if (CheckMatch(input, @"^[aAbBdcCDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVxXyYzZʻʼ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$") && !languages.Contains(Language.Uzbek) && country == Country.Uzbekistan)
                 languages.Add(Language.Uzbek);
             // if Cyrillic letters and special symbols
-            if (CheckMatch(input, @"^[аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТУфФхХцЦчЧшШьЬъЪэЭюЮяЯўЎқҚғҒҳҲʻʼ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+            if (CheckMatch(input, @"^[аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТУфФхХцЦчЧшШьЬъЪэЭюЮяЯўЎқҚғҒҳҲʻʼ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$") && !languages.Contains(Language.Uzbek) && country == Country.Uzbekistan)
                 languages.Add(Language.Uzbek);
 
             // if Armenian letters only, digits and special symbols
-            if (CheckMatch(input, @"^[ա-ֆԱ-Ֆ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$"))
+            if (CheckMatch(input, @"^[ա-ֆԱ-Ֆ0-9 !""№;%:?@*()#_\-\\\/|+=.,<>'`~]*$") && !languages.Contains(Language.Armenian) && country == Country.Armenia)
                 languages.Add(Language.Armenian);
 
-            if (languages.Count() == 1)
-                return languages.First();
-            else if (languages.Count() >= 2) {
-                if (country.HasValue) { // country hint specified
-                    switch (country.Value) {
-                        case Country.Latvia:
-                            if (languages.Contains(Language.Latvian)) // prefer the local language
-                                return Language.Latvian;
-                            else return languages.First();
-                        case Country.Uzbekistan:
-                            if (languages.Contains(Language.Uzbek))
-                                return Language.Uzbek;
-                            else return languages.First();
-                    }
-                }
-
-                return languages.Last();
-            }
+            if (languages.Count() >= 1)
+                return languages.ToArray();
 
             #region mixed text detected. Let's analyze it more thoroughly
             var charsToRemove = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -194,14 +184,11 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
             // if the text is in only one languages- that's it
             if (langLettersCount.Where(x => x.Value > 0).Count() == 1)
-                return langLettersCount.First(x => x.Value > 0).Key;
+                return [langLettersCount.First(x => x.Value > 0).Key];
 
-            // if the text is in only two languages- one specific and English, we can state that it is a text in the first one
-            if (langLettersCount.Where(x => x.Value > 0).Count() == 2 && langLettersCount.Where(x => x.Value > 0).Any(x => x.Key == Language.English))
-                return langLettersCount.First(x => x.Value > 0 && x.Key != Language.English).Key;
-
-            // 2 or more languages (not English) detected. let's dive deeper
-            return langLettersCount.OrderByDescending(x => x.Value).First().Key;
+            // 2 or more languages (not English) detected
+            Language[] countryLangs = country.GetLanguages();
+            return langLettersCount.OrderByDescending(x => x.Value).Where(x => x.Value > 0 && countryLangs.Contains(x.Key)).Select(x => x.Key).ToArray();
             #endregion
         }
 
