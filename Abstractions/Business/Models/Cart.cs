@@ -41,9 +41,12 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
             => new Cart { Items = items, AdditionalParams = additionalParams };
 
         public string GetParam(string key)
-           => AdditionalParams.ContainsKey(key) ? AdditionalParams[key] : null;
+           => AdditionalParams != null && AdditionalParams.ContainsKey(key) ? AdditionalParams[key] : null;
 
         public Cart AddParam(string key, object value) {
+            if (AdditionalParams == null)
+                AdditionalParams = new Dictionary<string, string>();
+
             AdditionalParams.TryAdd(key, value.ToString());
             return this;
         }

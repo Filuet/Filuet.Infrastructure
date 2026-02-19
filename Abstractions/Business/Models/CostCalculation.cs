@@ -109,5 +109,14 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
                 Items = Items.Select(x => new CartItem { Sku = x.Sku, Quantity = x.Quantity }),
                 AdditionalParams = AdditionalParams
             };
+
+        public string this[string additionalParamName] {
+            get {
+                if (AdditionalParams == null)
+                    return string.Empty;
+
+                return AdditionalParams.TryGetValue(additionalParamName, out string result) ? result : string.Empty;
+            }
+        }
     }
 }

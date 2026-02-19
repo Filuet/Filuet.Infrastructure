@@ -1,7 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Filuet.Infrastructure.Abstractions.Helpers
 {
@@ -111,5 +110,8 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
 
             return result.Concat([Language.English]).ToArray(); // English is possible by default
         }
+
+        public static string GetTelephoneCode(this Country country)
+            => FluentSwitch.On(country).Case(Country.Latvia).Then("+371").Case(Country.Uzbekistan).Then("+998").Default(string.Empty);
     }
 }

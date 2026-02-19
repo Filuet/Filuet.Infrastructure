@@ -50,12 +50,12 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
             => !string.IsNullOrWhiteSpace(Code) && !string.IsNullOrWhiteSpace(Address) && !string.IsNullOrWhiteSpace(City);
 
         [JsonIgnore]
-        public Enums.PickupPoint? ParcelDeliveryService
+        public PickupPointProvider? ParcelDeliveryService
         {
             get {
                 string service = ServiceName.ToLower();
                 if (service.StartsWith("3pl"))
-                    return Enums.PickupPoint.PL3;
+                    return PickupPointProvider.PL3;
 
                 return null;
             }

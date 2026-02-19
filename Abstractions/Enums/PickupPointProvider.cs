@@ -2,7 +2,7 @@
 
 namespace Filuet.Infrastructure.Abstractions.Enums
 {
-    public enum PickupPoint
+    public enum PickupPointProvider
     {
         [Code("3PL")] // Uzbekistan
         PL3 = 0x01

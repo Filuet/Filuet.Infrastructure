@@ -9,7 +9,6 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("type")]
         public ShippingType Type { get; set; } = ShippingType.CourierDelivery;
         [JsonPropertyName("store")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public StoreDetails Store { get; set; } = new StoreDetails();
         [JsonPropertyName("delivery")]
         public DeliveryDetails Delivery { get; set; } = new DeliveryDetails();
