@@ -112,9 +112,13 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return result.Concat([Language.English]).ToArray(); // English is possible by default
         }
 
-        public static (string code, string pattern, string example) GetMobileNumberFormat(this Country country)
-            => FluentSwitch.On(country).Case(Country.Latvia).Then(("+371", @"^\d{8}$", "12345678"))
-                .Case(Country.Uzbekistan).Then(("+998", @"^\d{9}$", "123456789"))
-                .Default((string.Empty, string.Empty, string.Empty));
+        public static (string code, string pattern, int length, string example) GetMobileNumberFormat(this Country country)
+            => FluentSwitch.On(country).Case(Country.Latvia).Then(("+371", @"^\d{8}$", 8, "12345678"))
+                .Case(Country.Uzbekistan).Then(("+998", @"^\d{9}$", 9, "123456789"))
+                .Default((string.Empty, string.Empty, 0, string.Empty));
+        public static (string pattern,  string example) GetPostalCodeFormat(this Country country)
+            => FluentSwitch.On(country).Case(Country.Latvia).Then((@"^[l|L][v|V]-\d{4}$", "LV-0001"))
+                .Case(Country.Uzbekistan).Then((@"^\d{6}$", "100000"))
+                .Default((string.Empty, string.Empty));
     }
 }
