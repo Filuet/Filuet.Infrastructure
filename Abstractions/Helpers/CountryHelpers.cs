@@ -111,7 +111,7 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return result.Concat([Language.English]).ToArray(); // English is possible by default
         }
 
-        public static string GetTelephoneCode(this Country country)
-            => FluentSwitch.On(country).Case(Country.Latvia).Then("+371").Case(Country.Uzbekistan).Then("+998").Default(string.Empty);
+        public static (string code, int length, string example) GetMobileNumberFormat(this Country country)
+            => FluentSwitch.On(country).Case(Country.Latvia).Then(("+371", 8, "12345678")).Case(Country.Uzbekistan).Then(("+998", 9, "123456789")).Default((string.Empty, 0, string.Empty));
     }
 }

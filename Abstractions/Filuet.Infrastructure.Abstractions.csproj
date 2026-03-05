@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-	<PackageVersion>1.0.248</PackageVersion>
+	<PackageVersion>1.0.249</PackageVersion>
 	  <PackageIcon>images\icon.png</PackageIcon>
   </PropertyGroup>
 
