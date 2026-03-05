@@ -1,5 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
 using System;
+using System.Buffers;
 using System.Linq;
 
 namespace Filuet.Infrastructure.Abstractions.Helpers
@@ -111,7 +112,9 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             return result.Concat([Language.English]).ToArray(); // English is possible by default
         }
 
-        public static (string code, int length, string example) GetMobileNumberFormat(this Country country)
-            => FluentSwitch.On(country).Case(Country.Latvia).Then(("+371", 8, "12345678")).Case(Country.Uzbekistan).Then(("+998", 9, "123456789")).Default((string.Empty, 0, string.Empty));
+        public static (string code, string pattern, string example) GetMobileNumberFormat(this Country country)
+            => FluentSwitch.On(country).Case(Country.Latvia).Then(("+371", @"^\d{8}$", "12345678"))
+                .Case(Country.Uzbekistan).Then(("+998", @"^\d{9}$", "123456789"))
+                .Default((string.Empty, string.Empty, string.Empty));
     }
 }
