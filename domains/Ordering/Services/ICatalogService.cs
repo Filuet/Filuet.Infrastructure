@@ -1,5 +1,6 @@
 ﻿using Filuet.Infrastructure.Abstractions.Enums;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Filuet.Infrastructure.Ordering.Services
 {
@@ -12,13 +13,13 @@ namespace Filuet.Infrastructure.Ordering.Services
         /// <param name="language"></param>
         /// <param name="country"></param>
         /// <returns></returns>
-        Dictionary<string, string> GetNames(IEnumerable<string> uids, Language language, Country country);
+        Task<Dictionary<string, string>> GetNamesAsync(IEnumerable<string> uids, Language language, Country country);
         /// <summary>
         /// Get products weight
         /// </summary>
         /// <param name="uids">sku</param>
         /// <param name="country">country</param>
         /// <returns></returns>
-        Dictionary<string, int> GetWeights(IEnumerable<string> uids, Country country);
+        Task<Dictionary<string, int>> GetWeightsAsync(IEnumerable<string> uids, Country country);
     }
 }
