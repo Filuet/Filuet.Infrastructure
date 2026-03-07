@@ -1,4 +1,5 @@
-﻿using Filuet.Infrastructure.Abstractions.Helpers;
+﻿using Filuet.Infrastructure.Abstractions.Enums;
+using Filuet.Infrastructure.Abstractions.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,12 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
     public class Cart {
         [JsonPropertyName("items")]
         public IEnumerable<CartItem> Items { get; set; }
-
         /// <summary>
         /// Additional parameters that take participation in calculation process
         /// </summary>
         /// <example>HLF: kiosk mode, month (in case of dual month period), consumption type...</example>
         [JsonPropertyName("additionalParams")]
         public Dictionary<string, string> AdditionalParams { get; set; } = new Dictionary<string, string>();
-
         [JsonPropertyName("shipping")]
         public ShippingDetails ShippingDetails { get; set; }
 

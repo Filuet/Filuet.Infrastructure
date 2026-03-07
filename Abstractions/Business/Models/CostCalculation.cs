@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Filuet.Infrastructure.Abstractions.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -103,6 +104,13 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("products")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public IEnumerable<Product> Products { get; set; }
+        [JsonPropertyName("county")]
+        public Country Country { get; set; }
+        /// <summary>
+        /// UI language
+        /// </summary>
+        [JsonPropertyName("language")]
+        public Language Language { get; set; }
 
         public Cart ToCart()
             => new Cart {

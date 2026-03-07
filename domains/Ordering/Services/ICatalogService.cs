@@ -13,7 +13,6 @@ namespace Filuet.Infrastructure.Ordering.Services
         /// <param name="country"></param>
         /// <returns></returns>
         Dictionary<string, string> GetNames(IEnumerable<string> uids, Language language, Country country);
-
         /// <summary>
         /// Get products weight
         /// </summary>

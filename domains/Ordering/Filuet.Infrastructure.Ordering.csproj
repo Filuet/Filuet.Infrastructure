@@ -2,7 +2,8 @@
 
   <PropertyGroup>
 	  <TargetFramework>net8.0</TargetFramework>
-	  <PackageVersion>1.0.49</PackageVersion>
+	  <PackageVersion>1.0.51</PackageVersion>
+	  <PackageIcon>images\icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,6 +13,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Abstractions\Filuet.Infrastructure.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="images\icon.png" Pack="true" Visible="false" PackagePath="images\" />
   </ItemGroup>
 
 </Project>

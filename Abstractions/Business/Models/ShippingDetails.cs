@@ -10,12 +10,16 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonPropertyName("type")]
         public ShippingType Type { get; set; } = ShippingType.CourierDelivery;
         [JsonPropertyName("store")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public StoreDetails Store { get; set; } = new StoreDetails();
         [JsonPropertyName("delivery")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public DeliveryDetails Delivery { get; set; } = new DeliveryDetails();
         [JsonPropertyName("locker")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public LockerDetails Locker { get; set; } = new LockerDetails();
         [JsonPropertyName("pickupPoint")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public PickupPointDetails PickupPoint { get; set; } = new PickupPointDetails();
         [JsonPropertyName("comment")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -23,15 +27,15 @@ namespace Filuet.Infrastructure.Abstractions.Business.Models
         [JsonIgnore]
         public string Tag
             => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(ShippingType.CourierDelivery.GetCode())
-                .Case(ShippingType.Store).Then($"{ShippingType.Store.GetCode()}:{Store.StoreCode}")
+                .Case(ShippingType.Store).Then(Store == null ? null : $"{ShippingType.Store.GetCode()}:{Store.StoreCode}")
                 .Default(null);
 
         [JsonIgnore]
         public bool IsSufficient
-            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery.IsSufficient)
-                .Case(ShippingType.Store).Then(Store.IsSufficient)
-                .Case(ShippingType.Locker).Then(Locker.IsSufficient)
-                .Case(ShippingType.PickupPoint).Then(PickupPoint.IsSufficient)
+            => FluentSwitch.On(Type).Case(ShippingType.CourierDelivery).Then(Delivery == null ? false : Delivery.IsSufficient)
+                .Case(ShippingType.Store).Then(Store == null ? false : Store.IsSufficient)
+                .Case(ShippingType.Locker).Then(Locker == null ? false : Locker.IsSufficient)
+                .Case(ShippingType.PickupPoint).Then(PickupPoint == null ? false : PickupPoint.IsSufficient)
             .Default(false);
 
         /// <summary>

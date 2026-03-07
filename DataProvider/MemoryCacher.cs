@@ -27,7 +27,7 @@ namespace Filuet.Infrastructure.DataProvider
 
         public T Set<T>(object key, T value, double minDurationMs = 60000, bool riseEvent = true) {
             if (value == null && riseEvent)
-                OnCacheClear.Invoke(this, new CacheClearEventArgs(key.ToString()));
+                OnCacheClear?.Invoke(this, new CacheClearEventArgs(key.ToString()));
 
             KeysClearTime[key.ToString()] = DateTime.Now;
 
