@@ -9,6 +9,10 @@ namespace Filuet.Infrastructure.Abstractions.Enums
     [JsonConverter(typeof(CountryJsonConverter))]
     public enum Country : short
     {
+        [Code("AE")]
+        //[Description("ARE")]
+        [Display(Name = "الإمارات العربية المتحدة", Description = "ARE")]
+        UnitedArabEmirates = 784,
         [Code("AZ")]
         //[Description("AZE")]
         [Display(Name = "Azərbaycan Respublikası", Description = "AZE")]
