@@ -108,6 +108,11 @@ namespace Filuet.Infrastructure.Abstractions.Enums
         /// When a new payment happened
         /// </summary>
         [Code("MoneyIncome")]
-        MoneyIncome = 25
+        MoneyIncome = 25,
+        /// <summary>
+        /// Indicates a card reader malfunction.
+        /// </summary>
+        [Code("CardReaderIssue")]
+        CardReaderIssue = 26,
     }
 }
