@@ -252,7 +252,10 @@ namespace Filuet.Infrastructure.Abstractions.Helpers
             if (string.IsNullOrWhiteSpace(sku))
                 throw new ArgumentException("Sku is mandatory");
 
-            return sku.Trim().ToUpper();
+            sku = sku.Trim().ToUpper();
+
+            // Replace Cyrillic with Latin
+            return sku.Replace('К', 'K').Replace('С', 'C').Replace('А', 'A').Replace('Т', 'T').Replace('В', 'B').Replace('У', 'Y').Replace('М', 'M').Replace('Н', 'H').Replace('Е', 'E').Replace('Х', 'X').Replace('О', 'O').Replace('Р', 'P');
         }
 
         public static string Capitalize(this string input) {
